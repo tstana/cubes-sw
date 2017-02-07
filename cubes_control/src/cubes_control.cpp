@@ -24,7 +24,7 @@ cubes_control::cubes_control(QWidget *parent) :
 
 //    for (int baud = QSerialPort::Baud1200; baud != QSerialPort::UnknownBaud; baud++) {
 //        const QString s = QString::number(baud) + "; ";
-//        ui->textOutpMessages->setPlainText(s);
+//        ui->textMsgs->setPlainText(s);
 ////        ui->cbBaudRates->addItem(QString::number(baud));
 //    }
 }
@@ -34,7 +34,3 @@ cubes_control::~cubes_control()
     delete ui;
 }
 
-void cubes_control::on_plainTextEdit_textChanged()
-{
-
-}

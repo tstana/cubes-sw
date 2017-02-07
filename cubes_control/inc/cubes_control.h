@@ -15,9 +15,6 @@ public:
     explicit cubes_control(QWidget *parent = 0);
     ~cubes_control();
 
-private slots:
-    void on_plainTextEdit_textChanged();
-
 private:
     Ui::cubes_control *ui;
 };
