@@ -9,6 +9,7 @@ cubes_control::cubes_control(QWidget *parent) :
     ui(new Ui::cubes_control)
 {
     QStringList ports;
+    int baudRates[] = {9600, 19200, 38400, 115200};
 
     ui->setupUi(this);
     ui->cbSerialPorts->addItem("<Click to select available Serial Port>");
@@ -22,11 +23,12 @@ cubes_control::cubes_control(QWidget *parent) :
 
     ui->cbSerialPorts->addItems(ports);
 
-//    for (int baud = QSerialPort::Baud1200; baud != QSerialPort::UnknownBaud; baud++) {
-//        const QString s = QString::number(baud) + "; ";
-//        ui->textMsgs->setPlainText(s);
-////        ui->cbBaudRates->addItem(QString::number(baud));
-//    }
+    QString s;
+    for (int i = 0; i < sizeof(baudRates)/sizeof(baudRates[0]) ; i++) {
+        ui->cbBaudRates->addItem(QString::number(baudRates[i]));
+    }
+    int idx = ui->cbBaudRates->findText("115200");
+    ui->cbBaudRates->setCurrentIndex(idx);
 }
 
 cubes_control::~cubes_control()
