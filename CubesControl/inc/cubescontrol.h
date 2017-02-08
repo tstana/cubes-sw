@@ -27,6 +27,8 @@ private slots:
 
     void on_SerialPort_ReadyRead();
 
+    void on_btnClose_clicked();
+
 private:
     Ui::CubesControl    *ui;
 

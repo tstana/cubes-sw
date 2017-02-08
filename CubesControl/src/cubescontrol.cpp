@@ -33,6 +33,8 @@ CubesControl::CubesControl(QWidget *parent) :
     }
     int idx = ui->cbBaudRates->findText("115200");
     ui->cbBaudRates->setCurrentIndex(idx);
+
+    ui->btnClose->setEnabled(false);
 }
 
 CubesControl::~CubesControl()
@@ -52,6 +54,10 @@ void CubesControl::on_btnOpen_clicked()
     m_serialPort.open(QIODevice::ReadWrite);
 
     ui->lblMsgs->setText("Opened " + m_serialPort.portName() + " @ " + QString::number(m_serialPort.baudRate()) + " bps");
+    ui->cbSerialPorts->setEnabled(false);
+    ui->cbBaudRates->setEnabled(false);
+    ui->btnOpen->setEnabled(false);
+    ui->btnClose->setEnabled(true);
 }
 
 void CubesControl::on_cbSerialPorts_currentIndexChanged(const QString &arg1)
@@ -75,4 +81,16 @@ void CubesControl::on_textToSend_textChanged(const QString &arg1)
 void CubesControl::on_SerialPort_ReadyRead()
 {
     ui->lblMsgs->setText(QString::fromUtf8(m_serialPort.readAll()));
+}
+
+void CubesControl::on_btnClose_clicked()
+{
+    ui->cbSerialPorts->setEnabled(true);
+    ui->cbBaudRates->setEnabled(true);
+    ui->btnOpen->setEnabled(true);
+
+    m_serialPort.close();
+    ui->lblMsgs->setText("Closed " + m_serialPort.portName());
+
+    ui->btnClose->setEnabled(false);
 }
