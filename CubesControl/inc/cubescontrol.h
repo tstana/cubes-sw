@@ -12,16 +12,16 @@ class CubesControl;
 
 class CubesControl : public QMainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit CubesControl(QWidget *parent = 0);
-	~CubesControl();
+    explicit CubesControl(QWidget *parent = 0);
+    ~CubesControl();
 
 private:
-	Ui::CubesControl	*ui;
+    Ui::CubesControl	*ui;
 
-	QSerialPort			m_serialPort;
+    QSerialPort			m_serialPort;
 };
 
 #endif // CUBESCONTROL_H

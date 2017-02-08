@@ -8,21 +8,21 @@
 
 class CubesHardwareComm : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit CubesHardwareComm(QSerialPort *port, QLabel *lblMessages, QObject *parent = 0);
-	~CubesHardwareComm();
+    explicit CubesHardwareComm(QSerialPort *port, QLabel *lblMessages, QObject *parent = 0);
+    ~CubesHardwareComm();
 
 private slots:
-	void handleTimeout();
-	void handleError(QSerialPort::SerialPortError error);
+    void handleTimeout();
+    void handleError(QSerialPort::SerialPortError error);
 
 private:
-	QSerialPort		*m_port;
-	QLabel			*m_lblMessages;
-	char			m_writeData;
-	QTimer			m_timer;
+    QSerialPort		*m_port;
+    QLabel			*m_lblMessages;
+    char			m_writeData;
+    QTimer			m_timer;
 };
 
 #endif // CUBESHARDWARECOMM_H
