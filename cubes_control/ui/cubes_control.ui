@@ -13,32 +13,6 @@
   <property name="windowTitle">
    <string>CUBES Control Program</string>
   </property>
-  <widget class="QPlainTextEdit" name="textToSend">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>100</y>
-     <width>381</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="verticalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="textMsgs">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>130</y>
-     <width>381</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="textInteractionFlags">
-    <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-   </property>
-  </widget>
   <widget class="QComboBox" name="cbSerialPorts">
    <property name="geometry">
     <rect>
@@ -68,45 +42,68 @@
     <string>Open Serial Port</string>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="textBaudRate">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>161</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::NoFrame</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Sunken</enum>
-   </property>
-   <property name="lineWidth">
-    <number>1</number>
-   </property>
-   <property name="verticalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
-   </property>
-   <property name="plainText">
-    <string>Baud rate:</string>
-   </property>
-   <property name="textInteractionFlags">
-    <set>Qt::TextSelectableByKeyboard</set>
-   </property>
-  </widget>
   <widget class="QComboBox" name="cbBaudRates">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>90</x>
      <y>40</y>
-     <width>71</width>
+     <width>171</width>
      <height>22</height>
     </rect>
    </property>
    <property name="layoutDirection">
     <enum>Qt::RightToLeft</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblBaudRate">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Baud rate:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblMsgs">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>130</y>
+     <width>381</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::PlainText</enum>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="textToSend">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>381</width>
+     <height>21</height>
+    </rect>
    </property>
   </widget>
  </widget>
