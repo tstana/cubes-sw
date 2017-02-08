@@ -8,7 +8,7 @@ QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = cubes_control
+TARGET = cubescontrol
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -25,12 +25,12 @@ INCLUDEPATH += $$PWD/inc
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/cubes_control.cpp \
+    src/cubescontrol.cpp \
     src/main.cpp \
     src/cubeshardwarecomm.cpp
 
 HEADERS  += \
-    $$INCLUDEPATH/cubes_control.h \
+    $$INCLUDEPATH/cubescontrol.h \
     $$INCLUDEPATH/cubeshardwarecomm.h \
 
-FORMS    += ui/cubes_control.ui
+FORMS    += ui/cubescontrol.ui

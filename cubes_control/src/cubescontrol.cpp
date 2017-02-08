@@ -1,14 +1,14 @@
-#include "cubes_control.h"
+#include "CubesControl.h"
 #include "CubesHardwareComm.h"
-#include "ui_cubes_control.h"
+#include "ui_cubescontrol.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QLabel>
 #include <string>
 
-cubes_control::cubes_control(QWidget *parent) :
+CubesControl::CubesControl(QWidget *parent) :
 	QMainWindow(parent),
-	ui(new Ui::cubes_control)
+	ui(new Ui::CubesControl)
 {
 	QStringList		ports;
 	int				baudRates[] = {9600, 19200, 38400, 115200};
@@ -34,7 +34,7 @@ cubes_control::cubes_control(QWidget *parent) :
 	ui->cbBaudRates->setCurrentIndex(idx);
 }
 
-cubes_control::~cubes_control()
+CubesControl::~CubesControl()
 {
 	delete ui;
 }

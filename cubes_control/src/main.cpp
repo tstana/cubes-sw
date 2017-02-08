@@ -1,10 +1,10 @@
-#include "cubes_control.h"
+#include "cubescontrol.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	cubes_control w;
+	CubesControl w;
 	w.show();
 
 	return a.exec();
