@@ -18,10 +18,18 @@ public:
     explicit CubesControl(QWidget *parent = 0);
     ~CubesControl();
 
-private:
-    Ui::CubesControl	*ui;
+private slots:
+    void on_btnOpen_clicked();
 
-    QSerialPort			m_serialPort;
+    void on_cbSerialPorts_currentIndexChanged(const QString &arg1);
+
+    void on_textToSend_textChanged(const QString &arg1);
+
+private:
+    Ui::CubesControl    *ui;
+
+    QSerialPort         m_serialPort;
+    QString             m_serialPortName;
 };
 
 #endif // CUBESCONTROL_H

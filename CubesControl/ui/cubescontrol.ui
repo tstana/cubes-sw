@@ -23,12 +23,12 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnOpenSerialPort">
+  <widget class="QPushButton" name="btnOpen">
    <property name="geometry">
     <rect>
      <x>280</x>
      <y>10</y>
-     <width>111</width>
+     <width>51</width>
      <height>51</height>
     </rect>
    </property>
@@ -39,7 +39,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Open Serial Port</string>
+    <string>Open</string>
    </property>
   </widget>
   <widget class="QComboBox" name="cbBaudRates">
@@ -104,6 +104,25 @@
      <width>381</width>
      <height>21</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnClose">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>10</y>
+     <width>51</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Close</string>
    </property>
   </widget>
  </widget>

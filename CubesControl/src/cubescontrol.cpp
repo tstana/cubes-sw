@@ -1,5 +1,5 @@
-#include "CubesControl.h"
-#include "CubesHardwareComm.h"
+#include "cubescontrol.h"
+#include "cubeshardwarecomm.h"
 #include "ui_cubescontrol.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
@@ -39,3 +39,34 @@ CubesControl::~CubesControl()
     delete ui;
 }
 
+void CubesControl::on_btnOpen_clicked()
+{
+    if (ui->cbSerialPorts->currentIndex() == 0) {
+        ui->lblMsgs->setText("Port not opened; please select a valid port from the drop-down above.");
+        return;
+    }
+    m_serialPort.setPortName(m_serialPortName);
+    m_serialPort.setBaudRate(ui->cbBaudRates->currentText().toInt());
+
+    m_serialPort.open(QIODevice::WriteOnly);
+
+    ui->lblMsgs->setText("Opened " + m_serialPort.portName() + " @ " + QString::number(m_serialPort.baudRate()) + " bps");
+}
+
+void CubesControl::on_cbSerialPorts_currentIndexChanged(const QString &arg1)
+{
+    const auto serialPorts = QSerialPortInfo::availablePorts();
+
+    for (const QSerialPortInfo &info : serialPorts) {
+        if (arg1.contains(info.portName())) {
+            m_serialPortName = info.portName();
+            break;
+        }
+    }
+}
+
+void CubesControl::on_textToSend_textChanged(const QString &arg1)
+{
+    QByteArray writeData = arg1.toUtf8();
+    m_serialPort.write(writeData);
+}
