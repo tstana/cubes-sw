@@ -2,6 +2,9 @@
 #define CUBES_CONTROL_H
 
 #include <QMainWindow>
+#include <QString>
+#include <QTextStream>
+#include <QSerialPort>
 
 namespace Ui {
 class cubes_control;
@@ -16,7 +19,9 @@ public:
 	~cubes_control();
 
 private:
-	Ui::cubes_control *ui;
+	Ui::cubes_control	*ui;
+
+	QSerialPort			m_serialPort;
 };
 
 #endif // CUBES_CONTROL_H
