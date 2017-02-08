@@ -9,14 +9,14 @@ class cubes_control;
 
 class cubes_control : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit cubes_control(QWidget *parent = 0);
-    ~cubes_control();
+	explicit cubes_control(QWidget *parent = 0);
+	~cubes_control();
 
 private:
-    Ui::cubes_control *ui;
+	Ui::cubes_control *ui;
 };
 
 #endif // CUBES_CONTROL_H
