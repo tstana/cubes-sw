@@ -25,6 +25,8 @@ private slots:
 
     void on_textToSend_textChanged(const QString &arg1);
 
+    void on_SerialPort_ReadyRead();
+
 private:
     Ui::CubesControl    *ui;
 

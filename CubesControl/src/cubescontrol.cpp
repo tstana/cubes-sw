@@ -10,13 +10,14 @@ CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CubesControl)
 {
-    QStringList		ports;
-    int				baudRates[] = {9600, 19200, 38400, 115200};
+    QStringList     ports;
+    int             baudRates[] = {9600, 19200, 38400, 115200};
 
     ui->setupUi(this);
     ui->cbSerialPorts->addItem("<Click to select available Serial Port>");
 
-    CubesHardwareComm	cubesComm(&m_serialPort, ui->lblMsgs);
+//    CubesHardwareComm	cubesComm(&m_serialPort, ui->lblMsgs);
+    connect(&m_serialPort, &QSerialPort::readyRead, this, &CubesControl::on_SerialPort_ReadyRead);
 
     const auto serialPorts = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : serialPorts) {
@@ -48,7 +49,7 @@ void CubesControl::on_btnOpen_clicked()
     m_serialPort.setPortName(m_serialPortName);
     m_serialPort.setBaudRate(ui->cbBaudRates->currentText().toInt());
 
-    m_serialPort.open(QIODevice::WriteOnly);
+    m_serialPort.open(QIODevice::ReadWrite);
 
     ui->lblMsgs->setText("Opened " + m_serialPort.portName() + " @ " + QString::number(m_serialPort.baudRate()) + " bps");
 }
@@ -69,4 +70,9 @@ void CubesControl::on_textToSend_textChanged(const QString &arg1)
 {
     QByteArray writeData = arg1.toUtf8();
     m_serialPort.write(writeData);
+}
+
+void CubesControl::on_SerialPort_ReadyRead()
+{
+    ui->lblMsgs->setText(QString::fromUtf8(m_serialPort.readAll()));
 }
