@@ -37,7 +37,7 @@
  */
 
 #include "cubescontrol.h"
-#include "cubeshardwarecomm.h"
+#include "cubeshardwareif.h"
 #include "ui_cubescontrol.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
