@@ -39,6 +39,8 @@
 #ifndef CUBESCONTROL_H
 #define CUBESCONTROL_H
 
+#include <cubesserialport.h>
+
 #include <QMainWindow>
 #include <QString>
 #include <QTextStream>
@@ -70,8 +72,7 @@ private slots:
 private:
     Ui::CubesControl    *ui;
 
-    QSerialPort         m_serialPort;
-    QString             m_serialPortName;
+    CubesSerialPort     m_hwPort;
 };
 
 #endif // CUBESCONTROL_H

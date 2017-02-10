@@ -36,8 +36,8 @@
  *==============================================================================
  */
 
-#include "cubescontrol.h"
-#include "cubeshardwareif.h"
+#include <cubescontrol.h>
+#include "cubesserialport.h"
 #include "ui_cubescontrol.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
@@ -54,9 +54,6 @@ CubesControl::CubesControl(QWidget *parent) :
     ui->setupUi(this);
     ui->cbSerialPorts->addItem("<Click to select available Serial Port>");
 
-//    CubesHardwareComm	cubesComm(&m_serialPort, ui->lblMsgs);
-    connect(&m_serialPort, &QSerialPort::readyRead, this, &CubesControl::on_SerialPort_ReadyRead);
-
     const auto serialPorts = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : serialPorts) {
         ports.append(info.portName() + ": " + info.description());
@@ -65,7 +62,7 @@ CubesControl::CubesControl(QWidget *parent) :
     ports.sort();
 
     ui->cbSerialPorts->addItems(ports);
-
+//itzi was here :*
     for (uint32_t i = 0; i < sizeof(baudRates)/sizeof(baudRates[0]) ; i++) {
         ui->cbBaudRates->addItem(QString::number(baudRates[i]));
     }
@@ -82,16 +79,18 @@ CubesControl::~CubesControl()
 
 void CubesControl::on_btnOpen_clicked()
 {
+    QSerialPort *p_serialPort = new QSerialPort();
+
     if (ui->cbSerialPorts->currentIndex() == 0) {
         ui->lblMsgs->setText("Port not opened; please select a valid port from the drop-down above.");
         return;
     }
-    m_serialPort.setPortName(m_serialPortName);
-    m_serialPort.setBaudRate(ui->cbBaudRates->currentText().toInt());
+    m_hwPort.setPortName(m_hwPortName);
+    m_hwPort.setBaudRate(ui->cbBaudRates->currentText().toInt());
 
-    m_serialPort.open(QIODevice::ReadWrite);
+    m_hwPort.open(QIODevice::ReadWrite);
 
-    ui->lblMsgs->setText("Opened " + m_serialPort.portName() + " @ " + QString::number(m_serialPort.baudRate()) + " bps");
+    ui->lblMsgs->setText("Opened " + m_hwPort.portName() + " @ " + QString::number(m_hwPort.baudRate()) + " bps");
     ui->cbSerialPorts->setEnabled(false);
     ui->cbBaudRates->setEnabled(false);
     ui->btnOpen->setEnabled(false);
@@ -104,7 +103,7 @@ void CubesControl::on_cbSerialPorts_currentIndexChanged(const QString &arg1)
 
     for (const QSerialPortInfo &info : serialPorts) {
         if (arg1.contains(info.portName())) {
-            m_serialPortName = info.portName();
+            m_hwPortName = info.portName();
             break;
         }
     }
@@ -113,12 +112,12 @@ void CubesControl::on_cbSerialPorts_currentIndexChanged(const QString &arg1)
 void CubesControl::on_textToSend_textChanged(const QString &arg1)
 {
     QByteArray writeData = arg1.toUtf8();
-    m_serialPort.write(writeData);
+    m_hwPort.write(writeData);
 }
 
 void CubesControl::on_SerialPort_ReadyRead()
 {
-    ui->lblMsgs->setText(QString::fromUtf8(m_serialPort.readAll()));
+    ui->lblMsgs->setText(QString::fromUtf8(m_hwPort.readAll()));
 }
 
 void CubesControl::on_btnClose_clicked()
@@ -127,8 +126,8 @@ void CubesControl::on_btnClose_clicked()
     ui->cbBaudRates->setEnabled(true);
     ui->btnOpen->setEnabled(true);
 
-    m_serialPort.close();
-    ui->lblMsgs->setText("Closed " + m_serialPort.portName());
+    m_hwPort.close();
+    ui->lblMsgs->setText("Closed " + m_hwPort.portName());
 
     ui->btnClose->setEnabled(false);
 }

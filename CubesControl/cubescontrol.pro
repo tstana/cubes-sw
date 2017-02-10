@@ -27,10 +27,10 @@ INCLUDEPATH += $$PWD/inc
 SOURCES += \
     src/cubescontrol.cpp \
     src/main.cpp \
-    src/cubeshardwareif.cpp
+    src/cubesserialport.cpp
 
 HEADERS  += \
     $$INCLUDEPATH/cubescontrol.h \
-    $$INCLUDEPATH/cubeshardwareif.h \
+    $$INCLUDEPATH/cubesserialport.h \
 
 FORMS    += ui/cubescontrol.ui
