@@ -36,34 +36,38 @@
  *==============================================================================
  */
 
-#ifndef CUBESHARDWAREIF_H
-#define CUBESHARDWAREIF_H
+#include "cubesserialport.h"
 
-#include <QObject>
 #include <QtSerialPort/QSerialPort>
-#include <QTimer>
+#include <QtSerialPort/QSerialPortInfo>
 #include <QLabel>
 
-class CubesHardwareIF : public QObject
+CubesSerialPort::CubesSerialPort(QSerialPort *port, QObject *parent)
+    : QObject(parent)
+    , m_port(port)
 {
-    Q_OBJECT
+//    QObject::connect( m_port, &QSerialPort::readyRead, this, &CubesSerialPort::handleReadyRead);
+//    QObject::connect( m_port, static_cast<void (QSerialPort::*)(QSerialPort::SerialPortError)>(&QSerialPort::error),
+//                      this, &CubesSerialPort::handleError );
+}
 
-public:
-    explicit CubesHardwareIF(QSerialPort *port, QLabel *lblMessages, QObject *parent = 0);
-    ~CubesHardwareIF();
+CubesSerialPort::~CubesSerialPort()
+{
+}
 
-    void write(const QByteArray &writeData);
+inline void CubesSerialPort::write(const QByteArray &writeData)
+{
+    m_port->write(writeData);
+}
 
-private slots:
-    void handleReadyRead();
-    void handleTimeout();
-    void handleError(QSerialPort::SerialPortError error);
+//void CubesSerialPort::handleReadyRead()
+//{
+//}
 
-private:
-    QSerialPort		*m_port;
-    QLabel			*m_lblMessages;
-    char			m_writeData;
-    QTimer			m_timer;
-};
+//void CubesSerialPort::handleError(QSerialPort::SerialPortError error)
+//{
+//}
 
-#endif // CUBESHARDWAREIF_H
+//void CubesSerialPort::handleTimeout()
+//{
+//}

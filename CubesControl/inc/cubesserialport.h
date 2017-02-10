@@ -36,45 +36,28 @@
  *==============================================================================
  */
 
-#include "cubeshardwareif.h"
+#ifndef CUBESHARDWARESERIAL_H
+#define CUBESHARDWARESERIAL_H
 
+#include <QObject>
 #include <QtSerialPort/QSerialPort>
+#include <QTimer>
 #include <QLabel>
 
-CubesHardwareIF::CubesHardwareIF(QSerialPort *port, QLabel *lblMessages, QObject *parent)
-    : QObject(parent)
-    , m_port(port)
-    , m_lblMessages(lblMessages)
+class CubesSerialPort : QIODevice
 {
-    m_timer.setSingleShot(true);
-    QObject::connect( m_port, &QSerialPort::readyRead, this, &CubesHardwareIF::handleReadyRead);
-    QObject::connect( m_port, static_cast<void (QSerialPort::*)(QSerialPort::SerialPortError)>(&QSerialPort::error),
-                      this, &CubesHardwareIF::handleError );
-    QObject::connect( &m_timer, &QTimer::timeout,
-                      this, &CubesHardwareIF::handleTimeout );
-}
 
-CubesHardwareIF::~CubesHardwareIF()
-{
-}
+public:
+    CubesSerialPort(QSerialPort *port, QObject *parent = 0);
+    ~CubesSerialPort();
 
-inline void CubesHardwareIF::write(const QByteArray &writeData)
-{
-    m_port->write(writeData);
-}
+    void write(QByteArray &writeData);
 
-void CubesHardwareIF::handleReadyRead()
-{
-    m_lblMessages->setText(QString::fromUtf8(m_port->readAll()));
-}
+//public signals:
+//    void hardwareError(int errValue);
 
-void CubesHardwareIF::handleError(QSerialPort::SerialPortError error)
-{
-    m_lblMessages->setText("Serial port error occured: " + QString::number(error));
-}
+private:
 
-void CubesHardwareIF::handleTimeout()
-{
-    m_lblMessages->setText("Operation timed out for port " + m_port->portName() +
-                           "; error" + m_port->errorString());
-}
+    QSerialPort *m_port;
+};
+#endif // CUBESHARDWARESERIAL_H
