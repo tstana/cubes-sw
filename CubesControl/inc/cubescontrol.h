@@ -30,7 +30,7 @@
  * source; if not, download it from http://www.gnu.org/licenses/lgpl-2.1.html
  *==============================================================================
  * last changes:
- *    2017-02-10   theodor.stana@gmail.com     File created
+ *    2017-02-08   theodor.stana@gmail.com     File created
  *==============================================================================
  * TODO: -
  *==============================================================================
