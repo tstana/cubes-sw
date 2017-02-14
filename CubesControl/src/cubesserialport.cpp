@@ -42,32 +42,57 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include <QLabel>
 
-CubesSerialPort::CubesSerialPort(QSerialPort *port, QObject *parent)
-    : QObject(parent)
-    , m_port(port)
+CubesSerialPort::CubesSerialPort(QSerialPort *port) :
+    m_port{port}
 {
-//    QObject::connect( m_port, &QSerialPort::readyRead, this, &CubesSerialPort::handleReadyRead);
-//    QObject::connect( m_port, static_cast<void (QSerialPort::*)(QSerialPort::SerialPortError)>(&QSerialPort::error),
-//                      this, &CubesSerialPort::handleError );
+    QObject::connect( m_port, &QSerialPort::readyRead, this, &CubesSerialPort::readyRead);
+    QObject::connect( m_port, &QSerialPort::errorOccurred, this, &CubesSerialPort::errorOccured );
 }
 
 CubesSerialPort::~CubesSerialPort()
 {
 }
 
-inline void CubesSerialPort::write(const QByteArray &writeData)
+bool CubesSerialPort::open(QIODevice::OpenMode mode)
+{
+    return m_port->open(mode);
+}
+
+void CubesSerialPort::close()
+{
+    m_port->close();
+}
+
+QString CubesSerialPort::portName()
+{
+    return m_port->portName();
+}
+
+void CubesSerialPort::write(const QByteArray &writeData)
 {
     m_port->write(writeData);
 }
 
-//void CubesSerialPort::handleReadyRead()
-//{
-//}
+QByteArray CubesSerialPort::read(qint64 maxSize)
+{
+    return m_port->read(maxSize);
+}
 
-//void CubesSerialPort::handleError(QSerialPort::SerialPortError error)
-//{
-//}
+QByteArray CubesSerialPort::readAll()
+{
+    return m_port->readAll();
+}
 
-//void CubesSerialPort::handleTimeout()
-//{
-//}
+qint64 CubesSerialPort::readData(char *data, qint64 maxSize)
+{
+    return 0;
+
+    /*** IMPLEMENT ME! ***/
+}
+
+qint64 CubesSerialPort::writeData(const char *data, qint64 maxSize)
+{
+    return 0;
+
+    /*** IMPLEMENT ME! ***/
+}

@@ -61,18 +61,18 @@ public:
 private slots:
     void on_btnOpen_clicked();
 
-    void on_cbSerialPorts_currentIndexChanged(const QString &arg1);
-
-    void on_textToSend_textChanged(const QString &arg1);
-
-    void on_SerialPort_ReadyRead();
+  void on_textToSend_textChanged(const QString &arg1);
 
     void on_btnClose_clicked();
+
+    void on_hwPort_readyRead();
+
+    void on_hwPort_errorOccured(int error);
 
 private:
     Ui::CubesControl    *ui;
 
-    CubesSerialPort     m_hwPort;
+    CubesSerialPort     *m_hwPort;
 };
 
 #endif // CUBESCONTROL_H

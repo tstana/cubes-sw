@@ -40,21 +40,34 @@
 #define CUBESHARDWARESERIAL_H
 
 #include <QObject>
+#include <QIODevice>
 #include <QtSerialPort/QSerialPort>
 #include <QTimer>
 #include <QLabel>
 
-class CubesSerialPort : QIODevice
+class CubesSerialPort : public QIODevice
 {
+    Q_OBJECT
 
 public:
-    CubesSerialPort(QSerialPort *port, QObject *parent = 0);
+    CubesSerialPort(QSerialPort *port);
     ~CubesSerialPort();
 
-    void write(QByteArray &writeData);
+    bool        open(QIODevice::OpenMode mode);
+    void        close();
 
-//public signals:
-//    void hardwareError(int errValue);
+    QString     portName();
+
+    void        write(const QByteArray &writeData);
+    QByteArray  read(qint64 maxSize);
+    QByteArray  readAll();
+
+    qint64      readData(char *data, qint64 maxSize);
+    qint64      writeData(const char *data, qint64 maxSize);
+
+
+signals:
+    void errorOccured(int error);
 
 private:
 

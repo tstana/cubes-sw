@@ -85,39 +85,27 @@ void CubesControl::on_btnOpen_clicked()
         ui->lblMsgs->setText("Port not opened; please select a valid port from the drop-down above.");
         return;
     }
-    m_hwPort.setPortName(m_hwPortName);
-    m_hwPort.setBaudRate(ui->cbBaudRates->currentText().toInt());
+    p_serialPort->setPortName(ui->cbSerialPorts->currentText().split(":")[0]);
+    p_serialPort->setBaudRate(ui->cbBaudRates->currentText().toInt());
 
-    m_hwPort.open(QIODevice::ReadWrite);
+    m_hwPort = new CubesSerialPort(p_serialPort);
 
-    ui->lblMsgs->setText("Opened " + m_hwPort.portName() + " @ " + QString::number(m_hwPort.baudRate()) + " bps");
+    QObject::connect(m_hwPort, &CubesSerialPort::readyRead, this, &CubesControl::on_hwPort_readyRead);
+    QObject::connect(m_hwPort, &CubesSerialPort::errorOccured, this, &CubesControl::on_hwPort_errorOccured);
+
+    m_hwPort->open(QIODevice::ReadWrite);
+
+    ui->lblMsgs->setText("Opened " + p_serialPort->portName() + " @ " + QString::number(p_serialPort->baudRate()) + " bps");
     ui->cbSerialPorts->setEnabled(false);
     ui->cbBaudRates->setEnabled(false);
     ui->btnOpen->setEnabled(false);
     ui->btnClose->setEnabled(true);
 }
 
-void CubesControl::on_cbSerialPorts_currentIndexChanged(const QString &arg1)
-{
-    const auto serialPorts = QSerialPortInfo::availablePorts();
-
-    for (const QSerialPortInfo &info : serialPorts) {
-        if (arg1.contains(info.portName())) {
-            m_hwPortName = info.portName();
-            break;
-        }
-    }
-}
-
 void CubesControl::on_textToSend_textChanged(const QString &arg1)
 {
     QByteArray writeData = arg1.toUtf8();
-    m_hwPort.write(writeData);
-}
-
-void CubesControl::on_SerialPort_ReadyRead()
-{
-    ui->lblMsgs->setText(QString::fromUtf8(m_hwPort.readAll()));
+    m_hwPort->write(writeData);
 }
 
 void CubesControl::on_btnClose_clicked()
@@ -126,8 +114,19 @@ void CubesControl::on_btnClose_clicked()
     ui->cbBaudRates->setEnabled(true);
     ui->btnOpen->setEnabled(true);
 
-    m_hwPort.close();
-    ui->lblMsgs->setText("Closed " + m_hwPort.portName());
+    m_hwPort->close();
+    ui->lblMsgs->setText("Closed " + m_hwPort->portName());
 
     ui->btnClose->setEnabled(false);
 }
+
+void CubesControl::on_hwPort_readyRead()
+{
+    ui->lblMsgs->setText(QString::fromUtf8(m_hwPort->readAll()));
+}
+
+void CubesControl::on_hwPort_errorOccured(int error)
+{
+    ui->lblMsgs->setText("Hardware port error: " + QString::number(error));
+}
+
