@@ -46,41 +46,11 @@ CubesSerialPort::CubesSerialPort(QSerialPort *port) :
     m_port{port}
 {
     QObject::connect( m_port, &QSerialPort::readyRead, this, &CubesSerialPort::readyRead);
-    QObject::connect( m_port, &QSerialPort::errorOccurred, this, &CubesSerialPort::errorOccured );
+    QObject::connect( m_port, &QSerialPort::errorOccurred, this, &CubesSerialPort::errorOccured);
 }
 
 CubesSerialPort::~CubesSerialPort()
 {
-}
-
-bool CubesSerialPort::open(QIODevice::OpenMode mode)
-{
-    return m_port->open(mode);
-}
-
-void CubesSerialPort::close()
-{
-    m_port->close();
-}
-
-QString CubesSerialPort::portName()
-{
-    return m_port->portName();
-}
-
-void CubesSerialPort::write(const QByteArray &writeData)
-{
-    m_port->write(writeData);
-}
-
-QByteArray CubesSerialPort::read(qint64 maxSize)
-{
-    return m_port->read(maxSize);
-}
-
-QByteArray CubesSerialPort::readAll()
-{
-    return m_port->readAll();
 }
 
 qint64 CubesSerialPort::readData(char *data, qint64 maxSize)

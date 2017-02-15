@@ -53,22 +53,43 @@ public:
     CubesSerialPort(QSerialPort *port);
     ~CubesSerialPort();
 
-    bool        open(QIODevice::OpenMode mode);
-    void        close();
+    inline bool open(QIODevice::OpenMode mode)
+    {
+        return m_port->open(mode);
+    }
 
-    QString     portName();
-    inline int  error()
+    inline void close()
+    {
+        return m_port->close();
+    }
+
+    inline QString portName()
+    {
+        return m_port->portName();
+    }
+
+    inline int error()
     {
         return m_port->error();
     }
 
-    void        write(const QByteArray &writeData);
-    QByteArray  read(qint64 maxSize);
-    QByteArray  readAll();
+    inline void write(const QByteArray &writeData)
+    {
+        m_port->write(writeData);
+    }
 
-    qint64      readData(char *data, qint64 maxSize);
-    qint64      writeData(const char *data, qint64 maxSize);
+    inline QByteArray read(qint64 maxSize)
+    {
+        return m_port->read(maxSize);
+    }
 
+    inline QByteArray readAll()
+    {
+        return m_port->readAll();
+    }
+
+    qint64 readData(char *data, qint64 maxSize);
+    qint64 writeData(const char *data, qint64 maxSize);
 
 signals:
     void errorOccured(int error);
