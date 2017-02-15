@@ -61,7 +61,7 @@ public:
 private slots:
     void on_btnOpen_clicked();
 
-  void on_textToSend_textChanged(const QString &arg1);
+    void on_textToSend_textChanged(const QString &arg1);
 
     void on_btnClose_clicked();
 

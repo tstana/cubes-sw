@@ -57,6 +57,10 @@ public:
     void        close();
 
     QString     portName();
+    inline int  error()
+    {
+        return m_port->error();
+    }
 
     void        write(const QByteArray &writeData);
     QByteArray  read(qint64 maxSize);

@@ -95,11 +95,13 @@ void CubesControl::on_btnOpen_clicked()
 
     m_hwPort->open(QIODevice::ReadWrite);
 
-    ui->lblMsgs->setText("Opened " + p_serialPort->portName() + " @ " + QString::number(p_serialPort->baudRate()) + " bps");
-    ui->cbSerialPorts->setEnabled(false);
-    ui->cbBaudRates->setEnabled(false);
-    ui->btnOpen->setEnabled(false);
-    ui->btnClose->setEnabled(true);
+    if (m_hwPort->error() == 0) {
+        ui->lblMsgs->setText("Opened " + p_serialPort->portName() + " @ " + QString::number(p_serialPort->baudRate()) + " bps");
+        ui->cbSerialPorts->setEnabled(false);
+        ui->cbBaudRates->setEnabled(false);
+        ui->btnOpen->setEnabled(false);
+        ui->btnClose->setEnabled(true);
+    }
 }
 
 void CubesControl::on_textToSend_textChanged(const QString &arg1)
