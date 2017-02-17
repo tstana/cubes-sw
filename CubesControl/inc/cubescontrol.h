@@ -65,9 +65,9 @@ private slots:
 
     void on_btnClose_clicked();
 
-    void on_hwPort_readyRead();
+    void on_cubes_devReadReady();
 
-    void on_hwPort_errorOccured(int error);
+    void on_cubes_devErrorOccured(int error);
 
 private:
     Ui::CubesControl    *ui;

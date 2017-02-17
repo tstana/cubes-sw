@@ -90,8 +90,8 @@ void CubesControl::on_btnOpen_clicked()
 
     cubes = new CubesProtoUartPmod(p_serialPort);
 
-    QObject::connect(cubes, &CubesProtoUartPmod::devReadReady, this, &CubesControl::on_hwPort_readyRead);
-    QObject::connect(cubes, &CubesProtoUartPmod::devErrorOccured, this, &CubesControl::on_hwPort_errorOccured);
+    QObject::connect(cubes, &CubesProtoUartPmod::devReadReady, this, &CubesControl::on_cubes_devReadReady);
+    QObject::connect(cubes, &CubesProtoUartPmod::devErrorOccured, this, &CubesControl::on_cubes_devErrorOccured);
 
     cubes->devOpen(QIODevice::ReadWrite);
 
@@ -122,12 +122,12 @@ void CubesControl::on_btnClose_clicked()
     ui->btnClose->setEnabled(false);
 }
 
-void CubesControl::on_hwPort_readyRead()
+void CubesControl::on_cubes_devReadReady()
 {
     ui->lblMsgs->setText(QString::fromUtf8(cubes->readAll()));
 }
 
-void CubesControl::on_hwPort_errorOccured(int error)
+void CubesControl::on_cubes_devErrorOccured(int error)
 {
     ui->lblMsgs->setText("Hardware port error: " + QString::number(error));
 }
