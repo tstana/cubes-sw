@@ -1,12 +1,11 @@
-/*
- *==============================================================================
+/*==============================================================================
  * KTH Royal Institute of Technology Stockholm
- * CUBES Control Program
+ * CUBES Protocol interface
  *==============================================================================
  *
  * author: Theodor Stana (theodor.stana@gmail.com)
  *
- * date of creation: 2017-02-08
+ * date of creation: 2017-02-15
  *
  * version: 1.0
  *
@@ -30,49 +29,38 @@
  * source; if not, download it from http://www.gnu.org/licenses/lgpl-2.1.html
  *==============================================================================
  * last changes:
- *    2017-02-08   theodor.stana@gmail.com     File created
+ *    2017-02-15   theodor.stana@gmail.com     File created
  *==============================================================================
  * TODO: -
  *==============================================================================
  */
 
-#ifndef CUBESCONTROL_H
-#define CUBESCONTROL_H
+#ifndef ICUBESPROTOCOL_H
+#define ICUBESPROTOCOL_H
 
-#include <cubesprotouartpmod.h>
+#include <QObject>
+#include <QIODevice>
 
-#include <QMainWindow>
-#include <QString>
-#include <QTextStream>
-#include <QSerialPort>
-
-namespace Ui {
-class CubesControl;
-}
-
-class CubesControl : public QMainWindow
+class ICubesProtocol
 {
-    Q_OBJECT
-
 public:
-    explicit CubesControl(QWidget *parent = 0);
-    ~CubesControl();
+    virtual ~ICubesProtocol() {};
 
-private slots:
-    void on_btnOpen_clicked();
+    virtual bool        devOpen(int mode) = 0;
+    virtual void        devClose() = 0;
+    virtual int         devError() = 0;
+    virtual QString     devName() = 0;
 
-    void on_textToSend_textChanged(const QString &arg1);
+    virtual qint64      write(QByteArray &data) = 0;
+    virtual QByteArray  readAll() = 0;
 
-    void on_btnClose_clicked();
+/* Connect signals and slots as part of the implementing class */
+signals:
+    virtual void devReadReady() = 0;
+    virtual void devErrorOccured(int error) = 0;
 
-    void on_hwPort_readyRead();
-
-    void on_hwPort_errorOccured(int error);
-
-private:
-    Ui::CubesControl    *ui;
-
-    CubesProtoUartPmod  *cubes;
 };
 
-#endif // CUBESCONTROL_H
+Q_DECLARE_INTERFACE(ICubesProtocol, "ICubesProtocol")
+
+#endif // ICUBESPROTOCOL_H

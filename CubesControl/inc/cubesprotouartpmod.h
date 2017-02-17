@@ -1,12 +1,11 @@
-/*
- *==============================================================================
+/*==============================================================================
  * KTH Royal Institute of Technology Stockholm
- * CUBES Control Program
+ * CUBES Protocol UART Pmod implementation
  *==============================================================================
  *
  * author: Theodor Stana (theodor.stana@gmail.com)
  *
- * date of creation: 2017-02-08
+ * date of creation: 2017-02-15
  *
  * version: 1.0
  *
@@ -30,49 +29,39 @@
  * source; if not, download it from http://www.gnu.org/licenses/lgpl-2.1.html
  *==============================================================================
  * last changes:
- *    2017-02-08   theodor.stana@gmail.com     File created
+ *    2017-02-15   theodor.stana@gmail.com     File created
  *==============================================================================
  * TODO: -
  *==============================================================================
  */
+#ifndef CUBESPROTOUARTPMOD_H
+#define CUBESPROTOUARTPMOD_H
 
-#ifndef CUBESCONTROL_H
-#define CUBESCONTROL_H
-
-#include <cubesprotouartpmod.h>
-
-#include <QMainWindow>
-#include <QString>
-#include <QTextStream>
+#include <QObject>
 #include <QSerialPort>
 
-namespace Ui {
-class CubesControl;
-}
-
-class CubesControl : public QMainWindow
+class CubesProtoUartPmod : public QObject //, public ICubesProtocol
 {
     Q_OBJECT
 
-public:
-    explicit CubesControl(QWidget *parent = 0);
-    ~CubesControl();
-
-private slots:
-    void on_btnOpen_clicked();
-
-    void on_textToSend_textChanged(const QString &arg1);
-
-    void on_btnClose_clicked();
-
-    void on_hwPort_readyRead();
-
-    void on_hwPort_errorOccured(int error);
-
 private:
-    Ui::CubesControl    *ui;
+    QSerialPort *m_device;
 
-    CubesProtoUartPmod  *cubes;
+public:
+    CubesProtoUartPmod(QSerialPort *device, QObject *parent = 0);
+    ~CubesProtoUartPmod();
+
+    bool        devOpen(QSerialPort::OpenMode mode);
+    void        devClose();
+    int         devError();
+    QString     devName();
+
+    qint64      write(QByteArray &data);
+    QByteArray  readAll();
+
+signals:
+    void devReadReady();
+    void devErrorOccured(int error);
 };
 
-#endif // CUBESCONTROL_H
+#endif // CUBESPROTOUARTPMOD_H

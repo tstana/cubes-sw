@@ -37,7 +37,7 @@
  */
 
 #include <cubescontrol.h>
-#include "cubesserialport.h"
+#include "cubesprotouartpmod.h"
 #include "ui_cubescontrol.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
@@ -88,14 +88,14 @@ void CubesControl::on_btnOpen_clicked()
     p_serialPort->setPortName(ui->cbSerialPorts->currentText().split(":")[0]);
     p_serialPort->setBaudRate(ui->cbBaudRates->currentText().toInt());
 
-    m_hwPort = new CubesSerialPort(p_serialPort);
+    cubes = new CubesProtoUartPmod(p_serialPort);
 
-    QObject::connect(m_hwPort, &CubesSerialPort::readyRead, this, &CubesControl::on_hwPort_readyRead);
-    QObject::connect(m_hwPort, &CubesSerialPort::errorOccured, this, &CubesControl::on_hwPort_errorOccured);
+    QObject::connect(cubes, &CubesProtoUartPmod::devReadReady, this, &CubesControl::on_hwPort_readyRead);
+    QObject::connect(cubes, &CubesProtoUartPmod::devErrorOccured, this, &CubesControl::on_hwPort_errorOccured);
 
-    m_hwPort->open(QIODevice::ReadWrite);
+    cubes->devOpen(QIODevice::ReadWrite);
 
-    if (m_hwPort->error() == 0) {
+    if (cubes->devError() == 0) {
         ui->lblMsgs->setText("Opened " + p_serialPort->portName() + " @ " + QString::number(p_serialPort->baudRate()) + " bps");
         ui->cbSerialPorts->setEnabled(false);
         ui->cbBaudRates->setEnabled(false);
@@ -107,7 +107,7 @@ void CubesControl::on_btnOpen_clicked()
 void CubesControl::on_textToSend_textChanged(const QString &arg1)
 {
     QByteArray writeData = arg1.toUtf8();
-    m_hwPort->write(writeData);
+    cubes->write(writeData);
 }
 
 void CubesControl::on_btnClose_clicked()
@@ -116,15 +116,15 @@ void CubesControl::on_btnClose_clicked()
     ui->cbBaudRates->setEnabled(true);
     ui->btnOpen->setEnabled(true);
 
-    m_hwPort->close();
-    ui->lblMsgs->setText("Closed " + m_hwPort->portName());
+    cubes->devClose();
+    ui->lblMsgs->setText("Closed " + cubes->devName());
 
     ui->btnClose->setEnabled(false);
 }
 
 void CubesControl::on_hwPort_readyRead()
 {
-    ui->lblMsgs->setText(QString::fromUtf8(m_hwPort->readAll()));
+    ui->lblMsgs->setText(QString::fromUtf8(cubes->readAll()));
 }
 
 void CubesControl::on_hwPort_errorOccured(int error)
