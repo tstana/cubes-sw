@@ -77,6 +77,23 @@ qint64 CubesProtoUartPmod::write(QByteArray &data)
     return m_device->write(data);
 }
 
+qint64 CubesProtoUartPmod::sendCommand(unsigned char cmdCode, QByteArray &cmdData)
+{
+    QByteArray      data;
+    char            rw; // = decodeCommand();
+
+    if (cmdCode == 0x90) rw = 0; else rw = 1;
+
+    data.resize(2 + cmdData.size());
+
+    data[0] = (CUBES_I2C_ADDRESS << 1) | (rw);
+    data[1] = cmdCode;
+    for (int i = 0; i < cmdData.size(); i++)
+        data[i+2] = cmdData[i];
+
+    return m_device->write(data);
+}
+
 QByteArray CubesProtoUartPmod::readAll()
 {
     return m_device->readAll();

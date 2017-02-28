@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>210</height>
+    <height>208</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,9 +78,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>130</y>
+     <y>160</y>
      <width>381</width>
-     <height>71</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -96,14 +96,17 @@
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
   </widget>
-  <widget class="QLineEdit" name="textToSend">
+  <widget class="QLineEdit" name="textSendData">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>100</y>
-     <width>381</width>
+     <x>90</x>
+     <y>130</y>
+     <width>171</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="maxLength">
+    <number>1</number>
    </property>
   </widget>
   <widget class="QPushButton" name="btnClose">
@@ -123,6 +126,73 @@
    </property>
    <property name="text">
     <string>Close</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnSend">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>100</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Send --&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblCommand">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Command:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblSend">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>130</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Send data:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cbCommands">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>100</y>
+     <width>171</width>
+     <height>22</height>
+    </rect>
    </property>
   </widget>
  </widget>

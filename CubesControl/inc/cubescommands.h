@@ -1,12 +1,11 @@
 /*
  *==============================================================================
- * KTH Royal Institute of Technology Stockholm
- * CUBES Control Program
+ * Header file for CUBES commands
  *==============================================================================
  *
  * author: Theodor Stana (theodor.stana@gmail.com)
  *
- * date of creation: 2017-02-08
+ * date of creation: 2017-02-28
  *
  * version: 1.0
  *
@@ -30,49 +29,43 @@
  * source; if not, download it from http://www.gnu.org/licenses/lgpl-2.1.html
  *==============================================================================
  * last changes:
- *    2017-02-08   theodor.stana@gmail.com     File created
+ *    2017-02-28   Theodor Stana     File created
  *==============================================================================
  * TODO: -
  *==============================================================================
  */
 
-#ifndef CUBESCONTROL_H
-#define CUBESCONTROL_H
+#ifndef __CUBESCOMMANDS_H_
+#define __CUBESCOMMANDS_H_
 
-#include <cubesprotouartpmod.h>
-
-#include <QMainWindow>
 #include <QString>
-#include <QTextStream>
-#include <QSerialPort>
 
-namespace Ui {
-class CubesControl;
-}
-
-class CubesControl : public QMainWindow
+/*-----------------------------------------------------------------------------
+ * Class definition
+ *---------------------------------------------------------------------------*/
+class CubesCommands
 {
-    Q_OBJECT
-
 public:
-    explicit CubesControl(QWidget *parent = 0);
-    ~CubesControl();
+    CubesCommands() { }
 
-private slots:
-    void on_btnOpen_clicked();
+    CubesCommands(const unsigned char code, const QString &desc) :
+        code{code},
+        description{desc}
+    {
+    }
 
-    void on_btnClose_clicked();
-
-    void on_cubes_devReadReady();
-
-    void on_cubes_devErrorOccured(int error);
-
-    void on_btnSend_clicked();
-
-private:
-    Ui::CubesControl    *ui;
-
-    CubesProtoUartPmod  *cubes;
+    unsigned char   code;
+    QString         description;
 };
 
-#endif // CUBESCONTROL_H
+/*-----------------------------------------------------------------------------
+ * Command definitions
+ *---------------------------------------------------------------------------*/
+#define NUM_COMMANDS        2
+
+const CubesCommands COMMANDS[NUM_COMMANDS] {
+    { 0x90, "Set LED reg." },
+    { 0x91, "Get LED reg." }
+};
+
+#endif // __CUBESCOMMANDS_H_

@@ -44,12 +44,15 @@
 #include <QLabel>
 #include <string>
 
+#include <cubescommands.h>
+
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CubesControl)
 {
     QStringList     ports;
     int             baudRates[] = {9600, 19200, 38400, 115200};
+    uint32_t        i;
 
     ui->setupUi(this);
     ui->cbSerialPorts->addItem("<Click to select available Serial Port>");
@@ -63,11 +66,19 @@ CubesControl::CubesControl(QWidget *parent) :
 
     ui->cbSerialPorts->addItems(ports);
 //itzi was here :*
-    for (uint32_t i = 0; i < sizeof(baudRates)/sizeof(baudRates[0]) ; i++) {
+    for (i = 0; i < sizeof(baudRates)/sizeof(baudRates[0]) ; i++) {
         ui->cbBaudRates->addItem(QString::number(baudRates[i]));
     }
+
     int idx = ui->cbBaudRates->findText("115200");
     ui->cbBaudRates->setCurrentIndex(idx);
+
+    ui->cbCommands->addItem("<Click to select available commands...>");
+
+    for (i = 0; i < NUM_COMMANDS; i++) {
+        ui->cbCommands->addItem("0x" + QString::number(COMMANDS[i].code, 16) + " : " + \
+                                    COMMANDS[i].description);
+    }
 
     ui->btnClose->setEnabled(false);
 }
@@ -104,12 +115,6 @@ void CubesControl::on_btnOpen_clicked()
     }
 }
 
-void CubesControl::on_textToSend_textChanged(const QString &arg1)
-{
-    QByteArray writeData = arg1.toUtf8();
-    cubes->write(writeData);
-}
-
 void CubesControl::on_btnClose_clicked()
 {
     ui->cbSerialPorts->setEnabled(true);
@@ -122,13 +127,31 @@ void CubesControl::on_btnClose_clicked()
     ui->btnClose->setEnabled(false);
 }
 
+void CubesControl::on_btnSend_clicked()
+{
+    QString         cmdData = ui->textSendData->text();
+    unsigned char   cmdCode = COMMANDS[ui->cbCommands->currentIndex()-1].code;
+    QByteArray      data;
+
+    data.resize(4);
+
+    data[0] = 0x00;
+    data[1] = 0x00;
+    data[2] = 0x00;
+    data[3] = cmdData.toUtf8()[0];
+
+    cubes->sendCommand(cmdCode, data);
+}
+
 void CubesControl::on_cubes_devReadReady()
 {
-    ui->lblMsgs->setText(QString::fromUtf8(cubes->readAll()));
+    QByteArray readData = cubes->readAll();
+    QString s = "0x" + QString::number(readData[3], 16);
+
+    ui->lblMsgs->setText(s);
 }
 
 void CubesControl::on_cubes_devErrorOccured(int error)
 {
     ui->lblMsgs->setText("Hardware port error: " + QString::number(error));
 }
-

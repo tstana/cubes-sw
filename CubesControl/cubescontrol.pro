@@ -32,6 +32,7 @@ SOURCES += \
 HEADERS  += \
     $$INCLUDEPATH/cubescontrol.h \
     $$INCLUDEPATH/icubesprotocol.h \
-    $$INCLUDEPATH/cubesprotouartpmod.h
+    $$INCLUDEPATH/cubesprotouartpmod.h \
+    $$INCLUDEPATH/cubescommands.h
 
 FORMS    += ui/cubescontrol.ui

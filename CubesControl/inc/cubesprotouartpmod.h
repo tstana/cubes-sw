@@ -40,12 +40,11 @@
 #include <QObject>
 #include <QSerialPort>
 
+#define CUBES_I2C_ADDRESS       0x70
+
 class CubesProtoUartPmod : public QObject //, public ICubesProtocol
 {
     Q_OBJECT
-
-private:
-    QSerialPort *m_device;
 
 public:
     CubesProtoUartPmod(QSerialPort *device, QObject *parent = 0);
@@ -59,9 +58,14 @@ public:
     qint64      write(QByteArray &data);
     QByteArray  readAll();
 
+    qint64      sendCommand(unsigned char cmd, QByteArray &cmdData);
+
 signals:
     void devReadReady();
     void devErrorOccured(int error);
+
+private:
+    QSerialPort     *m_device;
 };
 
 #endif // CUBESPROTOUARTPMOD_H
