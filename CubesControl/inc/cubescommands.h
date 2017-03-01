@@ -61,11 +61,12 @@ public:
 /*-----------------------------------------------------------------------------
  * Command definitions
  *---------------------------------------------------------------------------*/
-#define NUM_COMMANDS        2
+#define NUM_COMMANDS        3
 
 const CubesCommands COMMANDS[NUM_COMMANDS] {
-    { 0x90, "Set LED reg." },
-    { 0x91, "Get LED reg." }
+    { 0x90, "Get ID" },
+    { 0x91, "Set LED reg." },
+    { 0x92, "Get LED reg." }
 };
 
 #endif // __CUBESCOMMANDS_H_

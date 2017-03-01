@@ -63,7 +63,7 @@ private slots:
 
     void on_btnClose_clicked();
 
-    void on_cubes_devReadReady();
+    void on_cubes_dataReceived();
 
     void on_cubes_devErrorOccured(int error);
 
@@ -73,6 +73,8 @@ private:
     Ui::CubesControl    *ui;
 
     CubesProtoUartPmod  *cubes;
+
+    int                 selectedCommandCode();
 };
 
 #endif // CUBESCONTROL_H

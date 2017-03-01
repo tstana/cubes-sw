@@ -60,12 +60,18 @@ public:
 
     qint64      sendCommand(unsigned char cmd, QByteArray &cmdData);
 
+private slots:
+    void on_serialPort_readReady();
+
 signals:
     void devReadReady();
     void devErrorOccured(int error);
+    void dataReceived();
 
 private:
     QSerialPort     *m_device;
+
+    qint32         m_bytesLeft;
 };
 
 #endif // CUBESPROTOUARTPMOD_H

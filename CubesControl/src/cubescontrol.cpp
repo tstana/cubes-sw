@@ -101,13 +101,16 @@ void CubesControl::on_btnOpen_clicked()
 
     cubes = new CubesProtoUartPmod(p_serialPort);
 
-    QObject::connect(cubes, &CubesProtoUartPmod::devReadReady, this, &CubesControl::on_cubes_devReadReady);
-    QObject::connect(cubes, &CubesProtoUartPmod::devErrorOccured, this, &CubesControl::on_cubes_devErrorOccured);
+    QObject::connect(cubes, &CubesProtoUartPmod::dataReceived,
+                     this, &CubesControl::on_cubes_dataReceived);
+    QObject::connect(cubes, &CubesProtoUartPmod::devErrorOccured,
+                     this, &CubesControl::on_cubes_devErrorOccured);
 
     cubes->devOpen(QIODevice::ReadWrite);
 
     if (cubes->devError() == 0) {
-        ui->lblMsgs->setText("Opened " + p_serialPort->portName() + " @ " + QString::number(p_serialPort->baudRate()) + " bps");
+        ui->lblMsgs->setText("Opened " + p_serialPort->portName() + " @ " +
+                             QString::number(p_serialPort->baudRate()) + " bps");
         ui->cbSerialPorts->setEnabled(false);
         ui->cbBaudRates->setEnabled(false);
         ui->btnOpen->setEnabled(false);
@@ -130,7 +133,7 @@ void CubesControl::on_btnClose_clicked()
 void CubesControl::on_btnSend_clicked()
 {
     QString         cmdData = ui->textSendData->text();
-    unsigned char   cmdCode = COMMANDS[ui->cbCommands->currentIndex()-1].code;
+    unsigned char   cmdCode = selectedCommandCode();
     QByteArray      data;
 
     data.resize(4);
@@ -143,10 +146,16 @@ void CubesControl::on_btnSend_clicked()
     cubes->sendCommand(cmdCode, data);
 }
 
-void CubesControl::on_cubes_devReadReady()
+void CubesControl::on_cubes_dataReceived()
 {
     QByteArray readData = cubes->readAll();
-    QString s = "0x" + QString::number(readData[3], 16);
+    QString s;
+
+    if (selectedCommandCode() == 0x90) {
+        s = QString::fromUtf8(readData);
+    } else {
+        s = "0x" + QString::number(readData[3], 16);
+    }
 
     ui->lblMsgs->setText(s);
 }
@@ -154,4 +163,9 @@ void CubesControl::on_cubes_devReadReady()
 void CubesControl::on_cubes_devErrorOccured(int error)
 {
     ui->lblMsgs->setText("Hardware port error: " + QString::number(error));
+}
+
+inline int CubesControl::selectedCommandCode()
+{
+    return COMMANDS[ui->cbCommands->currentIndex()-1].code;
 }
