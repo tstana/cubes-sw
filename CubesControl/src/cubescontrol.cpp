@@ -132,16 +132,28 @@ void CubesControl::on_btnClose_clicked()
 
 void CubesControl::on_btnSend_clicked()
 {
-    QString         cmdData = ui->textSendData->text();
+    int             cmdData = ui->spinData->value();
     unsigned char   cmdCode = selectedCommandCode();
     QByteArray      data;
 
-    data.resize(4);
+    if (cmdCode == 0x91) {
+        data.resize(4);
 
-    data[0] = 0x00;
-    data[1] = 0x00;
-    data[2] = 0x00;
-    data[3] = cmdData.toUtf8()[0];
+        data[0] = 0x00;
+        data[1] = 0x00;
+        data[2] = 0x00;
+        data[3] = cmdData & 0xff;
+    } else if (cmdCode == 0x93) {
+        data.resize(8);
+        data[0] = 0x00;
+        data[1] = 0x00;
+        data[2] = 0x01;
+        data[3] = (ui->spinAddress->value() << 1) | ui->chkbWrite->isChecked();
+        data[4] = (cmdData & 0x03000000) >> 24;
+        data[5] = (cmdData & 0x00ff0000) >> 16;
+        data[6] = (cmdData & 0x0000ff00) >>  8;
+        data[7] = cmdData & 0x000000ff;
+    }
 
     cubes->sendCommand(cmdCode, data);
 }
@@ -151,10 +163,16 @@ void CubesControl::on_cubes_dataReceived()
     QByteArray readData = cubes->readAll();
     QString s;
 
-    if (selectedCommandCode() == 0x90) {
+    if (selectedCommandCode() == 0x11) {
+        for (int i = 0; i < 12; i++) {
+            int j = i*4;
+            s += "0x" + QString("%1").arg(QString::number(j, 16), 2, '0') + ": " +
+                 "0x" + readData.mid(j, 4).toHex() + "\n";
+        }
+    } else if (selectedCommandCode() == 0x90) {
         s = QString::fromUtf8(readData);
-    } else {
-        s = "0x" + QString::number(readData[3], 16);
+    } else if (selectedCommandCode() == 0x92) {
+        s = "0x" + readData.toHex();
     }
 
     ui->lblMsgs->setText(s);

@@ -96,6 +96,10 @@ qint64 CubesProtoUartPmod::sendCommand(unsigned char cmdCode, QByteArray &cmdDat
     char            rw; // = decodeCommand();
 
     switch (cmdCode) {
+    case 0x11:
+        rw = 1;
+        m_bytesLeft = 64;
+        break;
     case 0x90:
         rw = 1;
         m_bytesLeft = 8;
@@ -107,6 +111,12 @@ qint64 CubesProtoUartPmod::sendCommand(unsigned char cmdCode, QByteArray &cmdDat
     case 0x92:
         rw = 1;
         m_bytesLeft = 4;
+        break;
+    case 0x93:
+        rw = 0;
+        m_bytesLeft = 8;
+        break;
+    default:
         break;
     }
 

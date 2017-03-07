@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>208</height>
+    <height>452</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,7 +80,7 @@
      <x>10</x>
      <y>160</y>
      <width>381</width>
-     <height>41</height>
+     <height>281</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -94,19 +94,6 @@
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="textSendData">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>130</y>
-     <width>171</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="maxLength">
-    <number>1</number>
    </property>
   </widget>
   <widget class="QPushButton" name="btnClose">
@@ -131,10 +118,10 @@
   <widget class="QPushButton" name="btnSend">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>290</x>
      <y>100</y>
-     <width>111</width>
-     <height>51</height>
+     <width>101</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
@@ -144,7 +131,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Send --&gt;</string>
+    <string>Send</string>
    </property>
   </widget>
   <widget class="QLabel" name="lblCommand">
@@ -166,7 +153,7 @@
     <string>Command:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="lblSend">
+  <widget class="QLabel" name="lblSendAddress">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -182,7 +169,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Send data:</string>
+    <string>Address:</string>
    </property>
   </widget>
   <widget class="QComboBox" name="cbCommands">
@@ -190,9 +177,102 @@
     <rect>
      <x>90</x>
      <y>100</y>
-     <width>171</width>
+     <width>191</width>
      <height>22</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblSendData">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>130</y>
+     <width>41</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Data:</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="chkbWrite">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>130</y>
+     <width>51</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Write</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>130</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>0x</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinAddress">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>130</y>
+     <width>42</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="wrapping">
+    <bool>false</bool>
+   </property>
+   <property name="maximum">
+    <number>32</number>
+   </property>
+   <property name="displayIntegerBase">
+    <number>16</number>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinData">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>130</y>
+     <width>121</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="maximum">
+    <number>67108863</number>
+   </property>
+   <property name="displayIntegerBase">
+    <number>16</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>130</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>0x</string>
    </property>
   </widget>
  </widget>

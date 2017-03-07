@@ -61,12 +61,14 @@ public:
 /*-----------------------------------------------------------------------------
  * Command definitions
  *---------------------------------------------------------------------------*/
-#define NUM_COMMANDS        3
+#define NUM_COMMANDS        5
 
 const CubesCommands COMMANDS[NUM_COMMANDS] {
+    { 0x11, "Request housekeeping data" },
     { 0x90, "Get ID" },
     { 0x91, "Set LED reg." },
-    { 0x92, "Get LED reg." }
+    { 0x92, "Get LED reg." },
+    { 0x93, "SIPHRA register operation" }
 };
 
 #endif // __CUBESCOMMANDS_H_
