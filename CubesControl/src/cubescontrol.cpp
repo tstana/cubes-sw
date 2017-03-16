@@ -145,14 +145,14 @@ void CubesControl::on_btnSend_clicked()
         data[3] = cmdData & 0xff;
     } else if (cmdCode == 0x93) {
         data.resize(8);
-        data[0] = 0x00;
-        data[1] = 0x00;
-        data[2] = 0x01;
-        data[3] = (ui->spinAddress->value() << 1) | ui->chkbWrite->isChecked();
-        data[4] = (cmdData & 0x03000000) >> 24;
-        data[5] = (cmdData & 0x00ff0000) >> 16;
-        data[6] = (cmdData & 0x0000ff00) >>  8;
-        data[7] = cmdData & 0x000000ff;
+        data[0] = (cmdData & 0x03000000) >> 24;
+        data[1] = (cmdData & 0x00ff0000) >> 16;
+        data[2] = (cmdData & 0x0000ff00) >>  8;
+        data[3] = cmdData & 0x000000ff;
+        data[4] = 0x00;
+        data[5] = 0x00;
+        data[6] = 0x00;
+        data[7] = (ui->spinAddress->value() << 1) | ui->chkbWrite->isChecked();
     }
 
     cubes->sendCommand(cmdCode, data);
