@@ -59,15 +59,7 @@ public:
     ~CubesControl();
 
 private slots:
-    void on_btnOpen_clicked();
-
-    void on_btnClose_clicked();
-
-    void on_cubes_dataReceived();
-
-    void on_cubes_devErrorOccured(int error);
-
-    void on_btnSend_clicked();
+    void on_actionClose_triggered();
 
 private:
     Ui::CubesControl    *ui;

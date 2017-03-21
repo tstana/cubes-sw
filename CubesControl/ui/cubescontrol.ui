@@ -1,280 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>CubesControl</class>
- <widget class="QWidget" name="CubesControl">
+ <widget class="QMainWindow" name="CubesControl">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>452</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>CUBES Control Program</string>
+   <string>MainWindow</string>
   </property>
-  <widget class="QComboBox" name="cbSerialPorts">
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>251</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnOpen">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>10</y>
-     <width>51</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Open</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="cbBaudRates">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>40</y>
-     <width>171</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="layoutDirection">
-    <enum>Qt::RightToLeft</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblBaudRate">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>71</width>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Baud rate:</string>
-   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionClose"/>
+   </widget>
+   <widget class="QMenu" name="menuConnection">
+    <property name="title">
+     <string>Connection</string>
+    </property>
+    <addaction name="actionConfigSerialPort"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuConnection"/>
   </widget>
-  <widget class="QLabel" name="lblMsgs">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>160</y>
-     <width>381</width>
-     <height>281</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::PlainText</enum>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnClose">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>10</y>
-     <width>51</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionClose">
    <property name="text">
     <string>Close</string>
    </property>
-  </widget>
-  <widget class="QPushButton" name="btnSend">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>100</y>
-     <width>101</width>
-     <height>21</height>
-    </rect>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
+  </action>
+  <action name="actionConfigSerialPort">
    <property name="text">
-    <string>Send</string>
+    <string>Configure serial port...</string>
    </property>
-  </widget>
-  <widget class="QLabel" name="lblCommand">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>100</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Command:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblSendAddress">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>130</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Address:</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="cbCommands">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>100</y>
-     <width>191</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblSendData">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>130</y>
-     <width>41</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Data:</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="chkbWrite">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>130</y>
-     <width>51</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Write</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>130</y>
-     <width>16</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>0x</string>
-   </property>
-  </widget>
-  <widget class="QSpinBox" name="spinAddress">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>130</y>
-     <width>42</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="wrapping">
-    <bool>false</bool>
-   </property>
-   <property name="maximum">
-    <number>32</number>
-   </property>
-   <property name="displayIntegerBase">
-    <number>16</number>
-   </property>
-  </widget>
-  <widget class="QSpinBox" name="spinData">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>130</y>
-     <width>121</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="maximum">
-    <number>67108863</number>
-   </property>
-   <property name="displayIntegerBase">
-    <number>16</number>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>130</y>
-     <width>16</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>0x</string>
-   </property>
-  </widget>
+  </action>
  </widget>
  <resources/>
  <connections/>

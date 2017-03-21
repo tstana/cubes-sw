@@ -35,4 +35,5 @@ HEADERS  += \
     $$INCLUDEPATH/cubesprotouartpmod.h \
     $$INCLUDEPATH/cubescommands.h
 
-FORMS    += ui/cubescontrol.ui
+FORMS    += \
+    ui/cubescontrol.ui
