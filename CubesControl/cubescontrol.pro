@@ -17,7 +17,7 @@ TEMPLATE = app
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
-INCLUDEPATH += $$PWD/inc
+INCLUDEPATH=$$PWD/inc/
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -25,15 +25,18 @@ INCLUDEPATH += $$PWD/inc
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/commsettingsdialog.cpp \
     src/cubescontrol.cpp \
     src/main.cpp \
     src/cubesprotouartpmod.cpp
 
 HEADERS  += \
-    $$INCLUDEPATH/cubescontrol.h \
-    $$INCLUDEPATH/icubesprotocol.h \
-    $$INCLUDEPATH/cubesprotouartpmod.h \
-    $$INCLUDEPATH/cubescommands.h
+    inc/commsettingsdialog.h \
+    inc/cubescontrol.h \
+    inc/icubesprotocol.h \
+    inc/cubesprotouartpmod.h \
+    inc/cubescommands.h
 
 FORMS    += \
+    ui/commsettingsdialog.ui \
     ui/cubescontrol.ui

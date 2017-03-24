@@ -1,12 +1,11 @@
 /*
  *==============================================================================
- * KTH Royal Institute of Technology Stockholm
- * CUBES Control Program
+ * Header file for Communication Settings Dialog box
  *==============================================================================
  *
  * author: Theodor Stana (theodor.stana@gmail.com)
  *
- * date of creation: 2017-02-08
+ * date of creation: 2017-03-24
  *
  * version: 1.0
  *
@@ -30,47 +29,38 @@
  * source; if not, download it from http://www.gnu.org/licenses/lgpl-2.1.html
  *==============================================================================
  * last changes:
- *    2017-02-08   theodor.stana@gmail.com     File created
+ *    2017-03-24   Theodor Stana     File created
  *==============================================================================
  * TODO: -
  *==============================================================================
  */
 
-#ifndef CUBESCONTROL_H
-#define CUBESCONTROL_H
+#ifndef COMMSETTINGSDIALOG_H
+#define COMMSETTINGSDIALOG_H
 
-#include <cubesprotouartpmod.h>
-#include <commsettingsdialog.h>
-
-#include <QMainWindow>
-#include <QString>
-#include <QTextStream>
-#include <QSerialPort>
+#include <QDialog>
 
 namespace Ui {
-class CubesControl;
+class CommSettingsDialog;
 }
 
-class CommSettingsDialog;
-
-class CubesControl : public QMainWindow
+class CommSettingsDialog : public QDialog
 {
-    Q_OBJECT
-
 public:
-    explicit CubesControl(QWidget *parent = 0);
-    ~CubesControl();
+    enum CommType {
+        SerialPort
+    };
 
-private slots:
-    void on_actionClose_triggered();
+    struct CommSettings {
+        CommType type;
+        qint32 port;
+    };
+
+    explicit CommSettingsDialog(QWidget *parent = 0);
+    ~CommSettingsDialog();
 
 private:
-    Ui::CubesControl    *ui;
-
-    CubesProtoUartPmod  *cubes;
-    CommSettingsDialog  *commSettings;
-
-    int                 selectedCommandCode();
+    Ui::CommSettingsDialog *ui;
+    CommSettings *settings;
 };
-
-#endif // CUBESCONTROL_H
+#endif // COMMSETTINGSDIALOG_H

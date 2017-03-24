@@ -46,13 +46,13 @@
 
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::CubesControl)
+    ui(new Ui::CubesControl),
+    commSettings(new CommSettingsDialog)
 {
-    QStringList     ports;
-    int             baudRates[] = {9600, 19200, 38400, 115200};
-    uint32_t        i;
-
     ui->setupUi(this);
+
+    connect(ui->actionConfigConnection, &QAction::triggered,
+            commSettings, &CubesControl::show);
 
 //itzi was here :*
 }
@@ -60,6 +60,7 @@ CubesControl::CubesControl(QWidget *parent) :
 CubesControl::~CubesControl()
 {
     delete ui;
+    delete commSettings;
 }
 
 void CubesControl::on_actionClose_triggered()

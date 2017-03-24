@@ -33,7 +33,7 @@
     <property name="title">
      <string>Connection</string>
     </property>
-    <addaction name="actionConfigSerialPort"/>
+    <addaction name="actionConfigConnection"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConnection"/>
@@ -47,9 +47,9 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionConfigSerialPort">
+  <action name="actionConfigConnection">
    <property name="text">
-    <string>Configure serial port...</string>
+    <string>Configure...</string>
    </property>
   </action>
  </widget>

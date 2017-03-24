@@ -1,12 +1,11 @@
 /*
  *==============================================================================
- * KTH Royal Institute of Technology Stockholm
- * CUBES Control Program
+ * Source file for Communication Settings Dialog box
  *==============================================================================
  *
  * author: Theodor Stana (theodor.stana@gmail.com)
  *
- * date of creation: 2017-02-08
+ * date of creation: 2017-03-24
  *
  * version: 1.0
  *
@@ -30,47 +29,24 @@
  * source; if not, download it from http://www.gnu.org/licenses/lgpl-2.1.html
  *==============================================================================
  * last changes:
- *    2017-02-08   theodor.stana@gmail.com     File created
+ *    2017-03-24   Theodor Stana     File created
  *==============================================================================
  * TODO: -
  *==============================================================================
  */
 
-#ifndef CUBESCONTROL_H
-#define CUBESCONTROL_H
-
-#include <cubesprotouartpmod.h>
 #include <commsettingsdialog.h>
+#include <ui_commsettingsdialog.h>
 
-#include <QMainWindow>
-#include <QString>
-#include <QTextStream>
-#include <QSerialPort>
-
-namespace Ui {
-class CubesControl;
+CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
+    QDialog{parent},
+    ui{new Ui::CommSettingsDialog}
+{
+    ui->setupUi(this);
 }
 
-class CommSettingsDialog;
-
-class CubesControl : public QMainWindow
+CommSettingsDialog::~CommSettingsDialog()
 {
-    Q_OBJECT
-
-public:
-    explicit CubesControl(QWidget *parent = 0);
-    ~CubesControl();
-
-private slots:
-    void on_actionClose_triggered();
-
-private:
-    Ui::CubesControl    *ui;
-
-    CubesProtoUartPmod  *cubes;
-    CommSettingsDialog  *commSettings;
-
-    int                 selectedCommandCode();
-};
-
-#endif // CUBESCONTROL_H
+    delete settings;
+    delete ui;
+}
