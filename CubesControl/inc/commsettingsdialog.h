@@ -41,13 +41,9 @@
 #include <QDialog>
 #include <QLayout>
 
-QT_BEGIN_NAMESPACE
-
 namespace Ui {
 class CommSettingsDialog;
 }
-
-QT_END_NAMESPACE
 
 class CommSettingsDialog : public QDialog
 {
@@ -74,7 +70,8 @@ private slots:
 
 private:
     Ui::CommSettingsDialog *ui;
-    CommSettings *settings;
+    CommType m_commType;
+    CommSettings *m_commSettings;
     QVBoxLayout *vboxCommSettings;
 
     void    addCommTypes();

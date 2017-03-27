@@ -37,7 +37,6 @@
 
 #include <commsettingsdialog.h>
 #include <ui_commsettingsdialog.h>
-#include <ui_cubescontrol.h>
 
 CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
     QDialog{parent},
@@ -63,7 +62,7 @@ CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
 
 CommSettingsDialog::~CommSettingsDialog()
 {
-    delete settings;
+    delete m_commSettings;
     delete ui;
     delete vboxCommSettings;
 }
@@ -93,21 +92,29 @@ void CommSettingsDialog::on_cbCommType_currentIndexChanged(int index)
 
 void CommSettingsDialog::populateCommSettings(int commType)
 {
+    if ((int)m_commType == commType)
+        return;
+
+    m_commType = (enum CommType)commType;
+
     switch (commType) {
-    case CommType::None:
+    case None:
     {
         clearLayout(vboxCommSettings);
+        ui->btnOk->setEnabled(false);
+        ui->btnCancel->setEnabled(false);
         break;
     }
-    case CommType::SerialPort:
+    case SerialPort:
     {
         QHBoxLayout *hboxPort = new QHBoxLayout;
         QLabel *lblPort = new QLabel(tr("Port:"));
         QComboBox *cbPort = new QComboBox;
-        cbPort->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        cbPort->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
         hboxPort->addWidget(lblPort);
         hboxPort->addWidget(cbPort);
         vboxCommSettings->addLayout(hboxPort);
+        ui->groupCommSettings->setLayout(vboxCommSettings);
         break;
     }
     default:
