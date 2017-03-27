@@ -39,16 +39,24 @@
 #define COMMSETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QLayout>
+
+QT_BEGIN_NAMESPACE
 
 namespace Ui {
 class CommSettingsDialog;
 }
 
+QT_END_NAMESPACE
+
 class CommSettingsDialog : public QDialog
 {
+    Q_OBJECT
+
 public:
     enum CommType {
-        SerialPort
+        None = 0,
+        SerialPort = 1
     };
 
     struct CommSettings {
@@ -59,8 +67,18 @@ public:
     explicit CommSettingsDialog(QWidget *parent = 0);
     ~CommSettingsDialog();
 
+private slots:
+    void on_btnOk_clicked();
+    void on_btnCancel_clicked();
+    void on_cbCommType_currentIndexChanged(int index);
+
 private:
     Ui::CommSettingsDialog *ui;
     CommSettings *settings;
+    QVBoxLayout *vboxCommSettings;
+
+    void    addCommTypes();
+    void    clearLayout(QLayout *layout);
+    void    populateCommSettings(int commType);
 };
 #endif // COMMSETTINGSDIALOG_H

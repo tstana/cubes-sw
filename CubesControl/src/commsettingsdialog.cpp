@@ -37,16 +37,95 @@
 
 #include <commsettingsdialog.h>
 #include <ui_commsettingsdialog.h>
+#include <ui_cubescontrol.h>
 
 CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
     QDialog{parent},
     ui{new Ui::CommSettingsDialog}
 {
     ui->setupUi(this);
+
+    connect(ui->btnOk, &QPushButton::clicked,
+            this, &CommSettingsDialog::on_btnOk_clicked);
+    connect(ui->btnCancel, &QPushButton::clicked,
+            this, &CommSettingsDialog::on_btnCancel_clicked);
+    connect(ui->cbCommType,
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, &CommSettingsDialog::on_cbCommType_currentIndexChanged);
+
+    vboxCommSettings = new QVBoxLayout;
+
+    ui->btnOk->setEnabled(false);
+    ui->btnCancel->setEnabled(false);
+
+    addCommTypes();
 }
 
 CommSettingsDialog::~CommSettingsDialog()
 {
     delete settings;
     delete ui;
+    delete vboxCommSettings;
+}
+
+void CommSettingsDialog::addCommTypes()
+{
+    ui->cbCommType->addItem("<Select...>");
+
+    ui->cbCommType->addItem("Serial Port");
+}
+
+void CommSettingsDialog::on_btnOk_clicked()
+{
+    // updateSettings();
+    hide();
+}
+
+void CommSettingsDialog::on_btnCancel_clicked()
+{
+    hide();
+}
+
+void CommSettingsDialog::on_cbCommType_currentIndexChanged(int index)
+{
+    populateCommSettings(index);
+}
+
+void CommSettingsDialog::populateCommSettings(int commType)
+{
+    switch (commType) {
+    case CommType::None:
+    {
+        clearLayout(vboxCommSettings);
+        break;
+    }
+    case CommType::SerialPort:
+    {
+        QHBoxLayout *hboxPort = new QHBoxLayout;
+        QLabel *lblPort = new QLabel(tr("Port:"));
+        QComboBox *cbPort = new QComboBox;
+        cbPort->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        hboxPort->addWidget(lblPort);
+        hboxPort->addWidget(cbPort);
+        vboxCommSettings->addLayout(hboxPort);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void CommSettingsDialog::clearLayout(QLayout *layout)
+{
+    QLayoutItem *item;
+    while((item = layout->takeAt(0))) {
+        if (item->layout()) {
+            clearLayout(item->layout());
+            delete item->layout();
+        }
+        if (item->widget()) {
+            delete item->widget();
+        }
+        delete item;
+    }
 }

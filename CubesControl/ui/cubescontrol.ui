@@ -25,7 +25,7 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionClose"/>
    </widget>
@@ -50,6 +50,11 @@
   <action name="actionConfigConnection">
    <property name="text">
     <string>Configure...</string>
+   </property>
+  </action>
+  <action name="actionOpenConnection">
+   <property name="text">
+    <string>Open connection</string>
    </property>
   </action>
  </widget>
