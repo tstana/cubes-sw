@@ -38,6 +38,8 @@
 #include <commsettingsdialog.h>
 #include <ui_commsettingsdialog.h>
 
+#include <QFormLayout>
+
 CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
     QDialog{parent},
     ui{new Ui::CommSettingsDialog}
@@ -107,14 +109,31 @@ void CommSettingsDialog::populateCommSettings(int commType)
     }
     case SerialPort:
     {
-        QHBoxLayout *hboxPort = new QHBoxLayout;
-        QLabel *lblPort = new QLabel(tr("Port:"));
+        QFormLayout *layout = new QFormLayout;
         QComboBox *cbPort = new QComboBox;
-        cbPort->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        hboxPort->addWidget(lblPort);
-        hboxPort->addWidget(cbPort);
-        vboxCommSettings->addLayout(hboxPort);
-        ui->groupCommSettings->setLayout(vboxCommSettings);
+        QLabel *lblPortName = new QLabel;
+        QLabel *lblDescription = new QLabel;
+        QLabel *lblProductIdent = new QLabel;
+        QLabel *lblManufacturer = new QLabel;
+        QLabel *lblVendor = new QLabel;
+        QComboBox *cbBaud = new QComboBox;
+
+        layout->addRow(tr("Port:"), cbPort);
+        layout->addRow(tr("Name:"), lblPortName);
+        layout->addRow(tr("Description"), lblDescription);
+        layout->addRow(tr("Product:"), lblProductIdent);
+        layout->addRow(tr("Manufacturer:"), lblManufacturer);
+        layout->addRow(tr("Vendor:"), lblVendor);
+        layout->addRow(tr("Baud rate:"), cbBaud);
+
+        cbBaud->addItem("9600");
+        cbBaud->addItem("19200");
+        cbBaud->addItem("38400");
+        cbBaud->addItem("115200");
+        cbBaud->setCurrentIndex(3);
+
+        ui->groupCommSettings->setLayout(layout);
+
         break;
     }
     default:
