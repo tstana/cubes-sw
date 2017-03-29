@@ -38,7 +38,9 @@
 #include <commsettingsdialog.h>
 #include <ui_commsettingsdialog.h>
 
-#include <QFormLayout>
+#include <QSerialPortInfo>
+
+static const QString stringNotAvailable = "N/A";
 
 CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
     QDialog{parent},
@@ -54,7 +56,7 @@ CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &CommSettingsDialog::on_cbCommType_currentIndexChanged);
 
-    vboxCommSettings = new QVBoxLayout;
+    layoutCommSettings = new QFormLayout;
 
     ui->btnOk->setEnabled(false);
     ui->btnCancel->setEnabled(false);
@@ -66,7 +68,7 @@ CommSettingsDialog::~CommSettingsDialog()
 {
     delete m_commSettings;
     delete ui;
-    delete vboxCommSettings;
+    delete layoutCommSettings;
 }
 
 void CommSettingsDialog::addCommTypes()
@@ -102,14 +104,13 @@ void CommSettingsDialog::populateCommSettings(int commType)
     switch (commType) {
     case None:
     {
-        clearLayout(vboxCommSettings);
+        clearLayout(layoutCommSettings);
         ui->btnOk->setEnabled(false);
         ui->btnCancel->setEnabled(false);
         break;
     }
     case SerialPort:
     {
-        QFormLayout *layout = new QFormLayout;
         QComboBox *cbPort = new QComboBox;
         QLabel *lblPortName = new QLabel;
         QLabel *lblDescription = new QLabel;
@@ -117,14 +118,23 @@ void CommSettingsDialog::populateCommSettings(int commType)
         QLabel *lblManufacturer = new QLabel;
         QLabel *lblVendor = new QLabel;
         QComboBox *cbBaud = new QComboBox;
+        QList<QSerialPortInfo> infos = QSerialPortInfo::availablePorts();
 
-        layout->addRow(tr("Port:"), cbPort);
-        layout->addRow(tr("Name:"), lblPortName);
-        layout->addRow(tr("Description"), lblDescription);
-        layout->addRow(tr("Product:"), lblProductIdent);
-        layout->addRow(tr("Manufacturer:"), lblManufacturer);
-        layout->addRow(tr("Vendor:"), lblVendor);
-        layout->addRow(tr("Baud rate:"), cbBaud);
+        connect(cbPort, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+                this, &CommSettingsDialog::on_cbPort_currentIndexChanged);
+
+        cbPort->addItem("");
+        for (const QSerialPortInfo &info : infos) {
+            cbPort->addItem(info.portName() + " : " + info.description());
+        }
+
+        layoutCommSettings->addRow(tr("Port:"), cbPort);
+        layoutCommSettings->addRow(tr("Name:"), lblPortName);
+        layoutCommSettings->addRow(tr("Description"), lblDescription);
+        layoutCommSettings->addRow(tr("Manufacturer:"), lblManufacturer);
+        layoutCommSettings->addRow(tr("Product:"), lblProductIdent);
+        layoutCommSettings->addRow(tr("Vendor:"), lblVendor);
+        layoutCommSettings->addRow(tr("Baud rate:"), cbBaud);
 
         cbBaud->addItem("9600");
         cbBaud->addItem("19200");
@@ -132,12 +142,52 @@ void CommSettingsDialog::populateCommSettings(int commType)
         cbBaud->addItem("115200");
         cbBaud->setCurrentIndex(3);
 
-        ui->groupCommSettings->setLayout(layout);
+        ui->groupCommSettings->setLayout(layoutCommSettings);
 
         break;
     }
     default:
         break;
+    }
+}
+
+void CommSettingsDialog::on_cbPort_currentIndexChanged(int index)
+{
+    /* layoutCommSettings[0] is port combo box */
+    QLabel *lblPortName = new QLabel;
+    QLabel *lblDescription = new QLabel;
+    QLabel *lblManufacturer = new QLabel;
+    QLabel *lblProductIdent = new QLabel;
+    QLabel *lblVendor = new QLabel;
+
+    lblPortName     = qobject_cast<QLabel *>(layoutCommSettings->itemAt(1, QFormLayout::FieldRole)->widget());
+    lblDescription  = qobject_cast<QLabel *>(layoutCommSettings->itemAt(2, QFormLayout::FieldRole)->widget());
+    lblManufacturer = qobject_cast<QLabel *>(layoutCommSettings->itemAt(3, QFormLayout::FieldRole)->widget());
+    lblProductIdent = qobject_cast<QLabel *>(layoutCommSettings->itemAt(4, QFormLayout::FieldRole)->widget());
+    lblVendor       = qobject_cast<QLabel *>(layoutCommSettings->itemAt(5, QFormLayout::FieldRole)->widget());
+
+    QList<QSerialPortInfo> infos = QSerialPortInfo::availablePorts();
+    QSerialPortInfo info;
+
+    if (index == 0) {
+        lblPortName->setText("");
+        lblDescription->setText("");
+        lblManufacturer->setText("");
+        lblProductIdent->setText("");
+        lblVendor->setText("");
+        ui->btnOk->setEnabled(false);
+        ui->btnCancel->setEnabled(false);
+    } else {
+        info = infos[index-1];
+        lblPortName->setText(info.portName());
+        lblDescription->setText(info.description());
+        lblManufacturer->setText(info.manufacturer());
+        lblProductIdent->setText(info.productIdentifier() ?
+            QString::number(info.productIdentifier(), 16) : stringNotAvailable);
+        lblVendor->setText(info.vendorIdentifier() ?
+            QString::number(info.vendorIdentifier(), 16) : stringNotAvailable);
+        ui->btnOk->setEnabled(true);
+        ui->btnCancel->setEnabled(true);
     }
 }
 

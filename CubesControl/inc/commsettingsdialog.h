@@ -39,7 +39,7 @@
 #define COMMSETTINGSDIALOG_H
 
 #include <QDialog>
-#include <QLayout>
+#include <QFormLayout>
 
 namespace Ui {
 class CommSettingsDialog;
@@ -67,12 +67,13 @@ private slots:
     void on_btnOk_clicked();
     void on_btnCancel_clicked();
     void on_cbCommType_currentIndexChanged(int index);
+    void on_cbPort_currentIndexChanged(int index);
 
 private:
     Ui::CommSettingsDialog *ui;
     CommType m_commType;
     CommSettings *m_commSettings;
-    QVBoxLayout *vboxCommSettings;
+    QFormLayout *layoutCommSettings;
 
     void    addCommTypes();
     void    clearLayout(QLayout *layout);
