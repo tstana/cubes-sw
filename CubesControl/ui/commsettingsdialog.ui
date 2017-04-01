@@ -49,9 +49,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="lineEdit"/>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="hboxButtons">
      <item>
       <spacer name="horizontalSpacer">

@@ -130,7 +130,7 @@ void CommSettingsDialog::populateCommSettings(int commType)
 
         layoutCommSettings->addRow(tr("Port:"), cbPort);
         layoutCommSettings->addRow(tr("Name:"), lblPortName);
-        layoutCommSettings->addRow(tr("Description"), lblDescription);
+        layoutCommSettings->addRow(tr("Description:"), lblDescription);
         layoutCommSettings->addRow(tr("Manufacturer:"), lblManufacturer);
         layoutCommSettings->addRow(tr("Product:"), lblProductIdent);
         layoutCommSettings->addRow(tr("Vendor:"), lblVendor);
@@ -153,15 +153,16 @@ void CommSettingsDialog::populateCommSettings(int commType)
 
 void CommSettingsDialog::on_cbPort_currentIndexChanged(int index)
 {
-    /* layoutCommSettings[0] is port combo box */
-    QLabel *lblPortName = qobject_cast<QLabel *>(layoutCommSettings->itemAt(1, QFormLayout::FieldRole)->widget());;
-    QLabel *lblDescription = qobject_cast<QLabel *>(layoutCommSettings->itemAt(2, QFormLayout::FieldRole)->widget());;
-    QLabel *lblManufacturer = qobject_cast<QLabel *>(layoutCommSettings->itemAt(3, QFormLayout::FieldRole)->widget());;
-    QLabel *lblProductIdent = qobject_cast<QLabel *>(layoutCommSettings->itemAt(4, QFormLayout::FieldRole)->widget());;
-    QLabel *lblVendor = qobject_cast<QLabel *>(layoutCommSettings->itemAt(5, QFormLayout::FieldRole)->widget());;
+    if (!layoutCommSettings || !layoutCommSettings->count()) {
+        return;
+    }
 
-    static int number = 0;
-    ui->lineEdit->setText("cbPort changed " + QString::number(number++) + " times");
+    /* layoutCommSettings[0] is port combo box */
+    QLabel *lblPortName = qobject_cast<QLabel *>(layoutCommSettings->itemAt(1, QFormLayout::FieldRole)->widget());
+    QLabel *lblDescription = qobject_cast<QLabel *>(layoutCommSettings->itemAt(2, QFormLayout::FieldRole)->widget());
+    QLabel *lblManufacturer = qobject_cast<QLabel *>(layoutCommSettings->itemAt(3, QFormLayout::FieldRole)->widget());
+    QLabel *lblProductIdent = qobject_cast<QLabel *>(layoutCommSettings->itemAt(4, QFormLayout::FieldRole)->widget());
+    QLabel *lblVendor = qobject_cast<QLabel *>(layoutCommSettings->itemAt(5, QFormLayout::FieldRole)->widget());
 
     QList<QSerialPortInfo> infos = QSerialPortInfo::availablePorts();
     QSerialPortInfo info;
