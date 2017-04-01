@@ -40,6 +40,7 @@
 
 #include <QDialog>
 #include <QFormLayout>
+#include <QSerialPortInfo>
 
 namespace Ui {
 class CommSettingsDialog;
@@ -67,16 +68,18 @@ private slots:
     void on_btnOk_clicked();
     void on_btnCancel_clicked();
     void on_cbCommType_currentIndexChanged(int index);
+
     void on_cbPort_currentIndexChanged(int index);
 
 private:
     Ui::CommSettingsDialog *ui;
     CommType m_commType;
     CommSettings *m_commSettings;
-    QFormLayout *layoutCommSettings;
+    QList<QSerialPortInfo> m_serialPortInfos;
 
     void    addCommTypes();
     void    clearLayout(QLayout *layout);
     void    populateCommSettings(int commType);
+    void    populateSerialPortInfo(int selectedPort);
 };
 #endif // COMMSETTINGSDIALOG_H

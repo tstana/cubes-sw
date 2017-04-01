@@ -52,14 +52,17 @@ CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
             this, &CommSettingsDialog::on_btnOk_clicked);
     connect(ui->btnCancel, &QPushButton::clicked,
             this, &CommSettingsDialog::on_btnCancel_clicked);
-    connect(ui->cbCommType,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this, &CommSettingsDialog::on_cbCommType_currentIndexChanged);
-
-    layoutCommSettings = new QFormLayout;
 
     ui->btnOk->setEnabled(false);
     ui->btnCancel->setEnabled(false);
+
+    ui->commSettingsPage->setCurrentIndex(0);
+
+    m_serialPortInfos = QSerialPortInfo::availablePorts();
+
+    for (auto &info : m_serialPortInfos) {
+        ui->cbPort->addItem(info.portName() + " : " + info.description());
+    }
 
     addCommTypes();
 }
@@ -68,7 +71,6 @@ CommSettingsDialog::~CommSettingsDialog()
 {
     delete m_commSettings;
     delete ui;
-    delete layoutCommSettings;
 }
 
 void CommSettingsDialog::addCommTypes()
@@ -94,6 +96,11 @@ void CommSettingsDialog::on_cbCommType_currentIndexChanged(int index)
     populateCommSettings(index);
 }
 
+void CommSettingsDialog::on_cbPort_currentIndexChanged(int index)
+{
+    populateSerialPortInfo(index);
+}
+
 void CommSettingsDialog::populateCommSettings(int commType)
 {
     if ((int)m_commType == commType)
@@ -101,49 +108,16 @@ void CommSettingsDialog::populateCommSettings(int commType)
 
     m_commType = (enum CommType)commType;
 
+    ui->commSettingsPage->setCurrentIndex(commType);
+
     switch (commType) {
     case None:
     {
-        clearLayout(layoutCommSettings);
-        ui->btnOk->setEnabled(false);
-        ui->btnCancel->setEnabled(false);
         break;
     }
     case SerialPort:
     {
-        QComboBox *cbPort = new QComboBox;
-        QLabel *lblPortName = new QLabel;
-        QLabel *lblDescription = new QLabel;
-        QLabel *lblProductIdent = new QLabel;
-        QLabel *lblManufacturer = new QLabel;
-        QLabel *lblVendor = new QLabel;
-        QComboBox *cbBaud = new QComboBox;
-        QList<QSerialPortInfo> infos = QSerialPortInfo::availablePorts();
-
-        connect(cbPort, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-                this, &CommSettingsDialog::on_cbPort_currentIndexChanged);
-
-        cbPort->addItem("");
-        for (const auto &info : infos) {
-            cbPort->addItem(info.portName() + " : " + info.description());
-        }
-
-        layoutCommSettings->addRow(tr("Port:"), cbPort);
-        layoutCommSettings->addRow(tr("Name:"), lblPortName);
-        layoutCommSettings->addRow(tr("Description:"), lblDescription);
-        layoutCommSettings->addRow(tr("Manufacturer:"), lblManufacturer);
-        layoutCommSettings->addRow(tr("Product:"), lblProductIdent);
-        layoutCommSettings->addRow(tr("Vendor:"), lblVendor);
-        layoutCommSettings->addRow(tr("Baud rate:"), cbBaud);
-
-        cbBaud->addItem("9600");
-        cbBaud->addItem("19200");
-        cbBaud->addItem("38400");
-        cbBaud->addItem("115200");
-        cbBaud->setCurrentIndex(3);
-
-        ui->groupCommSettings->setLayout(layoutCommSettings);
-
+        populateSerialPortInfo(ui->cbPort->currentIndex());
         break;
     }
     default:
@@ -151,55 +125,28 @@ void CommSettingsDialog::populateCommSettings(int commType)
     }
 }
 
-void CommSettingsDialog::on_cbPort_currentIndexChanged(int index)
+void CommSettingsDialog::populateSerialPortInfo(int selectedPort)
 {
-    if (!layoutCommSettings || !layoutCommSettings->count()) {
+    if (selectedPort == 0) {
+        ui->lblName->setText("");
+        ui->lblDescription->setText("");
+        ui->lblManufacturer->setText("");
+        ui->lblProductIdent->setText("");
+        ui->lblVendor->setText("");
+        ui->btnOk->setEnabled(false);
+        ui->btnCancel->setEnabled(false);
+
         return;
     }
 
-    /* layoutCommSettings[0] is port combo box */
-    QLabel *lblPortName = qobject_cast<QLabel *>(layoutCommSettings->itemAt(1, QFormLayout::FieldRole)->widget());
-    QLabel *lblDescription = qobject_cast<QLabel *>(layoutCommSettings->itemAt(2, QFormLayout::FieldRole)->widget());
-    QLabel *lblManufacturer = qobject_cast<QLabel *>(layoutCommSettings->itemAt(3, QFormLayout::FieldRole)->widget());
-    QLabel *lblProductIdent = qobject_cast<QLabel *>(layoutCommSettings->itemAt(4, QFormLayout::FieldRole)->widget());
-    QLabel *lblVendor = qobject_cast<QLabel *>(layoutCommSettings->itemAt(5, QFormLayout::FieldRole)->widget());
+    const auto &info = m_serialPortInfos[selectedPort-1];
 
-    QList<QSerialPortInfo> infos = QSerialPortInfo::availablePorts();
-    QSerialPortInfo info;
+    ui->lblName->setText(info.portName());
+    ui->lblDescription->setText(info.description());
+    ui->lblManufacturer->setText(info.manufacturer());
+    ui->lblProductIdent->setText(QString::number(info.productIdentifier(), 16));
+    ui->lblVendor->setText(QString::number(info.vendorIdentifier(), 16));
 
-    if (index == 0) {
-        lblPortName->setText("");
-        lblDescription->setText("");
-        lblManufacturer->setText("");
-        lblProductIdent->setText("");
-        lblVendor->setText("");
-        ui->btnOk->setEnabled(false);
-        ui->btnCancel->setEnabled(false);
-    } else {
-        info = infos[index-1];
-        lblPortName->setText(info.portName());
-        lblDescription->setText(info.description());
-        lblManufacturer->setText(info.manufacturer());
-        lblProductIdent->setText(info.productIdentifier() ?
-            QString::number(info.productIdentifier(), 16) : stringNotAvailable);
-        lblVendor->setText(info.vendorIdentifier() ?
-            QString::number(info.vendorIdentifier(), 16) : stringNotAvailable);
-        ui->btnOk->setEnabled(true);
-        ui->btnCancel->setEnabled(true);
-    }
-}
-
-void CommSettingsDialog::clearLayout(QLayout *layout)
-{
-    QLayoutItem *item;
-    while((item = layout->takeAt(0))) {
-        if (item->layout()) {
-            clearLayout(item->layout());
-            delete item->layout();
-        }
-        if (item->widget()) {
-            delete item->widget();
-        }
-        delete item;
-    }
+    ui->btnOk->setEnabled(true);
+    ui->btnCancel->setEnabled(true);
 }
