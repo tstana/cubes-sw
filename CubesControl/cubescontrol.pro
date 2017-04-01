@@ -40,3 +40,6 @@ HEADERS  += \
 FORMS    += \
     ui/commsettingsdialog.ui \
     ui/cubescontrol.ui
+
+RESOURCES += \
+    ui/resources.qrc

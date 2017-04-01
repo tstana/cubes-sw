@@ -71,6 +71,8 @@ private slots:
 
     void on_cbPort_currentIndexChanged(int index);
 
+    void on_btnRefreshPorts_clicked();
+
 private:
     Ui::CommSettingsDialog *ui;
     CommType m_commType;

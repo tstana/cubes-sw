@@ -39,6 +39,7 @@
 #include <ui_commsettingsdialog.h>
 
 #include <QSerialPortInfo>
+#include <QMessageBox>
 
 static const QString stringNotAvailable = "N/A";
 
@@ -53,6 +54,11 @@ CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
     connect(ui->btnCancel, &QPushButton::clicked,
             this, &CommSettingsDialog::on_btnCancel_clicked);
 
+    ui->lblName->setText("");
+    ui->lblDescription->setText("");
+    ui->lblManufacturer->setText("");
+    ui->lblProductIdent->setText("");
+    ui->lblVendor->setText("");
     ui->btnOk->setEnabled(false);
     ui->btnCancel->setEnabled(false);
 
@@ -101,6 +107,31 @@ void CommSettingsDialog::on_cbPort_currentIndexChanged(int index)
     populateSerialPortInfo(index);
 }
 
+void CommSettingsDialog::on_btnRefreshPorts_clicked()
+{
+    if (ui->cbPort->count())
+        ui->cbPort->clear();
+    if (m_serialPortInfos.count())
+        m_serialPortInfos.clear();
+    m_serialPortInfos = QSerialPortInfo::availablePorts();
+    if (m_serialPortInfos.count()) {
+        for (auto &info : m_serialPortInfos) {
+            ui->cbPort->addItem(info.portName() + " : " + info.description());
+        }
+    } else {
+        QMessageBox box;
+        box.setText("No COM ports detected! Please connect one and click Refresh.");
+        box.exec();
+        ui->lblName->setText("");
+        ui->lblDescription->setText("");
+        ui->lblManufacturer->setText("");
+        ui->lblProductIdent->setText("");
+        ui->lblVendor->setText("");
+        ui->btnOk->setEnabled(false);
+        ui->btnCancel->setEnabled(false);
+    }
+}
+
 void CommSettingsDialog::populateCommSettings(int commType)
 {
     if ((int)m_commType == commType)
@@ -127,19 +158,10 @@ void CommSettingsDialog::populateCommSettings(int commType)
 
 void CommSettingsDialog::populateSerialPortInfo(int selectedPort)
 {
-    if (selectedPort == 0) {
-        ui->lblName->setText("");
-        ui->lblDescription->setText("");
-        ui->lblManufacturer->setText("");
-        ui->lblProductIdent->setText("");
-        ui->lblVendor->setText("");
-        ui->btnOk->setEnabled(false);
-        ui->btnCancel->setEnabled(false);
-
+    if (selectedPort == -1)
         return;
-    }
 
-    const auto &info = m_serialPortInfos[selectedPort-1];
+    const auto &info = m_serialPortInfos[selectedPort];
 
     ui->lblName->setText(info.portName());
     ui->lblDescription->setText(info.description());
