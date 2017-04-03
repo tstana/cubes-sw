@@ -49,11 +49,6 @@ CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->btnOk, &QPushButton::clicked,
-            this, &CommSettingsDialog::on_btnOk_clicked);
-    connect(ui->btnCancel, &QPushButton::clicked,
-            this, &CommSettingsDialog::on_btnCancel_clicked);
-
     ui->lblName->setText("");
     ui->lblDescription->setText("");
     ui->lblManufacturer->setText("");
@@ -71,6 +66,8 @@ CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
     }
 
     addCommTypes();
+
+    m_commSettings = new CommSettings;
 }
 
 CommSettingsDialog::~CommSettingsDialog()
@@ -88,7 +85,7 @@ void CommSettingsDialog::addCommTypes()
 
 void CommSettingsDialog::on_btnOk_clicked()
 {
-    // updateSettings();
+    updateSettings();
     hide();
 }
 
@@ -109,10 +106,12 @@ void CommSettingsDialog::on_cbPort_currentIndexChanged(int index)
 
 void CommSettingsDialog::on_btnRefreshPorts_clicked()
 {
-    if (ui->cbPort->count())
+    if (ui->cbPort->count()) {
         ui->cbPort->clear();
-    if (m_serialPortInfos.count())
+    }
+    if (m_serialPortInfos.count()) {
         m_serialPortInfos.clear();
+    }
     m_serialPortInfos = QSerialPortInfo::availablePorts();
     if (m_serialPortInfos.count()) {
         for (auto &info : m_serialPortInfos) {
@@ -171,4 +170,19 @@ void CommSettingsDialog::populateSerialPortInfo(int selectedPort)
 
     ui->btnOk->setEnabled(true);
     ui->btnCancel->setEnabled(true);
+}
+
+void CommSettingsDialog::updateSettings()
+{
+    m_commSettings->type = (enum CommType) ui->cbCommType->currentIndex();
+
+    switch (m_commSettings->type) {
+    case None:
+        m_commSettings->port = "";
+        m_commSettings->baud = 0;
+        break;
+    case SerialPort:
+        m_commSettings->port = m_serialPortInfos[ui->cbPort->currentIndex()].portName();
+        m_commSettings->baud = ui->cbBaud->currentText().toInt();
+    }
 }

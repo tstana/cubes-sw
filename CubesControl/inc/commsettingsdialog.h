@@ -57,8 +57,9 @@ public:
     };
 
     struct CommSettings {
-        CommType type;
-        qint32 port;
+        CommType    type;
+        QString     port;
+        qint32      baud;
     };
 
     explicit CommSettingsDialog(QWidget *parent = 0);
@@ -83,5 +84,6 @@ private:
     void    clearLayout(QLayout *layout);
     void    populateCommSettings(int commType);
     void    populateSerialPortInfo(int selectedPort);
+    void    updateSettings();
 };
 #endif // COMMSETTINGSDIALOG_H
