@@ -40,9 +40,10 @@
 #include "cubesprotouartpmod.h"
 #include "ui_cubescontrol.h"
 #include <QLabel>
-#include <string>
+#include <QString>
 
 #include <cubescommands.h>
+
 
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
@@ -50,6 +51,14 @@ CubesControl::CubesControl(QWidget *parent) :
     commSettings(new CommSettingsDialog)
 {
     ui->setupUi(this);
+
+    lblConnStatus = new QLabel;
+    lblConnStatus->setFixedWidth(150);
+    lblConnStatus->setFixedHeight(13);
+    lblConnStatus->setIndent(5);
+    lblConnStatus->setStyleSheet("QLabel { font-weight : bold; background-color : red; border : 1px solid black }");
+    lblConnStatus->setText("Not connected");
+    statusBar()->addPermanentWidget(lblConnStatus);
 
     connect(ui->actionConfigConnection, &QAction::triggered,
             commSettings, &CubesControl::show);

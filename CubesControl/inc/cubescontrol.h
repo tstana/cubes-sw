@@ -44,8 +44,7 @@
 
 #include <QMainWindow>
 #include <QString>
-#include <QTextStream>
-#include <QSerialPort>
+#include <QLabel>
 
 namespace Ui {
 class CubesControl;
@@ -66,6 +65,8 @@ private slots:
 
 private:
     Ui::CubesControl    *ui;
+
+    QLabel              *lblConnStatus;
 
     CubesProtoUartPmod  *cubes;
     CommSettingsDialog  *commSettings;
