@@ -126,3 +126,33 @@ void CubesControl::on_actionConnect_triggered()
     }
     }
 }
+
+void CubesControl::on_actionDisconnect_triggered()
+{
+    CommSettingsDialog::CommSettings *currentSettings = commSettings->getSettings();
+
+    if (connStatus == 0) {
+        QMessageBox box;
+        box.setText("No connection open!");
+        box.exec();
+        return;
+    }
+
+    switch (currentSettings->type) {
+    case CommSettingsDialog::None:
+    {
+        QMessageBox box;
+        box.setText("No connection type selected. Please select one via \"Connection > Configure\".");
+        box.exec();
+        break;
+    }
+    case CommSettingsDialog::SerialPort:
+    {
+        serialPort->close();
+        connStatus = 0;
+        showConnStatus(connStatus);
+        break;
+    }
+    }
+
+}
