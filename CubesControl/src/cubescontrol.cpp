@@ -66,6 +66,7 @@ CubesControl::CubesControl(QWidget *parent) :
             commSettings, &CubesControl::show);
 
     serialPort = new QSerialPort();
+
     cubes = new CubesProtoUartPmod(serialPort, this);
     connect(cubes, &CubesProtoUartPmod::devErrorOccured,
             this, &CubesControl::on_cubes_devErrorOccured);
@@ -135,27 +136,15 @@ void CubesControl::on_actionDisconnect_triggered()
     QString msg;
 
     if (connStatus == 0) {
-        msg = "No connection open!";
-        statusBar()->showMessage(msg, 5000);
-        return;
-    }
-
-    switch (currentSettings->type) {
-    case CommSettingsDialog::None:
-    {
-        msg = "No connection type selected. Please select one via 'Connection > Configure'.";
-        statusBar()->showMessage(msg, 5000);
-        break;
-    }
-    case CommSettingsDialog::SerialPort:
-    {
+        msg = "Connection not open!";
+    } else {
         cubes->devClose();
         connStatus = 0;
         showConnStatus(connStatus);
-        break;
-    }
+        msg = "Connection closed.";
     }
 
+    statusBar()->showMessage(msg, 5000);
 }
 
 void CubesControl::on_cubes_devErrorOccured(int error)
