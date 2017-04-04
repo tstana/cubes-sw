@@ -68,12 +68,18 @@ CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
     addCommTypes();
 
     m_commSettings = new CommSettings;
+    m_commSettings->type = None;
 }
 
 CommSettingsDialog::~CommSettingsDialog()
 {
     delete m_commSettings;
     delete ui;
+}
+
+CommSettingsDialog::CommSettings* CommSettingsDialog::getSettings()
+{
+    return m_commSettings;
 }
 
 void CommSettingsDialog::addCommTypes()

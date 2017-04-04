@@ -65,6 +65,8 @@ public:
     explicit CommSettingsDialog(QWidget *parent = 0);
     ~CommSettingsDialog();
 
+    CommSettings* getSettings();
+
 private slots:
     void on_btnOk_clicked();
     void on_btnCancel_clicked();

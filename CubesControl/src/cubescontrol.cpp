@@ -39,8 +39,10 @@
 #include <cubescontrol.h>
 #include "cubesprotouartpmod.h"
 #include "ui_cubescontrol.h"
+
 #include <QLabel>
 #include <QString>
+#include <QMessageBox>
 
 #include <cubescommands.h>
 
@@ -53,26 +55,74 @@ CubesControl::CubesControl(QWidget *parent) :
     ui->setupUi(this);
 
     lblConnStatus = new QLabel;
-    lblConnStatus->setFixedWidth(150);
-    lblConnStatus->setFixedHeight(13);
+    lblConnStatus->setFixedWidth(100);
+    lblConnStatus->setFixedHeight(15);
     lblConnStatus->setIndent(5);
-    lblConnStatus->setStyleSheet("QLabel { font-weight : bold; background-color : red; border : 1px solid black }");
-    lblConnStatus->setText("Not connected");
+    connStatus = 0;
+    showConnStatus(connStatus);
     statusBar()->addPermanentWidget(lblConnStatus);
 
     connect(ui->actionConfigConnection, &QAction::triggered,
             commSettings, &CubesControl::show);
 
-//itzi was here :*
+    serialPort = new QSerialPort();
 }
 
 CubesControl::~CubesControl()
 {
     delete ui;
     delete commSettings;
+    delete serialPort;
 }
 
 void CubesControl::on_actionClose_triggered()
 {
     this->close();
+}
+
+const QString STYLE_CONN_UP =
+        "QLabel { font-weight : bold; color: white; background-color : green; border : 1px solid black }";
+const QString STYLE_CONN_DOWN =
+        "QLabel { font-weight : bold; color: black; background-color : red; border : 1px solid black }";
+
+void CubesControl::showConnStatus(int connUp)
+{
+    if (connUp) {
+        lblConnStatus->setStyleSheet(STYLE_CONN_UP);
+        lblConnStatus->setText(commSettings->getSettings()->port + " / " +
+                               QString::number(commSettings->getSettings()->baud));
+    } else {
+        lblConnStatus->setStyleSheet(STYLE_CONN_DOWN);
+        lblConnStatus->setText("Not connected");
+    }
+}
+
+void CubesControl::on_actionConnect_triggered()
+{
+    CommSettingsDialog::CommSettings *currentSettings = commSettings->getSettings();
+
+    if (currentSettings == 0) {
+        QMessageBox box;
+        box.setText("No connection type selected. Please select one via \"Connection > Configure\".");
+        box.exec();
+    }
+
+    switch (currentSettings->type) {
+    case CommSettingsDialog::None:
+    {
+        QMessageBox box;
+        box.setText("No connection type selected. Please select one via \"Connection > Configure\".");
+        box.exec();
+        break;
+    }
+    case CommSettingsDialog::SerialPort:
+    {
+        serialPort->setPortName(currentSettings->port);
+        serialPort->setBaudRate(currentSettings->baud);
+        if (serialPort->open(QSerialPort::ReadWrite))
+            connStatus = 1;
+        showConnStatus(connStatus);
+        break;
+    }
+    }
 }

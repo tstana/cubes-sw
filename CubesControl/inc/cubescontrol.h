@@ -46,6 +46,8 @@
 #include <QString>
 #include <QLabel>
 
+#include <QSerialPort>
+
 namespace Ui {
 class CubesControl;
 }
@@ -63,15 +65,21 @@ public:
 private slots:
     void on_actionClose_triggered();
 
+    void on_actionConnect_triggered();
+
 private:
     Ui::CubesControl    *ui;
 
     QLabel              *lblConnStatus;
+    int                 connStatus;
 
     CubesProtoUartPmod  *cubes;
     CommSettingsDialog  *commSettings;
 
-    int                 selectedCommandCode();
+    QSerialPort         *serialPort;
+
+    int     selectedCommandCode();
+    void    showConnStatus(int connUp);
 };
 
 #endif // CUBESCONTROL_H

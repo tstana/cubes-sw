@@ -34,6 +34,9 @@
      <string>Connection</string>
     </property>
     <addaction name="actionConfigConnection"/>
+    <addaction name="separator"/>
+    <addaction name="actionConnect"/>
+    <addaction name="actionDisconnect"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConnection"/>
@@ -52,9 +55,14 @@
     <string>Configure...</string>
    </property>
   </action>
-  <action name="actionOpenConnection">
+  <action name="actionConnect">
    <property name="text">
-    <string>Open connection</string>
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="text">
+    <string>Disconnect</string>
    </property>
   </action>
  </widget>
