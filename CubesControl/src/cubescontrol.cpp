@@ -111,6 +111,7 @@ void CubesControl::on_actionConnect_triggered()
     case CommSettingsDialog::None:
     {
         QMessageBox box;
+        box.setWindowTitle("Error");
         box.setText("No connection type selected. Please select one via \"Connection > Configure\".");
         box.exec();
         break;
@@ -133,6 +134,7 @@ void CubesControl::on_actionDisconnect_triggered()
 
     if (connStatus == 0) {
         QMessageBox box;
+        box.setWindowTitle("Error");
         box.setText("No connection open!");
         box.exec();
         return;
@@ -142,6 +144,7 @@ void CubesControl::on_actionDisconnect_triggered()
     case CommSettingsDialog::None:
     {
         QMessageBox box;
+        box.setWindowTitle("Error");
         box.setText("No connection type selected. Please select one via \"Connection > Configure\".");
         box.exec();
         break;

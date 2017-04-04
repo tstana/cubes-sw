@@ -125,6 +125,7 @@ void CommSettingsDialog::on_btnRefreshPorts_clicked()
         }
     } else {
         QMessageBox box;
+        box.setWindowTitle("Error");
         box.setText("No COM ports detected! Please connect one and click Refresh.");
         box.exec();
         ui->lblName->setText("");
