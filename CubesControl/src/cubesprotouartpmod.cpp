@@ -57,6 +57,11 @@ CubesProtoUartPmod::~CubesProtoUartPmod()
     delete m_device;
 }
 
+QSerialPort* CubesProtoUartPmod::dev()
+{
+    return m_device;
+}
+
 bool CubesProtoUartPmod::devOpen(QSerialPort::OpenMode mode)
 {
     return m_device->open(mode);

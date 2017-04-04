@@ -66,9 +66,7 @@ CubesControl::CubesControl(QWidget *parent) :
             commSettings, &CubesControl::show);
 
     serialPort = new QSerialPort();
-
     cubes = new CubesProtoUartPmod(serialPort, this);
-
     connect(cubes, &CubesProtoUartPmod::devErrorOccured,
             this, &CubesControl::on_cubes_devErrorOccured);
 }
@@ -121,9 +119,9 @@ void CubesControl::on_actionConnect_triggered()
     }
     case CommSettingsDialog::SerialPort:
     {
-        serialPort->setPortName(currentSettings->port);
-        serialPort->setBaudRate(currentSettings->baud);
-        if (serialPort->open(QSerialPort::ReadWrite))
+        cubes->dev()->setPortName(currentSettings->port);
+        cubes->dev()->setBaudRate(currentSettings->baud);
+        if (cubes->devOpen(QSerialPort::ReadWrite))
             connStatus = 1;
         showConnStatus(connStatus);
         break;
@@ -151,7 +149,7 @@ void CubesControl::on_actionDisconnect_triggered()
     }
     case CommSettingsDialog::SerialPort:
     {
-        serialPort->close();
+        cubes->devClose();
         connStatus = 0;
         showConnStatus(connStatus);
         break;
@@ -180,7 +178,7 @@ void CubesControl::on_cubes_devErrorOccured(int error)
             break;
         case 9:
             msg += " : I/O error.";
-            serialPort->close();
+            cubes->devClose();
             connStatus = 0;
             showConnStatus(connStatus);
             break;

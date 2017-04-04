@@ -50,15 +50,16 @@ public:
     CubesProtoUartPmod(QSerialPort *device, QObject *parent = 0);
     ~CubesProtoUartPmod();
 
-    bool        devOpen(QSerialPort::OpenMode mode);
-    void        devClose();
-    int         devError();
-    QString     devName();
+    bool            devOpen(QSerialPort::OpenMode mode);
+    void            devClose();
+    int             devError();
+    QString         devName();
+    QSerialPort*    dev();
 
-    qint64      write(QByteArray &data);
-    QByteArray  readAll();
+    qint64          write(QByteArray &data);
+    QByteArray      readAll();
 
-    qint64      sendCommand(unsigned char cmd, QByteArray &cmdData);
+    qint64          sendCommand(unsigned char cmd, QByteArray &cmdData);
 
 private slots:
     void on_serialPort_readReady();
@@ -71,7 +72,7 @@ signals:
 private:
     QSerialPort     *m_device;
 
-    qint32         m_bytesLeft;
+    qint32          m_bytesLeft;
 };
 
 #endif // CUBESPROTOUARTPMOD_H
