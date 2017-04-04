@@ -169,8 +169,14 @@ void CubesControl::on_cubes_devErrorOccured(int error)
     case CommSettingsDialog::SerialPort:
         msg += "QSerialPort error "+ QString::number(error);
         switch (error) {
+        case 1:
+            msg += " : Device not found.";
+            break;
         case 2:
             msg += " : Port already open or not enough permissions to access.";
+            break;
+        case 3:
+            msg += " : Device already open.";
             break;
         case 9:
             msg += " : I/O error.";
