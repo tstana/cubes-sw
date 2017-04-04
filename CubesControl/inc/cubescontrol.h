@@ -64,10 +64,10 @@ public:
 
 private slots:
     void on_actionClose_triggered();
-
     void on_actionConnect_triggered();
-
     void on_actionDisconnect_triggered();
+
+    void on_cubes_devErrorOccured(int error);
 
 private:
     Ui::CubesControl    *ui;

@@ -66,13 +66,18 @@ CubesControl::CubesControl(QWidget *parent) :
             commSettings, &CubesControl::show);
 
     serialPort = new QSerialPort();
+
+    cubes = new CubesProtoUartPmod(serialPort, this);
+
+    connect(cubes, &CubesProtoUartPmod::devErrorOccured,
+            this, &CubesControl::on_cubes_devErrorOccured);
 }
 
 CubesControl::~CubesControl()
 {
     delete ui;
     delete commSettings;
-    delete serialPort;
+    delete cubes;
 }
 
 void CubesControl::on_actionClose_triggered()
@@ -99,21 +104,19 @@ void CubesControl::showConnStatus(int connUp)
 
 void CubesControl::on_actionConnect_triggered()
 {
+    QString msg;
     CommSettingsDialog::CommSettings *currentSettings = commSettings->getSettings();
 
     if (currentSettings == 0) {
-        QMessageBox box;
-        box.setText("No connection type selected. Please select one via \"Connection > Configure\".");
-        box.exec();
+        msg = "No connection type selected. Please select one via \"Connection > Configure\".";
+        statusBar()->showMessage(msg, 5000);
     }
 
     switch (currentSettings->type) {
     case CommSettingsDialog::None:
     {
-        QMessageBox box;
-        box.setWindowTitle("Error");
-        box.setText("No connection type selected. Please select one via \"Connection > Configure\".");
-        box.exec();
+        msg = "No connection type selected. Please select one via \"Connection > Configure\".";
+        statusBar()->showMessage(msg, 5000);
         break;
     }
     case CommSettingsDialog::SerialPort:
@@ -131,22 +134,19 @@ void CubesControl::on_actionConnect_triggered()
 void CubesControl::on_actionDisconnect_triggered()
 {
     CommSettingsDialog::CommSettings *currentSettings = commSettings->getSettings();
+    QString msg;
 
     if (connStatus == 0) {
-        QMessageBox box;
-        box.setWindowTitle("Error");
-        box.setText("No connection open!");
-        box.exec();
+        msg = "No connection open!";
+        statusBar()->showMessage(msg, 5000);
         return;
     }
 
     switch (currentSettings->type) {
     case CommSettingsDialog::None:
     {
-        QMessageBox box;
-        box.setWindowTitle("Error");
-        box.setText("No connection type selected. Please select one via \"Connection > Configure\".");
-        box.exec();
+        msg = "No connection type selected. Please select one via 'Connection > Configure'.";
+        statusBar()->showMessage(msg, 5000);
         break;
     }
     case CommSettingsDialog::SerialPort:
@@ -158,4 +158,33 @@ void CubesControl::on_actionDisconnect_triggered()
     }
     }
 
+}
+
+void CubesControl::on_cubes_devErrorOccured(int error)
+{
+    QString msg = "";
+    CommSettingsDialog::CommSettings *currentSettings = commSettings->getSettings();
+
+    switch (currentSettings->type) {
+    case CommSettingsDialog::SerialPort:
+        msg += "QSerialPort error "+ QString::number(error);
+        switch (error) {
+        case 2:
+            msg += " : Port already open or not enough permissions to access.";
+            break;
+        case 9:
+            msg += " : I/O error.";
+            serialPort->close();
+            connStatus = 0;
+            showConnStatus(connStatus);
+            break;
+        default:
+            msg += ".";
+            break;
+        }
+        break;
+    }
+
+    if (error)
+        statusBar()->showMessage(msg, 5000);
 }

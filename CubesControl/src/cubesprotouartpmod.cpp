@@ -41,6 +41,7 @@
 #include <QSerialPort>
 
 CubesProtoUartPmod::CubesProtoUartPmod(QSerialPort *device, QObject *parent) :
+    QObject(parent),
     m_device{device}
 {
     QObject::connect(m_device, &QSerialPort::readyRead,
