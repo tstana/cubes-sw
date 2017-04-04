@@ -55,7 +55,7 @@ CubesControl::CubesControl(QWidget *parent) :
     ui->setupUi(this);
 
     lblConnStatus = new QLabel;
-    lblConnStatus->setFixedWidth(100);
+    lblConnStatus->setFixedWidth(120);
     lblConnStatus->setFixedHeight(15);
     lblConnStatus->setIndent(5);
     connStatus = 0;
@@ -94,7 +94,7 @@ void CubesControl::showConnStatus(int connUp)
     if (connUp) {
         lblConnStatus->setStyleSheet(STYLE_CONN_UP);
         lblConnStatus->setText(commSettings->getSettings()->port + " / " +
-                               QString::number(commSettings->getSettings()->baud));
+                               QString::number(commSettings->getSettings()->baud) + " bps");
     } else {
         lblConnStatus->setStyleSheet(STYLE_CONN_DOWN);
         lblConnStatus->setText("Not connected");
@@ -103,36 +103,35 @@ void CubesControl::showConnStatus(int connUp)
 
 void CubesControl::on_actionConnect_triggered()
 {
-    QString msg;
+    QString msg = "";
     CommSettingsDialog::CommSettings *currentSettings = commSettings->getSettings();
-
-    if (currentSettings == 0) {
-        msg = "No connection type selected. Please select one via \"Connection > Configure\".";
-        statusBar()->showMessage(msg, 5000);
-    }
 
     switch (currentSettings->type) {
     case CommSettingsDialog::None:
     {
-        msg = "No connection type selected. Please select one via \"Connection > Configure\".";
-        statusBar()->showMessage(msg, 5000);
+        msg += "No connection type selected. Please select one via 'Connection > Configure'.";
         break;
     }
     case CommSettingsDialog::SerialPort:
     {
         cubes->dev()->setPortName(currentSettings->port);
         cubes->dev()->setBaudRate(currentSettings->baud);
-        if (cubes->devOpen(QSerialPort::ReadWrite))
+        if (cubes->devOpen(QSerialPort::ReadWrite)) {
+            msg += "Serial port connection open on " +
+                    currentSettings->port + " at " +
+                    QString::number(currentSettings->baud) + " bps";
             connStatus = 1;
+        }
         showConnStatus(connStatus);
         break;
     }
     }
+
+    statusBar()->showMessage(msg, 5000);
 }
 
 void CubesControl::on_actionDisconnect_triggered()
 {
-    CommSettingsDialog::CommSettings *currentSettings = commSettings->getSettings();
     QString msg;
 
     if (connStatus == 0) {
