@@ -43,6 +43,7 @@
 #include <QLabel>
 #include <QString>
 #include <QMessageBox>
+#include <QCheckBox>
 
 #include <cubescommands.h>
 
@@ -70,6 +71,24 @@ CubesControl::CubesControl(QWidget *parent) :
     cubes = new CubesProtoUartPmod(serialPort, this);
     connect(cubes, &CubesProtoUartPmod::devErrorOccured,
             this, &CubesControl::on_cubes_devErrorOccured);
+
+    /* Connect LED check box clicks to single handler */
+    connect(ui->checkboxLed0, &QCheckBox::clicked,
+            this, on_anyLedCheckbox_clicked);
+    connect(ui->checkboxLed1, &QCheckBox::clicked,
+            this, on_anyLedCheckbox_clicked);
+    connect(ui->checkboxLed2, &QCheckBox::clicked,
+            this, on_anyLedCheckbox_clicked);
+    connect(ui->checkboxLed3, &QCheckBox::clicked,
+            this, on_anyLedCheckbox_clicked);
+    connect(ui->checkboxLed4, &QCheckBox::clicked,
+            this, on_anyLedCheckbox_clicked);
+    connect(ui->checkboxLed5, &QCheckBox::clicked,
+            this, on_anyLedCheckbox_clicked);
+    connect(ui->checkboxLed6, &QCheckBox::clicked,
+            this, on_anyLedCheckbox_clicked);
+    connect(ui->checkboxLed7, &QCheckBox::clicked,
+            this, on_anyLedCheckbox_clicked);
 }
 
 CubesControl::~CubesControl()
@@ -179,4 +198,28 @@ void CubesControl::on_cubes_devErrorOccured(int error)
 
     if (error)
         statusBar()->showMessage(msg, 5000);
+}
+
+void CubesControl::on_anyLedCheckbox_clicked()
+{
+    unsigned char leds =
+            (ui->checkboxLed7->isChecked() << 7) |
+            (ui->checkboxLed6->isChecked() << 6) |
+            (ui->checkboxLed5->isChecked() << 5) |
+            (ui->checkboxLed4->isChecked() << 4) |
+            (ui->checkboxLed3->isChecked() << 3) |
+            (ui->checkboxLed2->isChecked() << 2) |
+            (ui->checkboxLed1->isChecked() << 1) |
+            (ui->checkboxLed0->isChecked());
+
+    QByteArray data;
+
+    data.resize(4);
+
+    data[0] = 0x00;
+    data[1] = 0x00;
+    data[2] = 0x00;
+    data[3] = leds;
+
+    cubes->sendCommand(CMD_SET_LEDS, data);
 }

@@ -69,6 +69,8 @@ private slots:
 
     void on_cubes_devErrorOccured(int error);
 
+    void on_anyLedCheckbox_clicked();
+
 private:
     Ui::CubesControl    *ui;
 
