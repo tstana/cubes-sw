@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>593</width>
+    <height>483</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -111,17 +111,182 @@
          </widget>
         </item>
         <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+         <widget class="QGroupBox" name="groupboxCubesRegs">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
+          <property name="title">
+           <string>Registers</string>
           </property>
-         </spacer>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QTableWidget" name="tableCubesRegs">
+             <row>
+              <property name="text">
+               <string>0x00</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x04</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x08</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x0c</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x10</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x14</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x18</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x1c</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x20</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x24</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x28</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>0x2c</string>
+              </property>
+             </row>
+             <column>
+              <property name="text">
+               <string>Name</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Value</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Description</string>
+              </property>
+             </column>
+             <item row="0" column="0">
+              <property name="text">
+               <string>IDLR</string>
+              </property>
+             </item>
+             <item row="0" column="1">
+              <property name="text">
+               <string/>
+              </property>
+             </item>
+             <item row="0" column="2">
+              <property name="text">
+               <string>CUBES ID low register</string>
+              </property>
+             </item>
+             <item row="1" column="0">
+              <property name="text">
+               <string>IDHR</string>
+              </property>
+             </item>
+             <item row="1" column="2">
+              <property name="text">
+               <string>CUBES ID high register</string>
+              </property>
+             </item>
+             <item row="4" column="2">
+              <property name="text">
+               <string/>
+              </property>
+             </item>
+             <item row="5" column="0">
+              <property name="text">
+               <string>LEDR</string>
+              </property>
+             </item>
+             <item row="5" column="2">
+              <property name="text">
+               <string>On-board LEDs</string>
+              </property>
+             </item>
+             <item row="8" column="0">
+              <property name="text">
+               <string>SIPHRA_CSR</string>
+              </property>
+             </item>
+             <item row="8" column="2">
+              <property name="text">
+               <string>SIPHRA Control and Status Register</string>
+              </property>
+             </item>
+             <item row="9" column="0">
+              <property name="text">
+               <string>SIPHRA_DATAR</string>
+              </property>
+             </item>
+             <item row="9" column="2">
+              <property name="text">
+               <string>SIPHRA Data  Register</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QPushButton" name="btnUpdateCubesRegs">
+               <property name="text">
+                <string>Update</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -134,7 +299,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>593</width>
      <height>21</height>
     </rect>
    </property>
