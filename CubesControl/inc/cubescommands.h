@@ -61,14 +61,25 @@ public:
 /*-----------------------------------------------------------------------------
  * Command definitions
  *---------------------------------------------------------------------------*/
+
+/* 1. Command code definitions */
+
+#define CMD_GET_HOUSEKEEPING_DATA   0x11
+#define CMD_GET_CUBES_ID            0x90
+#define CMD_SET_LEDS                0x91
+#define CMD_GET_LEDS                0x92
+#define CMD_SIPHRA_REG_OP           0x93
+
+/* 2. Associating command codes to command descriptions */
+
 #define NUM_COMMANDS        5
 
 const CubesCommands COMMANDS[NUM_COMMANDS] {
-    { 0x11, "Request housekeeping data" },
-    { 0x90, "Get ID" },
-    { 0x91, "Set LED reg." },
-    { 0x92, "Get LED reg." },
-    { 0x93, "SIPHRA register operation" }
+    { CMD_GET_HOUSEKEEPING_DATA,    "Request housekeeping data" },
+    { CMD_GET_CUBES_ID,             "Get ID" },
+    { CMD_SET_LEDS,                 "Set LED reg." },
+    { CMD_GET_LEDS,                 "Get LED reg." },
+    { CMD_SIPHRA_REG_OP,            "SIPHRA register operation" }
 };
 
 #endif // __CUBESCOMMANDS_H_
