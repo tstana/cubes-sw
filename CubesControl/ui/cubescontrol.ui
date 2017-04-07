@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>593</width>
-    <height>483</height>
+    <width>700</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -124,6 +124,18 @@
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
             <widget class="QTableWidget" name="tableCubesRegs">
+             <property name="sizeAdjustPolicy">
+              <enum>QAbstractScrollArea::AdjustIgnored</enum>
+             </property>
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderMinimumSectionSize">
+              <number>11</number>
+             </attribute>
+             <attribute name="verticalHeaderStretchLastSection">
+              <bool>false</bool>
+             </attribute>
              <row>
               <property name="text">
                <string>0x00</string>
@@ -191,6 +203,11 @@
              </column>
              <column>
               <property name="text">
+               <string>Access</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
                <string>Value</string>
               </property>
              </column>
@@ -206,10 +223,18 @@
              </item>
              <item row="0" column="1">
               <property name="text">
-               <string/>
+               <string>R/O</string>
               </property>
              </item>
              <item row="0" column="2">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="flags">
+               <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item row="0" column="3">
               <property name="text">
                <string>CUBES ID low register</string>
               </property>
@@ -219,12 +244,40 @@
                <string>IDHR</string>
               </property>
              </item>
+             <item row="1" column="1">
+              <property name="text">
+               <string>R/O</string>
+              </property>
+             </item>
              <item row="1" column="2">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="flags">
+               <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item row="1" column="3">
               <property name="text">
                <string>CUBES ID high register</string>
               </property>
              </item>
+             <item row="2" column="2">
+              <property name="flags">
+               <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item row="3" column="2">
+              <property name="flags">
+               <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
              <item row="4" column="2">
+              <property name="flags">
+               <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item row="4" column="3">
               <property name="text">
                <string/>
               </property>
@@ -234,9 +287,32 @@
                <string>LEDR</string>
               </property>
              </item>
+             <item row="5" column="1">
+              <property name="text">
+               <string>R/W</string>
+              </property>
+             </item>
              <item row="5" column="2">
               <property name="text">
+               <string/>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item row="5" column="3">
+              <property name="text">
                <string>On-board LEDs</string>
+              </property>
+             </item>
+             <item row="6" column="2">
+              <property name="flags">
+               <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item row="7" column="2">
+              <property name="flags">
+               <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
               </property>
              </item>
              <item row="8" column="0">
@@ -244,7 +320,17 @@
                <string>SIPHRA_CSR</string>
               </property>
              </item>
+             <item row="8" column="1">
+              <property name="text">
+               <string>R/W</string>
+              </property>
+             </item>
              <item row="8" column="2">
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item row="8" column="3">
               <property name="text">
                <string>SIPHRA Control and Status Register</string>
               </property>
@@ -254,9 +340,32 @@
                <string>SIPHRA_DATAR</string>
               </property>
              </item>
+             <item row="9" column="1">
+              <property name="text">
+               <string>R/W</string>
+              </property>
+             </item>
              <item row="9" column="2">
               <property name="text">
+               <string/>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item row="9" column="3">
+              <property name="text">
                <string>SIPHRA Data  Register</string>
+              </property>
+             </item>
+             <item row="10" column="2">
+              <property name="flags">
+               <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item row="11" column="2">
+              <property name="flags">
+               <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
               </property>
              </item>
             </widget>
@@ -299,7 +408,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>593</width>
+     <width>700</width>
      <height>21</height>
     </rect>
    </property>
