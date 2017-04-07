@@ -1,12 +1,11 @@
 /*
  *==============================================================================
- * KTH Royal Institute of Technology Stockholm
- * CUBES Control Program
+ * Source file for CUBES Command class
  *==============================================================================
  *
  * author: Theodor Stana (theodor.stana@gmail.com)
  *
- * date of creation: 2017-02-08
+ * date of creation: 2017-04-07
  *
  * version: 1.0
  *
@@ -30,63 +29,77 @@
  * source; if not, download it from http://www.gnu.org/licenses/lgpl-2.1.html
  *==============================================================================
  * last changes:
- *    2017-02-08   theodor.stana@gmail.com     File created
+ *    2017-04-07   Theodor Stana     File created
  *==============================================================================
  * TODO: -
  *==============================================================================
  */
 
-#ifndef CUBESCONTROL_H
-#define CUBESCONTROL_H
+#include "cubescommand.h"
 
-#include <cubesprotouartpmod.h>
-#include <commsettingsdialog.h>
-
-#include <QMainWindow>
-#include <QString>
-#include <QLabel>
-
-#include <QSerialPort>
-
-namespace Ui {
-class CubesControl;
+CubesCommand::CubesCommand()
+{
+    decode(0);
 }
 
-class CommSettingsDialog;
-
-class CubesControl : public QMainWindow
+CubesCommand::CubesCommand(const unsigned char code)
 {
-    Q_OBJECT
+    decode(code);
+}
 
-public:
-    explicit CubesControl(QWidget *parent = 0);
-    ~CubesControl();
+unsigned char CubesCommand::setCommand(const unsigned char code)
+{
+    return decode(code);
+}
 
-private slots:
-    void on_actionClose_triggered();
-    void on_actionConnect_triggered();
-    void on_actionDisconnect_triggered();
+qint32 CubesCommand::dataBytes()
+{
+    return m_dataBytes;
+}
 
-    void on_cubes_devErrorOccured(int error);
-    void on_cubes_devReadReady();
+qint32 CubesCommand::dataDirection()
+{
+    return m_dataDirection;
+}
 
-    void on_anyLedCheckbox_clicked();
+QString& CubesCommand::description()
+{
+    return m_description;
+}
 
-    void on_btnUpdateCubesRegs_clicked();
+unsigned char CubesCommand::decode(const unsigned char code)
+{
+    m_code = code;
 
-private:
-    Ui::CubesControl    *ui;
+    switch (code) {
+    case CMD_READ_ALL_REGS:
+        m_dataBytes = 48;
+        m_dataDirection = Read;
+        m_description = "Request housekeeping data";
+        break;
+    case CMD_GET_CUBES_ID:
+        m_dataBytes = 8;
+        m_dataDirection = Read;
+        m_description = "Get ID";
+        break;
+    case CMD_SET_LEDS:
+        m_dataBytes = 4;
+        m_dataDirection = Write;
+        m_description = "Set LED reg.";
+        break;
+    case CMD_GET_LEDS:
+        m_dataBytes = 4;
+        m_dataDirection = Read;
+        m_description = "Get LED reg.";
+        break;
+    case CMD_SIPHRA_REG_OP:
+        m_dataBytes = 8;
+        m_dataDirection = Write;
+        m_description = "SIPHRA register operation";
+        break;
+    default:
+        return -1;
+    }
 
-    QLabel              *lblConnStatus;
-    int                 connStatus;
-
-    CubesProtoUartPmod  *cubes;
-    CommSettingsDialog  *commSettings;
-
-    QSerialPort         *serialPort;
-
-    int     selectedCommandCode();
-    void    showConnStatus(int connUp);
-};
-
-#endif // CUBESCONTROL_H
+    return code;
+}

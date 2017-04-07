@@ -45,8 +45,6 @@
 #include <QMessageBox>
 #include <QCheckBox>
 
-#include <cubescommands.h>
-
 
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
@@ -219,6 +217,8 @@ void CubesControl::on_cubes_devErrorOccured(int error)
         statusBar()->showMessage(msg, 5000);
 }
 
+
+
 void CubesControl::on_anyLedCheckbox_clicked()
 {
     unsigned char leds =
@@ -241,4 +241,11 @@ void CubesControl::on_anyLedCheckbox_clicked()
     data[3] = leds;
 
     cubes->sendCommand(CMD_SET_LEDS, data);
+}
+
+void CubesControl::on_btnUpdateCubesRegs_clicked()
+{
+    QByteArray dummy;
+
+    cubes->sendCommand(CMD_READ_ALL_REGS, dummy);
 }

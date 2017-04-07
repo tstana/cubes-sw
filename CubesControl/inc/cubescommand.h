@@ -43,43 +43,41 @@
 /*-----------------------------------------------------------------------------
  * Class definition
  *---------------------------------------------------------------------------*/
-class CubesCommands
+class CubesCommand
 {
 public:
-    CubesCommands() { }
 
-    CubesCommands(const unsigned char code, const QString &desc) :
-        code{code},
-        description{desc}
-    {
-    }
+    typedef enum Direction {
+        Read = 0,
+        Write = 1
+    } DataDirection;
 
-    unsigned char   code;
-    QString         description;
+    CubesCommand();
+    CubesCommand(const unsigned char code);
+
+    unsigned char   setCommand(const unsigned char code);
+    qint32          dataBytes();
+    qint32          dataDirection();
+    QString&        description();
+
+private:
+    unsigned char   m_code;
+    qint32          m_dataBytes;
+    qint32          m_dataDirection;
+    QString         m_description;
+
+    unsigned char   decode(const unsigned char code);
 };
+
 
 /*-----------------------------------------------------------------------------
  * Command definitions
  *---------------------------------------------------------------------------*/
 
-/* 1. Command code definitions */
-
-#define CMD_GET_HOUSEKEEPING_DATA   0x11
+#define CMD_READ_ALL_REGS           0x11
 #define CMD_GET_CUBES_ID            0x90
 #define CMD_SET_LEDS                0x91
 #define CMD_GET_LEDS                0x92
 #define CMD_SIPHRA_REG_OP           0x93
-
-/* 2. Associating command codes to command descriptions */
-
-#define NUM_COMMANDS        5
-
-const CubesCommands COMMANDS[NUM_COMMANDS] {
-    { CMD_GET_HOUSEKEEPING_DATA,    "Request housekeeping data" },
-    { CMD_GET_CUBES_ID,             "Get ID" },
-    { CMD_SET_LEDS,                 "Set LED reg." },
-    { CMD_GET_LEDS,                 "Get LED reg." },
-    { CMD_SIPHRA_REG_OP,            "SIPHRA register operation" }
-};
 
 #endif // __CUBESCOMMANDS_H_

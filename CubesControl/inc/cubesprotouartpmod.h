@@ -37,6 +37,8 @@
 #ifndef CUBESPROTOUARTPMOD_H
 #define CUBESPROTOUARTPMOD_H
 
+#include <cubescommand.h>
+
 #include <QObject>
 #include <QSerialPort>
 
@@ -61,6 +63,8 @@ public:
 
     qint64          sendCommand(unsigned char cmd, QByteArray &cmdData);
 
+    CubesCommand   currentCommand();
+
 private slots:
     void on_serialPort_readReady();
 
@@ -71,6 +75,8 @@ signals:
 
 private:
     QSerialPort     *m_device;
+
+    CubesCommand    *m_currentCommand;
 
     qint32          m_bytesLeft;
 };

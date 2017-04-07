@@ -28,14 +28,15 @@ SOURCES += \
     src/commsettingsdialog.cpp \
     src/cubescontrol.cpp \
     src/main.cpp \
-    src/cubesprotouartpmod.cpp
+    src/cubesprotouartpmod.cpp \
+    src/cubescommand.cpp
 
 HEADERS  += \
     inc/commsettingsdialog.h \
     inc/cubescontrol.h \
     inc/icubesprotocol.h \
     inc/cubesprotouartpmod.h \
-    inc/cubescommands.h
+    inc/cubescommand.h
 
 FORMS    += \
     ui/commsettingsdialog.ui \

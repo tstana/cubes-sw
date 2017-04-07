@@ -35,7 +35,9 @@
  *==============================================================================
  */
 
-#include <cubesprotouartpmod.h>
+#include "cubesprotouartpmod.h"
+
+#include <cubescommand.h>
 
 #include <QObject>
 #include <QSerialPort>
@@ -99,32 +101,13 @@ qint64 CubesProtoUartPmod::write(QByteArray &data)
 qint64 CubesProtoUartPmod::sendCommand(unsigned char cmdCode, QByteArray &cmdData)
 {
     QByteArray      data;
-    char            rw; // = decodeCommand();
+    char            rw;
 
-    switch (cmdCode) {
-    case 0x11:
-        rw = 1;
-        m_bytesLeft = 64;
-        break;
-    case 0x90:
-        rw = 1;
-        m_bytesLeft = 8;
-        break;
-    case 0x91:
-        rw = 0;
-        m_bytesLeft = 4;
-        break;
-    case 0x92:
-        rw = 1;
-        m_bytesLeft = 4;
-        break;
-    case 0x93:
-        rw = 0;
-        m_bytesLeft = 8;
-        break;
-    default:
-        break;
+    if (m_currentCommand->setCommand(cmdCode) != cmdCode) {
+        return 0;
     }
+
+    rw = ~m_currentCommand->dataDirection();
 
     data.resize(2 + cmdData.size());
 
@@ -134,6 +117,11 @@ qint64 CubesProtoUartPmod::sendCommand(unsigned char cmdCode, QByteArray &cmdDat
         data[i+2] = cmdData[i];
 
     return m_device->write(data);
+}
+
+CubesCommand CubesProtoUartPmod::currentCommand()
+{
+    return m_currentCommand;
 }
 
 QByteArray CubesProtoUartPmod::readAll()
