@@ -84,8 +84,23 @@ CubesControl::CubesControl(QWidget *parent) :
     connect(ui->checkboxLed7, &QCheckBox::clicked,
             this, on_anyLedCheckbox_clicked);
 
-    /* Massage CUBES register table view */
+    /* Resize address table in CUBES register view */
     ui->tableCubesRegs->resizeColumnToContents(1);
+
+    /* Adjustments to CUBES register table view */
+    for (int r = 0; r < ui->tableCubesRegs->rowCount(); r++) {
+        for (int c = 0; c < ui->tableCubesRegs->columnCount(); c++) {
+            /* Create widget item if non-existing */
+            if (ui->tableCubesRegs->item(r,c) == 0) {
+                ui->tableCubesRegs->setItem(r,c, new QTableWidgetItem);
+            }
+
+            /* Make the item non-editable. */
+            Qt::ItemFlags flags = ui->tableCubesRegs->item(r, c)->flags();
+            flags &= ~(Qt::ItemIsSelectable | Qt::ItemIsEditable);
+            ui->tableCubesRegs->item(r, c)->setFlags(flags);
+        }
+    }
 
     /* Create communication objects */
     serialPort = new QSerialPort();
