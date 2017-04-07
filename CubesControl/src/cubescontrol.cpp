@@ -66,12 +66,6 @@ CubesControl::CubesControl(QWidget *parent) :
     connect(ui->actionConfigConnection, &QAction::triggered,
             commSettings, &CubesControl::show);
 
-    serialPort = new QSerialPort();
-
-    cubes = new CubesProtoUartPmod(serialPort, this);
-    connect(cubes, &CubesProtoUartPmod::devErrorOccured,
-            this, &CubesControl::on_cubes_devErrorOccured);
-
     /* Connect LED check box clicks to single handler */
     connect(ui->checkboxLed0, &QCheckBox::clicked,
             this, on_anyLedCheckbox_clicked);
@@ -89,6 +83,16 @@ CubesControl::CubesControl(QWidget *parent) :
             this, on_anyLedCheckbox_clicked);
     connect(ui->checkboxLed7, &QCheckBox::clicked,
             this, on_anyLedCheckbox_clicked);
+
+    /* Massage CUBES register table view */
+    ui->tableCubesRegs->resizeColumnToContents(1);
+
+    /* Create communication objects */
+    serialPort = new QSerialPort();
+
+    cubes = new CubesProtoUartPmod(serialPort, this);
+    connect(cubes, &CubesProtoUartPmod::devErrorOccured,
+            this, &CubesControl::on_cubes_devErrorOccured);
 }
 
 CubesControl::~CubesControl()
