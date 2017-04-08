@@ -85,7 +85,6 @@ private:
 
     QSerialPort         *serialPort;
 
-    int     selectedCommandCode();
     void    showConnStatus(int connUp);
 };
 

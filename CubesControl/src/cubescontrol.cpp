@@ -106,6 +106,8 @@ CubesControl::CubesControl(QWidget *parent) :
     cubes = new CubesProtoUartPmod(serialPort, this);
     connect(cubes, &CubesProtoUartPmod::devErrorOccured,
             this, &CubesControl::on_cubes_devErrorOccured);
+    connect(cubes, &CubesProtoUartPmod::devReadReady,
+            this, &CubesControl::on_cubes_devReadReady);
 }
 
 CubesControl::~CubesControl()
@@ -182,6 +184,29 @@ void CubesControl::on_actionDisconnect_triggered()
     statusBar()->showMessage(msg, 5000);
 }
 
+void CubesControl::on_cubes_devReadReady()
+{
+    QString s;
+
+    QByteArray data;
+    data.resize(cubes->currentCommand()->dataBytes());
+    data = cubes->readAll();
+
+    switch (cubes->currentCommand()->code()){
+    case CMD_READ_ALL_REGS:
+        for (int i = 0; i < data.size(); i += 4) {
+            s = "0x" + QString::number((unsigned char)data[i+0], 16).rightJustified(2, '0') +
+                       QString::number((unsigned char)data[i+1], 16).rightJustified(2, '0') +
+                       QString::number((unsigned char)data[i+2], 16).rightJustified(2, '0') +
+                       QString::number((unsigned char)data[i+3], 16).rightJustified(2, '0');
+            ui->tableCubesRegs->item(i/4, 2)->setText(s);
+        }
+        break;
+    default:
+        break;
+    }
+}
+
 void CubesControl::on_cubes_devErrorOccured(int error)
 {
     QString msg = "";
@@ -216,8 +241,6 @@ void CubesControl::on_cubes_devErrorOccured(int error)
     if (error)
         statusBar()->showMessage(msg, 5000);
 }
-
-
 
 void CubesControl::on_anyLedCheckbox_clicked()
 {
