@@ -47,8 +47,6 @@ CubesProtoUartPmod::CubesProtoUartPmod(QSerialPort *device, QObject *parent) :
     m_device{device}
 {
     QObject::connect(m_device, &QSerialPort::readyRead,
-                     this, &CubesProtoUartPmod::devReadReady);
-    QObject::connect(m_device, &QSerialPort::readyRead,
                      this, &CubesProtoUartPmod::on_serialPort_readReady);
     QObject::connect(m_device, &QSerialPort::errorOccurred,
                      this, &CubesProtoUartPmod::devErrorOccured);
@@ -89,13 +87,8 @@ void CubesProtoUartPmod::on_serialPort_readReady()
     qint64 tmp = m_device->bytesAvailable();
     m_bytesLeft -= tmp;
     if (m_bytesLeft <= 0) {
-        emit dataReceived();
+        emit devReadReady();
     }
-}
-
-qint64 CubesProtoUartPmod::write(QByteArray &data)
-{
-    return m_device->write(data);
 }
 
 qint64 CubesProtoUartPmod::sendCommand(unsigned char cmdCode, QByteArray &cmdData)
@@ -103,11 +96,13 @@ qint64 CubesProtoUartPmod::sendCommand(unsigned char cmdCode, QByteArray &cmdDat
     QByteArray      data;
     char            rw;
 
+    /* Bail out if unknown command */
     if (m_currentCommand->setCommand(cmdCode) != cmdCode) {
-        return 0;
+        return -1;
     }
 
     rw = ~m_currentCommand->dataDirection();
+    m_bytesLeft = m_currentCommand->dataBytes();
 
     data.resize(2 + cmdData.size());
 
@@ -119,9 +114,14 @@ qint64 CubesProtoUartPmod::sendCommand(unsigned char cmdCode, QByteArray &cmdDat
     return m_device->write(data);
 }
 
-CubesCommand CubesProtoUartPmod::currentCommand()
+CubesCommand* CubesProtoUartPmod::currentCommand()
 {
     return m_currentCommand;
+}
+
+qint64 CubesProtoUartPmod::write(QByteArray &data)
+{
+    return m_device->write(data);
 }
 
 QByteArray CubesProtoUartPmod::readAll()

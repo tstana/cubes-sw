@@ -63,7 +63,7 @@ public:
 
     qint64          sendCommand(unsigned char cmd, QByteArray &cmdData);
 
-    CubesCommand   currentCommand();
+    CubesCommand*   currentCommand();
 
 private slots:
     void on_serialPort_readReady();
@@ -71,7 +71,6 @@ private slots:
 signals:
     void devReadReady();
     void devErrorOccured(int error);
-    void dataReceived();
 
 private:
     QSerialPort     *m_device;
