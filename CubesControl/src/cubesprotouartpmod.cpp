@@ -50,11 +50,14 @@ CubesProtoUartPmod::CubesProtoUartPmod(QSerialPort *device, QObject *parent) :
                      this, &CubesProtoUartPmod::on_serialPort_readReady);
     QObject::connect(m_device, &QSerialPort::errorOccurred,
                      this, &CubesProtoUartPmod::devErrorOccured);
+
+    m_currentCommand = new CubesCommand;
 }
 
 CubesProtoUartPmod::~CubesProtoUartPmod()
 {
     delete m_device;
+    delete m_currentCommand;
 }
 
 QSerialPort* CubesProtoUartPmod::dev()
@@ -101,7 +104,7 @@ qint64 CubesProtoUartPmod::sendCommand(unsigned char cmdCode, QByteArray &cmdDat
         return -1;
     }
 
-    rw = ~m_currentCommand->dataDirection();
+    rw = 0x1 & (~m_currentCommand->dataDirection());
     m_bytesLeft = m_currentCommand->dataBytes();
 
     data.resize(2 + cmdData.size());
