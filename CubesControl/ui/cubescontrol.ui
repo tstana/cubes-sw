@@ -375,9 +375,9 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <item>
-              <widget class="QPushButton" name="btnUpdateCubesRegs">
+              <widget class="QPushButton" name="btnReadAllCubesRegs">
                <property name="text">
-                <string>Update</string>
+                <string>Read all registers</string>
                </property>
               </widget>
              </item>

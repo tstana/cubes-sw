@@ -266,7 +266,7 @@ void CubesControl::on_anyLedCheckbox_clicked()
     cubes->sendCommand(CMD_SET_LEDS, data);
 }
 
-void CubesControl::on_btnUpdateCubesRegs_clicked()
+void CubesControl::on_btnReadAllCubesRegs_clicked()
 {
     QByteArray dummy;
 

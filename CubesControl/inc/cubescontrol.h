@@ -72,7 +72,7 @@ private slots:
 
     void on_anyLedCheckbox_clicked();
 
-    void on_btnUpdateCubesRegs_clicked();
+    void on_btnReadAllCubesRegs_clicked();
 
 private:
     Ui::CubesControl    *ui;
