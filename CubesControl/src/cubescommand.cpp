@@ -52,6 +52,11 @@ unsigned char CubesCommand::setCommand(const unsigned char code)
     return decode(code);
 }
 
+unsigned char CubesCommand::code()
+{
+    return m_code;
+}
+
 qint32 CubesCommand::dataBytes()
 {
     return m_dataBytes;

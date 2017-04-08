@@ -56,6 +56,8 @@ public:
     CubesCommand(const unsigned char code);
 
     unsigned char   setCommand(const unsigned char code);
+
+    unsigned char   code();
     qint32          dataBytes();
     qint32          dataDirection();
     QString&        description();
