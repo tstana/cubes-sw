@@ -23,6 +23,14 @@
       <property name="tabShape">
        <enum>QTabWidget::Triangular</enum>
       </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tabSiphraConfig">
+       <attribute name="title">
+        <string>SIPHRA config</string>
+       </attribute>
+      </widget>
       <widget class="QWidget" name="tabDiag">
        <attribute name="title">
         <string>Diagnostics</string>
@@ -108,6 +116,13 @@
             </layout>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
          </widget>
         </item>
         <item>
