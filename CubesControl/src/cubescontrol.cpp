@@ -244,6 +244,11 @@ void CubesControl::on_cubes_devErrorOccured(int error)
 
 void CubesControl::on_anyLedCheckbox_clicked()
 {
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open!", 5000);
+        return;
+    }
+
     unsigned char leds =
             (ui->checkboxLed7->isChecked() << 7) |
             (ui->checkboxLed6->isChecked() << 6) |
@@ -268,6 +273,11 @@ void CubesControl::on_anyLedCheckbox_clicked()
 
 void CubesControl::on_btnReadAllCubesRegs_clicked()
 {
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open!", 5000);
+        return;
+    }
+
     QByteArray dummy;
 
     cubes->sendCommand(CMD_READ_ALL_REGS, dummy);
