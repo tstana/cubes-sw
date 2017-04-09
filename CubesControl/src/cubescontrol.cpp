@@ -61,6 +61,7 @@ CubesControl::CubesControl(QWidget *parent) :
     showConnStatus(connStatus);
     statusBar()->addPermanentWidget(lblConnStatus);
 
+    commSettings->setModal(true);
     connect(ui->actionConfigConnection, &QAction::triggered,
             commSettings, &CubesControl::show);
 
