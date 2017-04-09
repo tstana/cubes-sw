@@ -195,10 +195,10 @@ void CubesControl::on_cubes_devReadReady()
     switch (cubes->currentCommand()->code()){
     case CMD_READ_ALL_REGS:
         for (int i = 0; i < data.size(); i += 4) {
-            s = "0x" + QString::number((unsigned char)data[i+0], 16).rightJustified(2, '0') +
-                       QString::number((unsigned char)data[i+1], 16).rightJustified(2, '0') +
-                       QString::number((unsigned char)data[i+2], 16).rightJustified(2, '0') +
-                       QString::number((unsigned char)data[i+3], 16).rightJustified(2, '0');
+            s = "0x" + QString::number((quint8)data[i+0], 16).rightJustified(2, '0') +
+                       QString::number((quint8)data[i+1], 16).rightJustified(2, '0') +
+                       QString::number((quint8)data[i+2], 16).rightJustified(2, '0') +
+                       QString::number((quint8)data[i+3], 16).rightJustified(2, '0');
             ui->tableCubesRegs->item(i/4, 2)->setText(s);
         }
         break;
@@ -249,7 +249,7 @@ void CubesControl::on_anyLedCheckbox_clicked()
         return;
     }
 
-    unsigned char leds =
+    quint8 leds =
             (ui->checkboxLed7->isChecked() << 7) |
             (ui->checkboxLed6->isChecked() << 6) |
             (ui->checkboxLed5->isChecked() << 5) |

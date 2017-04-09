@@ -42,17 +42,17 @@ CubesCommand::CubesCommand()
     decode(0);
 }
 
-CubesCommand::CubesCommand(const unsigned char code)
+CubesCommand::CubesCommand(const quint8 code)
 {
     decode(code);
 }
 
-unsigned char CubesCommand::setCommand(const unsigned char code)
+quint8 CubesCommand::setCommand(const quint8 code)
 {
     return decode(code);
 }
 
-unsigned char CubesCommand::code()
+quint8 CubesCommand::code()
 {
     return m_code;
 }
@@ -72,7 +72,7 @@ QString& CubesCommand::description()
     return m_description;
 }
 
-unsigned char CubesCommand::decode(const unsigned char code)
+quint8 CubesCommand::decode(const quint8 code)
 {
     m_code = code;
 

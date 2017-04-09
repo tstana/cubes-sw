@@ -53,22 +53,22 @@ public:
     } DataDirection;
 
     CubesCommand();
-    CubesCommand(const unsigned char code);
+    CubesCommand(const quint8 code);
 
-    unsigned char   setCommand(const unsigned char code);
+    quint8      setCommand(const quint8 code);
 
-    unsigned char   code();
-    qint32          dataBytes();
-    qint32          dataDirection();
-    QString&        description();
+    quint8      code();
+    qint32      dataBytes();
+    qint32      dataDirection();
+    QString&    description();
 
 private:
-    unsigned char   m_code;
-    qint32          m_dataBytes;
-    qint32          m_dataDirection;
-    QString         m_description;
+    quint8      m_code;
+    qint32      m_dataBytes;
+    qint32      m_dataDirection;
+    QString     m_description;
 
-    unsigned char   decode(const unsigned char code);
+    quint8      decode(const quint8 code);
 };
 
 

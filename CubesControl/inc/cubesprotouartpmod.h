@@ -61,7 +61,7 @@ public:
     qint64          write(QByteArray &data);
     QByteArray      readAll();
 
-    qint64          sendCommand(unsigned char cmd, QByteArray &cmdData);
+    qint64          sendCommand(quint8 cmd, QByteArray &cmdData);
 
     CubesCommand*   currentCommand();
 

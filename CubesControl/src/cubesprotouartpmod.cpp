@@ -94,7 +94,7 @@ void CubesProtoUartPmod::on_serialPort_readReady()
     }
 }
 
-qint64 CubesProtoUartPmod::sendCommand(unsigned char cmdCode, QByteArray &cmdData)
+qint64 CubesProtoUartPmod::sendCommand(quint8 cmdCode, QByteArray &cmdData)
 {
     QByteArray      data;
     char            rw;
