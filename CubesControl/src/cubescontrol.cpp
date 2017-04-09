@@ -53,6 +53,7 @@ CubesControl::CubesControl(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    /* Create a new label in the status bar to show the connection status */
     lblConnStatus = new QLabel;
     lblConnStatus->setFixedWidth(120);
     lblConnStatus->setFixedHeight(15);
@@ -61,6 +62,7 @@ CubesControl::CubesControl(QWidget *parent) :
     showConnStatus(connStatus);
     statusBar()->addPermanentWidget(lblConnStatus);
 
+    /* Make CommSettingsDialog modal and attach action to show it */
     commSettings->setModal(true);
     connect(ui->actionConfigConnection, &QAction::triggered,
             commSettings, &CubesControl::show);
