@@ -49,23 +49,23 @@ public:
     ~SiphraTreeWidgetItem();
 };
 
-#define SIPHRA_CTRL_CHAN_01             0x00
-#define SIPHRA_CTRL_CHAN_02             0x01
-#define SIPHRA_CTRL_CHAN_03             0x02
-#define SIPHRA_CTRL_CHAN_04             0x03
-#define SIPHRA_CTRL_CHAN_05             0x04
-#define SIPHRA_CTRL_CHAN_06             0x05
-#define SIPHRA_CTRL_CHAN_07             0x06
-#define SIPHRA_CTRL_CHAN_08             0x07
-#define SIPHRA_CTRL_CHAN_09             0x08
-#define SIPHRA_CTRL_CHAN_10             0x09
-#define SIPHRA_CTRL_CHAN_11             0x0a
-#define SIPHRA_CTRL_CHAN_12             0x0b
-#define SIPHRA_CTRL_CHAN_13             0x0c
-#define SIPHRA_CTRL_CHAN_14             0x0d
-#define SIPHRA_CTRL_CHAN_15             0x0e
-#define SIPHRA_CTRL_CHAN_16             0x0f
-#define SIPHRA_CTRL_CHAN_SUM            0x10
+#define SIPHRA_CTRL_CH_01               0x00
+#define SIPHRA_CTRL_CH_02               0x01
+#define SIPHRA_CTRL_CH_03               0x02
+#define SIPHRA_CTRL_CH_04               0x03
+#define SIPHRA_CTRL_CH_05               0x04
+#define SIPHRA_CTRL_CH_06               0x05
+#define SIPHRA_CTRL_CH_07               0x06
+#define SIPHRA_CTRL_CH_08               0x07
+#define SIPHRA_CTRL_CH_09               0x08
+#define SIPHRA_CTRL_CH_10               0x09
+#define SIPHRA_CTRL_CH_11               0x0a
+#define SIPHRA_CTRL_CH_12               0x0b
+#define SIPHRA_CTRL_CH_13               0x0c
+#define SIPHRA_CTRL_CH_14               0x0d
+#define SIPHRA_CTRL_CH_15               0x0e
+#define SIPHRA_CTRL_CH_16               0x0f
+#define SIPHRA_CTRL_CH_SUM              0x10
 #define SIPHRA_CHANNEL_CONFIG           0x11
 #define SIPHRA_CHANNEL_CONTROL          0x12
 #define SIPHRA_ADC_CONFIG               0x13
