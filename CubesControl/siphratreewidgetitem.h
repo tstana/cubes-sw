@@ -45,9 +45,42 @@
 class SiphraTreeWidgetItem : public QTreeWidgetItem
 {
 public:
-    SiphraTreeWidgetItem();
-    SiphraTreeWidgetItem(QWidget *parent);
+    SiphraTreeWidgetItem(QTreeWidget *parent, qint8 registerAddress, bool registerView);
     ~SiphraTreeWidgetItem();
 };
+
+#define SIPHRA_CTRL_CHAN_01             0x00
+#define SIPHRA_CTRL_CHAN_02             0x01
+#define SIPHRA_CTRL_CHAN_03             0x02
+#define SIPHRA_CTRL_CHAN_04             0x03
+#define SIPHRA_CTRL_CHAN_05             0x04
+#define SIPHRA_CTRL_CHAN_06             0x05
+#define SIPHRA_CTRL_CHAN_07             0x06
+#define SIPHRA_CTRL_CHAN_08             0x07
+#define SIPHRA_CTRL_CHAN_09             0x08
+#define SIPHRA_CTRL_CHAN_10             0x09
+#define SIPHRA_CTRL_CHAN_11             0x0a
+#define SIPHRA_CTRL_CHAN_12             0x0b
+#define SIPHRA_CTRL_CHAN_13             0x0c
+#define SIPHRA_CTRL_CHAN_14             0x0d
+#define SIPHRA_CTRL_CHAN_15             0x0e
+#define SIPHRA_CTRL_CHAN_16             0x0f
+#define SIPHRA_CTRL_CHAN_SUM            0x10
+#define SIPHRA_CHANNEL_CONFIG           0x11
+#define SIPHRA_CHANNEL_CONTROL          0x12
+#define SIPHRA_ADC_CONFIG               0x13
+#define SIPHRA_CAL_DAC                  0x14
+#define SIPHRA_POWER_MODULES            0x15
+#define SIPHRA_CAL_CTRL                 0x16
+#define SIPHRA_READOUT_FIXED_LIST       0x17
+#define SIPHRA_READOUT_MODE             0x18
+#define SIPHRA_AMUX_CTRL                0x19
+#define SIPHRA_ADC_CLK_DIV_FACTOR       0x1a
+#define SIPHRA_SYSCLOCK_CTRL            0x1b
+#define SIPHRA_CMD_DCAL                 0x1c
+#define SIPHRA_CMD_READOUT              0x1d
+#define SIPHRA_TRIGGER_LATCHES          0x1e
+#define SIPHRA_ADC_OUT                  0x1f
+#define SIPHRA_PARITY_ERR_REG           0x20
 
 #endif // SIPHRATREEWIDGETITEM_H

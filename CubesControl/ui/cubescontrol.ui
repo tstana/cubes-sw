@@ -32,7 +32,7 @@
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QTreeWidget" name="treeWidget">
+         <widget class="QTreeWidget" name="treeSiphraRegMap">
           <column>
            <property name="text">
             <string>Offset</string>

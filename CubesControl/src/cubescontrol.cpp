@@ -36,6 +36,7 @@
  *==============================================================================
  */
 
+#include <siphratreewidgetitem.h>
 #include <cubescontrol.h>
 #include "cubesprotouartpmod.h"
 #include "ui_cubescontrol.h"
@@ -44,7 +45,6 @@
 #include <QString>
 #include <QMessageBox>
 #include <QCheckBox>
-
 
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
@@ -102,6 +102,15 @@ CubesControl::CubesControl(QWidget *parent) :
             ui->tableCubesRegs->item(r, c)->setFlags(flags);
         }
     }
+
+    /* Add items to SIPHRA register view */
+    for (int i = 0; i < 1+SIPHRA_PARITY_ERR_REG; i++) {
+        ui->treeSiphraRegMap->insertTopLevelItem(i,
+                    new SiphraTreeWidgetItem(ui->treeSiphraRegMap, i, true));
+    }
+    ui->treeSiphraRegMap->setColumnWidth(0, 100);
+    ui->treeSiphraRegMap->setColumnWidth(1, 200);
+    ui->treeSiphraRegMap->setColumnWidth(2, 150);
 
     /* Create communication objects */
     serialPort = new QSerialPort();
