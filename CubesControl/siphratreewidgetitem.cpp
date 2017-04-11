@@ -78,6 +78,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_CTRL_CH_16:
             /* Set register's name */
             setText(1, "CTRL_CH_" + QString::number(registerAddress+1).rightJustified(2, QLatin1Char('0')));
+            setText(3, "Channel " + QString::number(registerAddress+1) + " configuration register");
 
             /* Bit fields */
             for (int i = 0; i < 8; i++) {
@@ -107,6 +108,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_CTRL_CH_SUM:
             /* Set register's name */
             setText(1, "CTRL_CH_SUM");
+            setText(3, "Summing channel configuration register");
 
             /* Bit fields */
             for (int i = 0; i < 5; i++) {
@@ -130,6 +132,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_CHANNEL_CONFIG:
             /* Set register's name */
             setText(1, "CHANNEL_CONFIG");
+            setText(3, "Configuration register applying to all channels");
 
             /* Bit fields */
             for (int i = 0; i < 8; i++) {
@@ -159,6 +162,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_CHANNEL_CONTROL:
             /* Set register's name */
             setText(1, "CHANNEL_CONTROL");
+            setText(3, "Configuration register applying to all channels");
 
             /* Bit fields */
             for (int i = 0; i < 8; i++) {
@@ -188,6 +192,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_ADC_CONFIG:
             /* Set register's name */
             setText(1, "ADC_CONFIG");
+            setText(3, "ADC configuration register");
 
             /* Bit fields */
             for (int i = 0; i < 3; i++) {
@@ -207,6 +212,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_CAL_DAC:
             /* Set register's name */
             setText(1, "CAL_DAC");
+            setText(3, "Gain Calibration Unit, Voltage DAC setting");
 
             /* Bit fields */
             insertChild(0, new QTreeWidgetItem(this));
@@ -220,6 +226,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_POWER_MODULES:
             /* Set register's name */
             setText(1, "POWER_MODULES");
+            setText(3, "Module power up register");
 
             /* Bit fields */
             for (int i = 0; i < 18; i++) {
@@ -269,6 +276,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_CAL_CTRL:
             /* Set register's name */
             setText(1, "CAL_CTRL");
+            setText(3, "Gain Calibration Unit control register");
 
             /* Bit fields */
             for (int i = 0; i < 5; i++) {
@@ -292,6 +300,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_READOUT_FIXED_LIST:
             /* Set register's name */
             setText(1, "READOUT_FIXED_LIST");
+            setText(3, "Enable fixed list readout mode");
 
             /* Bit fields */
             for (int i = 0; i < 19; i++) {
@@ -343,6 +352,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_READOUT_MODE:
             /* Set register's name */
             setText(1, "READOUT_MODE");
+            setText(3, "Readout mode configuration register");
 
             /* Bit fields */
             for (int i = 0; i < 7; i++) {
@@ -369,7 +379,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_AMUX_CTRL:
             /* Set register's name */
-            setText(1, "READOUT_MODE");
+            setText(1, "AMUX_CTRL");
+            setText(3, "Source selection for ADC input");
 
             /* Bit fields */
             for (int i = 0; i < 2; i++) {
@@ -387,6 +398,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_ADC_CLK_DIV_FACTOR:
             /* Set register's name */
             setText(1, "ADC_CLK_DIV_FACTOR");
+            setText(3, "ADC clock divider register");
 
             /* Bit fields */
             insertChild(0, new QTreeWidgetItem(this));
@@ -400,6 +412,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_SYSCLOCK_CTRL:
             /* Set register's name */
             setText(1, "SYSCLOCK_CTRL");
+            setText(3, "System clock control register");
 
             /* Bit fields */
             for (int i = 0; i < 2; i++) {
@@ -417,6 +430,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_CMD_DCAL:
             /* Set register's name */
             setText(1, "CMD_DCAL");
+            setText(3, "Trigger internal DCAL");
 
             /* Bit fields */
             insertChild(0, new QTreeWidgetItem(this));
@@ -430,6 +444,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_CMD_READOUT:
             /* Set register's name */
             setText(1, "CMD_READOUT");
+            setText(3, "Start forced readout");
 
             /* Bit fields */
             insertChild(0, new QTreeWidgetItem(this));
@@ -443,6 +458,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_TRIGGER_LATCHES:
             /* Set register's name */
             setText(1, "TRIGGER_LATCHES");
+            setText(3, "Trigger flags. NB: Reset after readout.");
 
             /* Bit fields */
             for (int i = 0; i < 17; i++) {
@@ -490,6 +506,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_ADC_OUT:
             /* Set register's name */
             setText(1, "ADC_OUT");
+            setText(3, "ADC output value");
 
             /* Bit fields */
             insertChild(0, new QTreeWidgetItem(this));
@@ -503,6 +520,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_PARITY_ERR_REG:
             /* Set register's name */
             setText(1, "PARITY_ERR_REG");
+            setText(3, "Parity error flags");
 
             /* Bit fields */
             for (int i = 0; i < 28; i++) {
