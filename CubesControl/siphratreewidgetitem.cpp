@@ -458,7 +458,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_TRIGGER_LATCHES:
             /* Set register's name */
             setText(1, "TRIGGER_LATCHES");
-            setText(3, "Trigger flags. NB: Reset after readout.");
+            setText(3, "____TBD: CC trig flags???_____ Trigger flags. NB: Reset after readout.");
 
             /* Bit fields */
             for (int i = 0; i < 17; i++) {
