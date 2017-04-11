@@ -110,7 +110,8 @@ CubesControl::CubesControl(QWidget *parent) :
     }
     ui->treeSiphraRegMap->setColumnWidth(0, 100);
     ui->treeSiphraRegMap->setColumnWidth(1, 200);
-    ui->treeSiphraRegMap->setColumnWidth(2, 150);
+    ui->treeSiphraRegMap->setColumnWidth(2, 100);
+    ui->treeSiphraRegMap->header()->setSectionResizeMode(3, QHeaderView::Stretch);
 
     /* Create communication objects */
     serialPort = new QSerialPort();
