@@ -29,14 +29,16 @@ SOURCES += \
     src/cubescontrol.cpp \
     src/main.cpp \
     src/cubesprotouartpmod.cpp \
-    src/cubescommand.cpp
+    src/cubescommand.cpp \
+    siphratreewidgetitem.cpp
 
 HEADERS  += \
     inc/commsettingsdialog.h \
     inc/cubescontrol.h \
     inc/icubesprotocol.h \
     inc/cubesprotouartpmod.h \
-    inc/cubescommand.h
+    inc/cubescommand.h \
+    siphratreewidgetitem.h
 
 FORMS    += \
     ui/commsettingsdialog.ui \
