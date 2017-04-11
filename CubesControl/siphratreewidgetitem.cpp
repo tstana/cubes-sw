@@ -44,8 +44,6 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                                            bool registerView) :
     QTreeWidgetItem(parent)
 {
-    QStringList itemStrings;
-
     /*
      * If we display a register view, there are three columns in the QTreeWidget:
      *      - Offset
