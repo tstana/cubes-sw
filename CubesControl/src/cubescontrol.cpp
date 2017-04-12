@@ -203,8 +203,8 @@ void CubesControl::on_actionDisconnect_triggered()
 void CubesControl::on_actionLoadSiphraConfig_triggered()
 {
     int configData;
-    int i = 0;
-    int j = 0;
+    int reg = 0;
+    int bitField = 0;
     bool isNumber;
     SiphraTreeWidgetItem *currentItem;
 
@@ -226,12 +226,25 @@ void CubesControl::on_actionLoadSiphraConfig_triggered()
             if (!isNumber) {
                 continue;
             }
-            currentItem = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(i);
-            currentItem->setRegisterValue(j, configData);
-            j++;
-            j %= ui->treeSiphraRegMap->topLevelItem(i)->childCount();
-            if (j == 0)
-                i++;
+            currentItem = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(reg);
+            switch (reg) {
+            case SIPHRA_READOUT_FIXED_LIST:
+            case SIPHRA_ADC_CLK_DIV_FACTOR:
+            case SIPHRA_CMD_DCAL:
+            case SIPHRA_CMD_READOUT:
+            case SIPHRA_TRIGGER_LATCHES:
+            case SIPHRA_ADC_OUT:
+                currentItem->setRegisterValue(configData);
+                reg++;
+                break;
+            default:
+                currentItem->setRegisterValue(bitField, configData);
+                bitField++;
+                bitField %= ui->treeSiphraRegMap->topLevelItem(reg)->childCount();
+                if (bitField == 0)
+                    reg++;
+                break;
+            }
         }
 
         file.close();
