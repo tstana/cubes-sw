@@ -295,3 +295,13 @@ void CubesControl::on_btnReadAllCubesRegs_clicked()
 
     cubes->sendCommand(CMD_READ_ALL_REGS, dummy);
 }
+
+void CubesControl::on_btnExpandSiphraRegTable_clicked()
+{
+    ui->treeSiphraRegMap->expandAll();
+}
+
+void CubesControl::on_btnCollapseSiphraRegTable_clicked()
+{
+    ui->treeSiphraRegMap->collapseAll();
+}

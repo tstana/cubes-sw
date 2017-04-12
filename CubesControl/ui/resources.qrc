@@ -2,4 +2,10 @@
     <qresource prefix="/ui/refreshbutton">
         <file>reload.png</file>
     </qresource>
+    <qresource prefix="/ui/expandbutton">
+        <file>expand-ico.png</file>
+    </qresource>
+    <qresource prefix="/ui/collapsebutton">
+        <file>collapse-ico.png</file>
+    </qresource>
 </RCC>

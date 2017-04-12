@@ -74,6 +74,10 @@ private slots:
 
     void on_btnReadAllCubesRegs_clicked();
 
+    void on_btnExpandSiphraRegTable_clicked();
+
+    void on_btnCollapseSiphraRegTable_clicked();
+
 private:
     Ui::CubesControl    *ui;
 
