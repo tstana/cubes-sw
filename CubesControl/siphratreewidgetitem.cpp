@@ -384,10 +384,10 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             /* Bit fields */
             for (int i = 0; i < 19; i++) {
                 insertChild(i, new QTreeWidgetItem(this));
-                child(0)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
-                child(0)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
-                child(0)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
+                child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
+                child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
+                child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
             child(0)->setText(0, "18");
@@ -753,6 +753,9 @@ void SiphraTreeWidgetItem::setRegisterValue(qint32 value)
     if (!m_registerView) {
         return;
     }
+
+    /* Set register hex value  */
+    setText(2, "0x" + QString::number(value, 16).rightJustified(8, '0'));
 }
 
 void SiphraTreeWidgetItem::setRegisterValue(qint8 bitFieldIndex, qint32 value)
