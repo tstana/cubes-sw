@@ -202,6 +202,12 @@ void CubesControl::on_actionDisconnect_triggered()
 
 void CubesControl::on_actionLoadSiphraConfig_triggered()
 {
+    int configData;
+    int i = 0;
+    int j = 0;
+    bool isNumber;
+    SiphraTreeWidgetItem *currentItem;
+
     QString fileName = QFileDialog::getOpenFileName(this, "Open file", QString(),
                             "CSV files (*.csv)");
 
@@ -212,8 +218,21 @@ void CubesControl::on_actionLoadSiphraConfig_triggered()
             return;
         }
 
-        QTextStream configData(&file);
-        statusBar()->showMessage("File contains: " + configData.readAll());
+        QTextStream fileData(&file);
+
+        while (!fileData.atEnd()) {
+            QString s = fileData.readLine();
+            configData = s.toInt(&isNumber);
+            if (!isNumber) {
+                continue;
+            }
+            currentItem = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(i);
+            currentItem->setRegisterValue(j, configData);
+            j++;
+            j %= ui->treeSiphraRegMap->topLevelItem(i)->childCount();
+            if (j == 0)
+                i++;
+        }
 
         file.close();
     }
