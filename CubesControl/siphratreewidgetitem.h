@@ -57,6 +57,9 @@ public:
 private:
     qint8   m_registerAddress;
     bool    m_registerView;
+
+    void    updateRegisterValue();
+    void    updateRegisterBitFields();
 };
 
 #define SIPHRA_CTRL_CH_01               0x00

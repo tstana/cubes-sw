@@ -208,8 +208,8 @@ void CubesControl::on_actionLoadSiphraConfig_triggered()
     bool isNumber;
     SiphraTreeWidgetItem *currentItem;
 
-    QString fileName = QFileDialog::getOpenFileName(this, "Open file", QString(),
-                            "CSV files (*.csv)");
+    QString fileName = QFileDialog::getOpenFileName(this, "Open file",
+                            QString(), "CSV files (*.csv)");
 
     if (!fileName.isEmpty()) {
         QFile file(fileName);
