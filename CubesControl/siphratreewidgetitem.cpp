@@ -39,10 +39,19 @@
 
 #include <QTreeWidgetItem>
 
+SiphraTreeWidgetItem::SiphraTreeWidgetItem()
+    : QTreeWidgetItem(0)
+    , m_registerAddress(0xff)
+    , m_registerView(false)
+{
+}
+
 SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                                            qint8 registerAddress,
-                                           bool registerView) :
-    QTreeWidgetItem(parent)
+                                           bool registerView)
+    : QTreeWidgetItem(parent)
+    , m_registerAddress(registerAddress)
+    , m_registerView(registerView)
 {
     /*
      * If we display a register view, there are three columns in the QTreeWidget:
@@ -83,7 +92,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -123,7 +132,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -154,7 +163,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -194,7 +203,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -234,7 +243,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -258,7 +267,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             insertChild(0, new QTreeWidgetItem(this));
             child(0)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
             child(0)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-            child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+            child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
             child(0)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
             child(0)->setText(0, "7:0");
             child(0)->setText(1, "cal_dac_voltage");
@@ -276,7 +285,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -346,7 +355,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -375,10 +384,10 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             /* Bit fields */
             for (int i = 0; i < 19; i++) {
                 insertChild(i, new QTreeWidgetItem(this));
-                child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
-                child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
-                child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
+                child(0)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
+                child(0)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
+                child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
+                child(0)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
             child(0)->setText(0, "18");
@@ -450,7 +459,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -487,7 +496,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -508,7 +517,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             insertChild(0, new QTreeWidgetItem(this));
             child(0)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
             child(0)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-            child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+            child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
             child(0)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
             child(0)->setText(0, "7:0");
             child(0)->setText(1, "adc_clk_div_factor");
@@ -526,7 +535,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -547,7 +556,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             insertChild(0, new QTreeWidgetItem(this));
             child(0)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
             child(0)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-            child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+            child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
             child(0)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
             child(0)->setText(0, "0");
             child(0)->setText(1, "trigger_dcal");
@@ -564,7 +573,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             insertChild(0, new QTreeWidgetItem(this));
             child(0)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
             child(0)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-            child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+            child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
             child(0)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
             child(0)->setText(0, "0");
             child(0)->setText(1, "readout_spi_force_start");
@@ -582,7 +591,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -648,7 +657,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             insertChild(0, new QTreeWidgetItem(this));
             child(0)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
             child(0)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-            child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+            child(0)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
             child(0)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
             child(0)->setText(0, "11:0");
             child(0)->setText(1, "adc_value");
@@ -665,7 +674,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 insertChild(i, new QTreeWidgetItem(this));
                 child(i)->setTextAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(1, Qt::AlignTop|Qt::AlignLeft);
-                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignRight);
+                child(i)->setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
                 child(i)->setTextAlignment(3, Qt::AlignTop|Qt::AlignLeft);
                 child(i)->setText(2, "");
             }
@@ -738,3 +747,42 @@ SiphraTreeWidgetItem::~SiphraTreeWidgetItem()
 
 }
 
+void SiphraTreeWidgetItem::setRegisterValue(qint32 value)
+{
+    /* No value column if not in register table view mode */
+    if (!m_registerView) {
+        return;
+    }
+}
+
+void SiphraTreeWidgetItem::setRegisterValue(qint8 bitFieldIndex, qint32 value)
+{
+    /* No value column if not in register table view mode */
+    if (!m_registerView) {
+        return;
+    }
+
+    /* Don't execute if specified bit field greater than number of children */
+    if (bitFieldIndex >= childCount()) {
+        return;
+    }
+
+    /* Finally, set the value */
+    child(bitFieldIndex)->setText(2, QString::number(value));
+}
+
+qint32 SiphraTreeWidgetItem::registerValue()
+{
+    bool ok;
+    qint32 val = text(2).toInt(&ok, 16);
+
+    return (ok ? val : -1);
+}
+
+qint32 SiphraTreeWidgetItem::registerValue(qint8 bitFieldIndex)
+{
+    bool ok;
+    qint32 val = child(bitFieldIndex)->text(2).toInt(&ok, 16);
+
+    return (ok ? val : -1);
+}
