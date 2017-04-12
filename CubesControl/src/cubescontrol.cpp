@@ -45,6 +45,9 @@
 #include <QString>
 #include <QMessageBox>
 #include <QCheckBox>
+#include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
 
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
@@ -130,7 +133,7 @@ CubesControl::~CubesControl()
     delete cubes;
 }
 
-void CubesControl::on_actionClose_triggered()
+void CubesControl::on_actionExit_triggered()
 {
     this->close();
 }
@@ -195,6 +198,25 @@ void CubesControl::on_actionDisconnect_triggered()
     }
 
     statusBar()->showMessage(msg, 5000);
+}
+
+void CubesControl::on_actionLoadSiphraConfig_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Open file", QString(),
+                            "CSV files (*.csv)");
+
+    if (!fileName.isEmpty()) {
+        QFile file(fileName);
+        if (!file.open(QIODevice::ReadOnly)) {
+            statusBar()->showMessage("Could not open " + fileName, 5000);
+            return;
+        }
+
+        QTextStream configData(&file);
+        statusBar()->showMessage("File contains: " + configData.readAll());
+
+        file.close();
+    }
 }
 
 void CubesControl::on_cubes_devReadReady()
@@ -304,4 +326,9 @@ void CubesControl::on_btnExpandSiphraRegTable_clicked()
 void CubesControl::on_btnCollapseSiphraRegTable_clicked()
 {
     ui->treeSiphraRegMap->collapseAll();
+}
+
+void CubesControl::on_btnLoadSiphraConfig_clicked()
+{
+    on_actionLoadSiphraConfig_triggered();
 }

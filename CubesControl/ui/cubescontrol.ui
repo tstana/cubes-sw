@@ -553,7 +553,7 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionClose"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuConnection">
     <property name="title">
@@ -568,9 +568,12 @@
    <addaction name="menuConnection"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionClose">
+  <action name="actionExit">
    <property name="text">
-    <string>Close</string>
+    <string>Exit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit program</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -589,6 +592,14 @@
   <action name="actionDisconnect">
    <property name="text">
     <string>Disconnect</string>
+   </property>
+  </action>
+  <action name="actionLoadSiphraConfig">
+   <property name="text">
+    <string>Load SIPHRA configuration</string>
+   </property>
+   <property name="toolTip">
+    <string>Load from .csv file</string>
    </property>
   </action>
  </widget>
