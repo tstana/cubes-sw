@@ -392,7 +392,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 child(i)->setText(2, "");
             }
             child(0)->setText(0, "18");
-            child(0)->setText(1, "adc_in ???");
+            child(0)->setText(1, "adc_in");
             child(0)->setText(3, "Enable ADC_IN for fixed-list readout mode");
             child(1)->setText(0, "17");
             child(1)->setText(1, "ch_sum");
@@ -446,7 +446,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             child(17)->setText(1, "ch_1");
             child(17)->setText(3, "Enable channel 1 for fixed-list readout mode");
             child(18)->setText(0, "0");
-            child(18)->setText(1, "pt100 ???");
+            child(18)->setText(1, "pt100");
             child(18)->setText(3, "Enable PT100 for fixed-list readout mode");
             break;
 
