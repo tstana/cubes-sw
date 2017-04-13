@@ -466,6 +466,12 @@ void CubesControl::on_btnReadAllSiphraRegs_clicked()
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     if (column == 2) {
+        /* Ignore editing whole register value */
+        if (item->parent() == (QTreeWidgetItem *)ui->treeSiphraRegMap) {
+            return;
+        }
+
+        /* Edit the item and allow for itemChanged() event to operate */
         ui->treeSiphraRegMap->editItem(item, column);
         m_changedByUser = true;
         m_textBeforeChange = item->text(column);
