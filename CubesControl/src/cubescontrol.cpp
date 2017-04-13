@@ -115,6 +115,8 @@ CubesControl::CubesControl(QWidget *parent) :
     /* Preparations for making _only_ value columns editable */
     ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::NoEditTriggers);
     for (int i = 0; i < ui->treeSiphraRegMap->topLevelItemCount(); i++) {
+        ui->treeSiphraRegMap->topLevelItem(i)->setFlags(
+                    ui->treeSiphraRegMap->topLevelItem(i)->flags()|Qt::ItemIsEditable);
         for (int j = 0; j < ui->treeSiphraRegMap->topLevelItem(i)->childCount(); j++) {
             ui->treeSiphraRegMap->topLevelItem(i)->child(j)->setFlags(
                         ui->treeSiphraRegMap->topLevelItem(i)->child(j)->flags()|Qt::ItemIsEditable);
@@ -464,4 +466,26 @@ void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, 
     if (column == 2) {
         ui->treeSiphraRegMap->editItem(item, column);
     }
+}
+
+void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column)
+{
+    /* If by _any chance_, _somehow_, another column gets edited, bail !!! */
+    if (column != 2) {
+        return;
+    }
+
+    /* Try to convert the value into a number, give up if NaN */
+    bool isNumber;
+    int bitFieldValue;
+    bitFieldValue = item->text(column).toInt(&isNumber);
+    if (!isNumber) {
+        item->setText(column, "");
+        return;
+    }
+
+    /* The clicked item should be a child of a SiphraTreeWidgetItem */
+    SiphraTreeWidgetItem *siphraItem = (SiphraTreeWidgetItem *)item->parent();
+
+    siphraItem->setRegisterValue(siphraItem->indexOfChild(item), bitFieldValue);
 }
