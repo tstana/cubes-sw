@@ -756,6 +756,7 @@ void SiphraTreeWidgetItem::setRegisterValue(qint32 value)
 
     /* Set register hex value  */
     setText(2, "0x" + QString::number(value, 16).rightJustified(8, '0'));
+    updateRegisterBitFields();
 }
 
 void SiphraTreeWidgetItem::setRegisterValue(qint8 bitFieldIndex, qint32 value)
@@ -909,5 +910,114 @@ void SiphraTreeWidgetItem::updateRegisterValue()
 
 void SiphraTreeWidgetItem::updateRegisterBitFields()
 {
+    switch (m_registerAddress) {
 
+    case SIPHRA_CTRL_CH_01:
+    case SIPHRA_CTRL_CH_02:
+    case SIPHRA_CTRL_CH_03:
+    case SIPHRA_CTRL_CH_04:
+    case SIPHRA_CTRL_CH_05:
+    case SIPHRA_CTRL_CH_06:
+    case SIPHRA_CTRL_CH_07:
+    case SIPHRA_CTRL_CH_08:
+    case SIPHRA_CTRL_CH_09:
+    case SIPHRA_CTRL_CH_10:
+    case SIPHRA_CTRL_CH_11:
+    case SIPHRA_CTRL_CH_12:
+    case SIPHRA_CTRL_CH_13:
+    case SIPHRA_CTRL_CH_14:
+    case SIPHRA_CTRL_CH_15:
+    case SIPHRA_CTRL_CH_16:
+        child(0)->setText(2, QString::number((registerValue() >> 18) & 0xff));
+        child(1)->setText(2, QString::number((registerValue() >> 15) & 0x07));
+        child(2)->setText(2, QString::number((registerValue() >> 14) & 0x01));
+        child(3)->setText(2, QString::number((registerValue() >> 13) & 0x01));
+        child(4)->setText(2, QString::number((registerValue() >>  5) & 0xff));
+        child(5)->setText(2, QString::number((registerValue() >>  2) & 0x07));
+        child(6)->setText(2, QString::number((registerValue() >>  1) & 0x01));
+        child(7)->setText(2, QString::number((registerValue())       & 0x01));
+        break;
+
+    case SIPHRA_CTRL_CH_SUM:
+        child(0)->setText(2, QString::number((registerValue() >> 13) & 0x01));
+        child(1)->setText(2, QString::number((registerValue() >>  5) & 0xff));
+        child(2)->setText(2, QString::number((registerValue() >>  2) & 0x07));
+        child(3)->setText(2, QString::number((registerValue() >>  1) & 0x01));
+        child(4)->setText(2, QString::number((registerValue())       & 0x01));
+        break;
+
+    case SIPHRA_CHANNEL_CONFIG:
+        child(0)->setText(2, QString::number((registerValue() >> 21) & 0x07));
+        child(1)->setText(2, QString::number((registerValue() >> 19) & 0x03));
+        child(2)->setText(2, QString::number((registerValue() >> 18) & 0x01));
+        child(3)->setText(2, QString::number((registerValue() >> 14) & 0x0f));
+        child(4)->setText(2, QString::number((registerValue() >> 10) & 0x0f));
+        child(5)->setText(2, QString::number((registerValue() >>  7) & 0x03));
+        child(6)->setText(2, QString::number((registerValue() >>  4) & 0x03));
+        child(7)->setText(2, QString::number((registerValue())       & 0x0f));
+        break;
+
+    case SIPHRA_CHANNEL_CONTROL:
+        child(0)->setText(2, QString::number((registerValue() >> 15) & 0xff));
+        child(1)->setText(2, QString::number((registerValue() >> 14) & 0x01));
+        child(2)->setText(2, QString::number((registerValue() >> 13) & 0x01));
+        child(3)->setText(2, QString::number((registerValue() >> 11) & 0x03));
+        child(4)->setText(2, QString::number((registerValue() >> 10) & 0x01));
+        child(5)->setText(2, QString::number((registerValue() >>  9) & 0x01));
+        child(6)->setText(2, QString::number((registerValue() >>  1) & 0xff));
+        child(7)->setText(2, QString::number((registerValue())       & 0x01));
+        break;
+
+    case SIPHRA_ADC_CONFIG:
+        child(0)->setText(2, QString::number((registerValue() >>  5) & 0x01));
+        child(1)->setText(2, QString::number((registerValue() >>  1) & 0x0f));
+        child(2)->setText(2, QString::number((registerValue())       & 0x01));
+        break;
+
+    case SIPHRA_CAL_CTRL:
+        child(0)->setText(2, QString::number((registerValue() >>  5) & 0x01));
+        child(1)->setText(2, QString::number((registerValue() >>  4) & 0x01));
+        child(2)->setText(2, QString::number((registerValue() >>  3) & 0x01));
+        child(3)->setText(2, QString::number((registerValue() >>  2) & 0x01));
+        child(4)->setText(2, QString::number((registerValue())       & 0x03));
+        break;
+
+    case SIPHRA_READOUT_MODE:
+        child(0)->setText(2, QString::number((registerValue() >> 10) & 0x1f));
+        child(1)->setText(2, QString::number((registerValue() >>  6) & 0x0f));
+        child(2)->setText(2, QString::number((registerValue() >>  4) & 0x03));
+        child(3)->setText(2, QString::number((registerValue() >>  3) & 0x01));
+        child(4)->setText(2, QString::number((registerValue() >>  2) & 0x01));
+        child(5)->setText(2, QString::number((registerValue() >>  1) & 0x01));
+        child(6)->setText(2, QString::number((registerValue())       & 0x01));
+        break;
+
+    case SIPHRA_AMUX_CTRL:
+        child(0)->setText(2, QString::number((registerValue() >> 1) & 0x1f));
+        child(1)->setText(2, QString::number((registerValue())      & 0x01));
+        break;
+
+    /* Registers with single multiple-bit field */
+    case SIPHRA_CAL_DAC:
+    case SIPHRA_ADC_CLK_DIV_FACTOR:
+        child(0)->setText(2, QString::number(registerValue() & 0xff));
+        break;
+
+    case SIPHRA_ADC_OUT:
+        child(0)->setText(2, QString::number(registerValue() & 0x7ff));
+        break;
+
+    /* Registers with multiple single-bit fields */
+    case SIPHRA_POWER_MODULES:
+    case SIPHRA_READOUT_FIXED_LIST:
+    case SIPHRA_TRIGGER_LATCHES:
+    case SIPHRA_PARITY_ERR_REG:
+    case SIPHRA_SYSCLOCK_CTRL:
+        for (int i = 0; i < childCount(); i++) {
+            child(i)->setText(2, QString::number((registerValue() >> (childCount()-1 - i)) & 0x01));
+        }
+        break;
+    default:
+        break;
+    }
 }
