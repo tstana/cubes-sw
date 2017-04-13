@@ -796,6 +796,7 @@ void SiphraTreeWidgetItem::updateRegisterValue()
     qint32 regval = 0;
 
     switch (m_registerAddress) {
+
     case SIPHRA_CTRL_CH_01:
     case SIPHRA_CTRL_CH_02:
     case SIPHRA_CTRL_CH_03:
@@ -821,6 +822,7 @@ void SiphraTreeWidgetItem::updateRegisterValue()
                  (child(6)->text(2).toInt() <<  1) |
                  (child(7)->text(2).toInt());
         break;
+
     case SIPHRA_CTRL_CH_SUM:
         regval = (child(0)->text(2).toInt() << 13) |
                  (child(1)->text(2).toInt() <<  5) |
@@ -828,6 +830,7 @@ void SiphraTreeWidgetItem::updateRegisterValue()
                  (child(3)->text(2).toInt() <<  1) |
                  (child(4)->text(2).toInt());
         break;
+
     case SIPHRA_CHANNEL_CONFIG:
         regval = (child(0)->text(2).toInt() << 21) |
                  (child(1)->text(2).toInt() << 19) |
@@ -838,6 +841,7 @@ void SiphraTreeWidgetItem::updateRegisterValue()
                  (child(6)->text(2).toInt() <<  4) |
                  (child(7)->text(2).toInt());
         break;
+
     case SIPHRA_CHANNEL_CONTROL:
         regval = (child(0)->text(2).toInt() << 15) |
                  (child(1)->text(2).toInt() << 14) |
@@ -848,12 +852,49 @@ void SiphraTreeWidgetItem::updateRegisterValue()
                  (child(6)->text(2).toInt() <<  1) |
                  (child(7)->text(2).toInt());
         break;
+
     case SIPHRA_ADC_CONFIG:
         regval = (child(0)->text(2).toInt() << 5) |
                  (child(1)->text(2).toInt() << 1) |
                  (child(2)->text(2).toInt());
         break;
+
+    case SIPHRA_CAL_CTRL:
+        regval = (child(0)->text(2).toInt() << 5) |
+                 (child(1)->text(2).toInt() << 4) |
+                 (child(2)->text(2).toInt() << 3) |
+                 (child(3)->text(2).toInt() << 2) |
+                 (child(4)->text(2).toInt());
+        break;
+
+    case SIPHRA_READOUT_MODE:
+        regval = (child(0)->text(2).toInt() << 10) |
+                 (child(1)->text(2).toInt() <<  6) |
+                 (child(2)->text(2).toInt() <<  4) |
+                 (child(3)->text(2).toInt() <<  3) |
+                 (child(4)->text(2).toInt() <<  2) |
+                 (child(5)->text(2).toInt() <<  1) |
+                 (child(6)->text(2).toInt());
+        break;
+
+    case SIPHRA_AMUX_CTRL:
+        regval = (child(0)->text(2).toInt() << 1) |
+                 (child(1)->text(2).toInt());
+        break;
+
+    /* Registers with single multiple-bit field */
+    case SIPHRA_CAL_DAC:
+    case SIPHRA_ADC_CLK_DIV_FACTOR:
+    case SIPHRA_ADC_OUT:
+        regval = child(0)->text(2).toInt();
+        break;
+
+    /* Registers with multiple single-bit fields */
     case SIPHRA_POWER_MODULES:
+    case SIPHRA_READOUT_FIXED_LIST:
+    case SIPHRA_TRIGGER_LATCHES:
+    case SIPHRA_PARITY_ERR_REG:
+    case SIPHRA_SYSCLOCK_CTRL:
         for (int i = 0; i < childCount(); i++) {
             regval |= child(i)->text(2).toInt() << (childCount()-1 - i);
         }
@@ -862,6 +903,7 @@ void SiphraTreeWidgetItem::updateRegisterValue()
         break;
     }
 
+    /* Finally, set the text */
     setText(2, "0x" + QString::number(regval, 16).rightJustified(8, '0'));
 }
 
