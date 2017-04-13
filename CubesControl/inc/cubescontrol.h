@@ -93,6 +93,8 @@ private:
 
     QSerialPort         *serialPort;
 
+    bool                m_treeSiphraRegMapUserChange;
+
     void    showConnStatus(int connUp);
 };
 

@@ -123,6 +123,8 @@ CubesControl::CubesControl(QWidget *parent) :
         }
     }
 
+    m_treeSiphraRegMapUserChange = false;
+
     /* Set register map view visual properties */
     ui->treeSiphraRegMap->setColumnWidth(0, 100);
     ui->treeSiphraRegMap->setColumnWidth(1, 200);
@@ -464,9 +466,8 @@ void CubesControl::on_btnReadAllSiphraRegs_clicked()
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     if (column == 2) {
-        ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::CurrentChanged);
         ui->treeSiphraRegMap->editItem(item, column);
-        ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        m_treeSiphraRegMapUserChange = true;
     }
 }
 
@@ -476,6 +477,12 @@ void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int co
     if (column != 2) {
         return;
     }
+
+    /* Also bail out on change not due to user double clicking */
+    if (!m_treeSiphraRegMapUserChange) {
+        return;
+    }
+    m_treeSiphraRegMapUserChange = false;
 
     /* Try to convert the value into a number, give up if NaN */
     bool isNumber;
