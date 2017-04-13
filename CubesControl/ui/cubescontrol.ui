@@ -553,6 +553,8 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionLoadSiphraConfig"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuConnection">
@@ -596,10 +598,10 @@
   </action>
   <action name="actionLoadSiphraConfig">
    <property name="text">
-    <string>Load SIPHRA configuration</string>
+    <string>Load SIPHRA config...</string>
    </property>
    <property name="toolTip">
-    <string>Load from .csv file</string>
+    <string>Load SIPHRA configuration from .csv file</string>
    </property>
   </action>
  </widget>
