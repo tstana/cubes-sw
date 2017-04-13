@@ -1016,6 +1016,11 @@ void SiphraTreeWidgetItem::setRegisterValue(qint8 bitFieldIndex, qint32 value)
     updateRegisterValue();
 }
 
+qint8 SiphraTreeWidgetItem::registerAddress()
+{
+    return m_registerAddress;
+}
+
 qint32 SiphraTreeWidgetItem::registerValue()
 {
     bool ok;

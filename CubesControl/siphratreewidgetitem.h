@@ -53,6 +53,7 @@ public:
     void    setRegisterValue(qint8 bitFieldIndex, qint32 value);
     qint32  registerValue();
     qint32  registerValue(qint8 bitFieldIndex);
+    qint8   registerAddress();
 
 private:
     qint8   m_registerAddress;
