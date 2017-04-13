@@ -772,6 +772,245 @@ void SiphraTreeWidgetItem::setRegisterValue(qint8 bitFieldIndex, qint32 value)
         return;
     }
 
+    /* Truncate values according to bit field width */
+    switch (m_registerAddress) {
+    case SIPHRA_CTRL_CH_01:
+    case SIPHRA_CTRL_CH_02:
+    case SIPHRA_CTRL_CH_03:
+    case SIPHRA_CTRL_CH_04:
+    case SIPHRA_CTRL_CH_05:
+    case SIPHRA_CTRL_CH_06:
+    case SIPHRA_CTRL_CH_07:
+    case SIPHRA_CTRL_CH_08:
+    case SIPHRA_CTRL_CH_09:
+    case SIPHRA_CTRL_CH_10:
+    case SIPHRA_CTRL_CH_11:
+    case SIPHRA_CTRL_CH_12:
+    case SIPHRA_CTRL_CH_13:
+    case SIPHRA_CTRL_CH_14:
+    case SIPHRA_CTRL_CH_15:
+    case SIPHRA_CTRL_CH_16:
+        switch (bitFieldIndex) {
+        case 0:
+        case 4:
+            if (value > 0xff) {
+                value = 0xff;
+            }
+            break;
+        case 1:
+        case 5:
+            if (value > 0x07) {
+                value = 0x07;
+            }
+            break;
+        case 2:
+        case 3:
+        case 6:
+        case 7:
+            if (value > 0x01) {
+                value = 0x01;
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+
+    case SIPHRA_CTRL_CH_SUM:
+        switch (bitFieldIndex) {
+        case 0:
+        case 3:
+        case 4:
+            if (value > 0x01) {
+                value = 0x01;
+            }
+            break;
+        case 1:
+            if (value > 0xff) {
+                value = 0xff;
+            }
+            break;
+        case 2:
+            if (value > 0x07) {
+                value = 0x07;
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+
+    case SIPHRA_CHANNEL_CONFIG:
+        switch (bitFieldIndex) {
+        case 0:
+        case 5:
+        case 6:
+            if (value > 0x07) {
+                value = 0x07;
+            }
+            break;
+        case 1:
+            if (value > 0x03) {
+                value = 0x03;
+            }
+            break;
+        case 2:
+            if (value > 0x01) {
+                value = 0x01;
+            }
+            break;
+        case 3:
+        case 4:
+        case 7:
+            if (value > 0x0f) {
+                value = 0x0f;
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+
+    case SIPHRA_CHANNEL_CONTROL:
+        switch (bitFieldIndex) {
+        case 0:
+        case 6:
+            if (value > 0xff) {
+                value = 0xff;
+            }
+            break;
+        case 1:
+        case 2:
+        case 4:
+        case 5:
+        case 7:
+            if (value > 0x01) {
+                value = 0x01;
+            }
+            break;
+        case 3:
+            if (value > 0x03) {
+                value = 0x03;
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+
+    case SIPHRA_ADC_CONFIG:
+        switch (bitFieldIndex) {
+        case 0:
+        case 2:
+            if (value > 0x01) {
+                value = 0x01;
+            }
+            break;
+        case 1:
+            if (value > 0x0f) {
+                value = 0x0f;
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+
+    case SIPHRA_CAL_CTRL:
+        switch (bitFieldIndex) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            if (value > 0x01) {
+                value = 0x01;
+            }
+            break;
+        case 4:
+            if (value > 0x03) {
+                value = 0x03;
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+
+    case SIPHRA_READOUT_MODE:
+        switch (bitFieldIndex) {
+        case 0:
+            if (value > 0x1f) {
+                value = 0x1f;
+            }
+            break;
+        case 1:
+            if (value > 0x0f) {
+                value = 0x0f;
+            }
+            break;
+        case 2:
+            if (value > 0x03) {
+                value = 0x03;
+            }
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            if (value > 0x01) {
+                value = 0x01;
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+
+    case SIPHRA_AMUX_CTRL:
+        switch (bitFieldIndex) {
+        case 0:
+            if (value > 0x1f) {
+                value = 0x1f;
+            }
+            break;
+        case 1:
+            if (value > 0x01) {
+                value = 0x01;
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+
+    /* Registers with single multiple-bit field */
+    case SIPHRA_CAL_DAC:
+    case SIPHRA_ADC_CLK_DIV_FACTOR:
+        if (value > 0xff) {
+            value = 0xff;
+        }
+        break;
+
+    case SIPHRA_ADC_OUT:
+        if (value > 0xfff) {
+            value = 0xfff;
+        }
+        break;
+
+    /* Registers with multiple single-bit fields */
+    case SIPHRA_POWER_MODULES:
+    case SIPHRA_READOUT_FIXED_LIST:
+    case SIPHRA_TRIGGER_LATCHES:
+    case SIPHRA_PARITY_ERR_REG:
+    case SIPHRA_SYSCLOCK_CTRL:
+        if (value > 0x01) {
+            value = 0x01;
+        }
+        break;
+    default:
+        break;
+    }
+
     /* Finally, set the value */
     child(bitFieldIndex)->setText(2, QString::number(value));
     updateRegisterValue();
@@ -1005,7 +1244,7 @@ void SiphraTreeWidgetItem::updateRegisterBitFields()
         break;
 
     case SIPHRA_ADC_OUT:
-        child(0)->setText(2, QString::number(registerValue() & 0x7ff));
+        child(0)->setText(2, QString::number(registerValue() & 0xfff));
         break;
 
     /* Registers with multiple single-bit fields */
