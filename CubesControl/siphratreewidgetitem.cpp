@@ -64,6 +64,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         /* Set register's default address and value */
         setText(0, "0x" + QString::number(registerAddress, 16).rightJustified(2, QLatin1Char('0')));
         setText(2, "");
+        setTextAlignment(2, Qt::AlignTop|Qt::AlignHCenter);
 
         /* Add register bit fields and names based on address */
         switch (registerAddress) {
