@@ -228,6 +228,7 @@ void CubesControl::on_actionLoadSiphraConfig_triggered()
             }
             currentItem = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(reg);
             switch (reg) {
+            /* Registers with single multiple-bit field */
             case SIPHRA_READOUT_FIXED_LIST:
             case SIPHRA_ADC_CLK_DIV_FACTOR:
             case SIPHRA_CMD_DCAL:
@@ -237,6 +238,7 @@ void CubesControl::on_actionLoadSiphraConfig_triggered()
                 currentItem->setRegisterValue(configData);
                 reg++;
                 break;
+            /* Other registers */
             default:
                 currentItem->setRegisterValue(bitField, configData);
                 bitField++;
@@ -248,6 +250,9 @@ void CubesControl::on_actionLoadSiphraConfig_triggered()
         }
 
         file.close();
+
+        statusBar()->showMessage("Applied config file \"" +
+                                 fileName.split('/').last() + "\".", 5000);
     }
 }
 
