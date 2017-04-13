@@ -111,6 +111,17 @@ CubesControl::CubesControl(QWidget *parent) :
         ui->treeSiphraRegMap->insertTopLevelItem(i,
                     new SiphraTreeWidgetItem(ui->treeSiphraRegMap, i, true));
     }
+
+    /* Preparations for making _only_ value columns editable */
+    ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    for (int i = 0; i < ui->treeSiphraRegMap->topLevelItemCount(); i++) {
+        for (int j = 0; j < ui->treeSiphraRegMap->topLevelItem(i)->childCount(); j++) {
+            ui->treeSiphraRegMap->topLevelItem(i)->child(j)->setFlags(
+                        ui->treeSiphraRegMap->topLevelItem(i)->child(j)->flags()|Qt::ItemIsEditable);
+        }
+    }
+
+    /* Set register map view visual properties */
     ui->treeSiphraRegMap->setColumnWidth(0, 100);
     ui->treeSiphraRegMap->setColumnWidth(1, 200);
     ui->treeSiphraRegMap->setColumnWidth(2, 100);
@@ -446,4 +457,11 @@ void CubesControl::on_btnReadAllSiphraRegs_clicked()
     }
 
     f.close();
+}
+
+void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+    if (column == 2) {
+        ui->treeSiphraRegMap->editItem(item, column);
+    }
 }

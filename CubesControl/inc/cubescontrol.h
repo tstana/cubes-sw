@@ -45,6 +45,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <QLabel>
+#include <QTreeWidgetItem>
 
 #include <QSerialPort>
 
@@ -78,6 +79,7 @@ private slots:
     void on_btnLoadSiphraConfig_clicked();
     void on_btnWriteAllSiphraRegs_clicked();
     void on_btnReadAllSiphraRegs_clicked();
+    void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
     Ui::CubesControl    *ui;
