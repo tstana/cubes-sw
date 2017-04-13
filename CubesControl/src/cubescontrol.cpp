@@ -123,7 +123,7 @@ CubesControl::CubesControl(QWidget *parent) :
         }
     }
 
-    m_treeSiphraRegMapUserChange = false;
+    m_changedByUser = false;
 
     /* Set register map view visual properties */
     ui->treeSiphraRegMap->setColumnWidth(0, 100);
@@ -467,7 +467,8 @@ void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, 
 {
     if (column == 2) {
         ui->treeSiphraRegMap->editItem(item, column);
-        m_treeSiphraRegMapUserChange = true;
+        m_changedByUser = true;
+        m_textBeforeChange = item->text(column);
     }
 }
 
@@ -479,17 +480,17 @@ void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int co
     }
 
     /* Also bail out on change not due to user double clicking */
-    if (!m_treeSiphraRegMapUserChange) {
+    if (!m_changedByUser) {
         return;
     }
-    m_treeSiphraRegMapUserChange = false;
+    m_changedByUser = false;
 
     /* Try to convert the value into a number, give up if NaN */
     bool isNumber;
     int bitFieldValue;
     bitFieldValue = item->text(column).toInt(&isNumber);
     if (!isNumber) {
-        item->setText(column, "");
+        item->setText(column, m_textBeforeChange);
         return;
     }
 
