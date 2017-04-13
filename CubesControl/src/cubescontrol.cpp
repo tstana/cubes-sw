@@ -464,7 +464,9 @@ void CubesControl::on_btnReadAllSiphraRegs_clicked()
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     if (column == 2) {
+        ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::CurrentChanged);
         ui->treeSiphraRegMap->editItem(item, column);
+        ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::NoEditTriggers);
     }
 }
 
@@ -487,5 +489,9 @@ void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int co
     /* The clicked item should be a child of a SiphraTreeWidgetItem */
     SiphraTreeWidgetItem *siphraItem = (SiphraTreeWidgetItem *)item->parent();
 
+    /* Update the value and prevent user from changing other items */
+    ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::CurrentChanged);
     siphraItem->setRegisterValue(siphraItem->indexOfChild(item), bitFieldValue);
+    ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
+
