@@ -412,3 +412,38 @@ void CubesControl::on_btnWriteAllSiphraRegs_clicked()
 
     statusBar()->showMessage("Write all SIPHRA registers finished.", 5000);
 }
+
+void CubesControl::on_btnReadAllSiphraRegs_clicked()
+{
+    SiphraTreeWidgetItem *item;
+    QByteArray data;
+    data.resize(8);
+
+    //    /* The command can't be executed without an open connection */
+    //    if (!connStatus) {
+    //        statusBar()->showMessage("Connection not open!", 5000);
+    //        return;
+    //    }
+
+    QString fname = QFileDialog::getOpenFileName(this, "Open file",
+                            QString(), "CSV files (*.txt)");
+    QFile f(fname);
+    QTextStream s(&f);
+
+    f.open(QIODevice::ReadOnly);
+
+    /* Prepare a read register command to the ASIC */
+    for (int i = 0; i < ui->treeSiphraRegMap->topLevelItemCount(); i++) {
+        item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(i);
+        item->setRegisterValue(s.readLine().right(8).toInt(nullptr, 16));
+
+//        for (int j = 0; j < 8; j++) {
+//            data[j] = 0x00;
+//        }
+//        data[3] = (i << 1);
+//        cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+//        ///// NB: Implement item->setRegisterValue() in on_cubes_devReadReady();
+    }
+
+    f.close();
+}
