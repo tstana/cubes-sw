@@ -63,6 +63,9 @@ public:
     ~CubesControl();
 
 private slots:
+    void on_cubes_devErrorOccured(int error);
+    void on_cubes_devReadReady();
+
     void on_actionExit_triggered();
     void on_actionConnect_triggered();
     void on_actionDisconnect_triggered();
@@ -73,9 +76,7 @@ private slots:
     void on_btnExpandSiphraRegTable_clicked();
     void on_btnCollapseSiphraRegTable_clicked();
     void on_btnLoadSiphraConfig_clicked();
-
-    void on_cubes_devErrorOccured(int error);
-    void on_cubes_devReadReady();
+    void on_btnWriteAllSiphraRegs_clicked();
 
 private:
     Ui::CubesControl    *ui;
