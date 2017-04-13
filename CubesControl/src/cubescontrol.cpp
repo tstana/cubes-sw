@@ -376,6 +376,12 @@ void CubesControl::on_btnWriteAllSiphraRegs_clicked()
     QByteArray data;
     data.resize(8);
 
+//    /* The command can't be executed without an open connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
     static int count = 0;
     QFile f(QString("command%1.txt").arg(count++));
     f.open(QIODevice::WriteOnly);
