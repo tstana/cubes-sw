@@ -466,7 +466,7 @@ void CubesControl::on_btnReadAllSiphraRegs_clicked()
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     if (column == 2) {
-        /* Ignore editing whole register value */
+        /* Ignore editing whole register value -- accept only bit field edits */
         if (item->parent() == (QTreeWidgetItem *)ui->treeSiphraRegMap) {
             return;
         }
@@ -489,6 +489,7 @@ void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int co
     if (!m_changedByUser) {
         return;
     }
+
     m_changedByUser = false;
 
     /* Try to convert the value into a number, give up if NaN */
@@ -507,5 +508,28 @@ void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int co
     ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::CurrentChanged);
     siphraItem->setRegisterValue(siphraItem->indexOfChild(item), bitFieldValue);
     ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    /* Finally, issue a command to write the changed SIPHRA register */
+    QByteArray data;
+    data.resize(8);
+    data[0] = 0x00;
+    data[1] = 0x00;
+    data[2] = 0x00;
+    data[3] = (siphraItem->registerAddress() << 1) | 0x1;
+    data[4] = (siphraItem->registerValue() >> 24) & 0xff;
+    data[5] = (siphraItem->registerValue() >> 16) & 0xff;
+    data[6] = (siphraItem->registerValue() >>  8) & 0xff;
+    data[7] = (siphraItem->registerValue());
+
+    QMessageBox b;
+    QString s;
+    QTextStream stream(&s);
+    stream << "0x";
+    for (int i = 0; i < 8; i++) {
+        stream << QString::number((int)data[i]&0xff, 16).rightJustified(2, '0');
+    }
+    b.setText(s);
+    b.exec();
+//    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 }
 
