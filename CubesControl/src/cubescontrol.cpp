@@ -48,6 +48,7 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
+#include <QThread>
 
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
@@ -397,33 +398,20 @@ void CubesControl::on_btnWriteAllSiphraRegs_clicked()
 //        return;
 //    }
 
-    static int count = 0;
-    QFile f(QString("command%1.txt").arg(count++));
-    f.open(QIODevice::WriteOnly);
-    QTextStream s(&f);
-
     /* Issue write commands to the ASIC registers */
     for (int i = 0; i < ui->treeSiphraRegMap->topLevelItemCount(); i++) {
         item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(i);
-        data[0] = 0x00;
-        data[1] = 0x00;
-        data[2] = 0x00;
-        data[3] = (i << 1) | 0x1;
-        data[4] = (item->registerValue() >> 24);
-        data[5] = (item->registerValue() >> 16);
-        data[6] = (item->registerValue() >>  8);
-        data[7] = (item->registerValue());
+        data[0] = (item->registerValue() >> 24) & 0xff;
+        data[1] = (item->registerValue() >> 16) & 0xff;
+        data[2] = (item->registerValue() >>  8) & 0xff;
+        data[3] = (item->registerValue()) & 0xff;
+        data[4] = 0x00;
+        data[5] = 0x00;
+        data[6] = 0x00;
+        data[7] = (i << 1) | 0x1;
 
-//        cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
-
-        s << "0x";
-        for (int j = 0; j < data.size(); j++) {
-            s << QString::number((int)data[j]&0xff, 16).rightJustified(2, '0', true);
-        }
-        s << '\n';
+        cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
     }
-
-    f.close();
 
     statusBar()->showMessage("Write all SIPHRA registers finished.", 5000);
 }
