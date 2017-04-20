@@ -480,6 +480,12 @@ void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, 
 
 void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column)
 {
+    //    /* The command can't be executed without an open connection */
+    //    if (!connStatus) {
+    //        statusBar()->showMessage("Connection not open!", 5000);
+    //        return;
+    //    }
+
     /* If by _any chance_, _somehow_, another column gets edited, bail !!! */
     if (column != 2) {
         return;
