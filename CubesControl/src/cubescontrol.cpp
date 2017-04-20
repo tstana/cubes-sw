@@ -290,6 +290,13 @@ void CubesControl::on_cubes_devReadReady()
             ui->tableCubesRegs->item(i/4, 2)->setText(s);
         }
         break;
+    case CMD_GET_SIPHRA_DATAR_CSR:
+    {
+        SiphraTreeWidgetItem *reg;
+        reg = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_currentSiphraRegAddress);
+        reg->setRegisterValue((data[0] << 24) | (data[1] << 16) | (data[2] <<  8) | (data[3]));
+        break;
+    }
     default:
         break;
     }
@@ -418,7 +425,6 @@ void CubesControl::on_btnWriteAllSiphraRegs_clicked()
 
 void CubesControl::on_btnReadAllSiphraRegs_clicked()
 {
-    SiphraTreeWidgetItem *item;
     QByteArray data;
     data.resize(8);
 
@@ -428,27 +434,22 @@ void CubesControl::on_btnReadAllSiphraRegs_clicked()
     //        return;
     //    }
 
-    QString fname = QFileDialog::getOpenFileName(this, "Open file",
-                            QString(), "CSV files (*.txt)");
-    QFile f(fname);
-    QTextStream s(&f);
-
-    f.open(QIODevice::ReadOnly);
-
-    /* Prepare a read register command to the ASIC */
+    /*
+     * Issue commands for SIPHRA register operation and reading the FPGA
+     * SIPHRA-dedicated register values. Updating the register fields in the
+     * UI register map is handled inside on_cubes_devReadReady() slot.
+     */
     for (int i = 0; i < ui->treeSiphraRegMap->topLevelItemCount(); i++) {
-        item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(i);
-        item->setRegisterValue(s.readLine().right(8).toInt(nullptr, 16));
+        for (int j = 0; j < 8; j++) {
+            data[j] = 0x00;
+        }
+        data[3] = (i << 1);
 
-//        for (int j = 0; j < 8; j++) {
-//            data[j] = 0x00;
-//        }
-//        data[3] = (i << 1);
-//        cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
-//        ///// NB: Implement item->setRegisterValue() in on_cubes_devReadReady();
+        cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+
+        m_currentSiphraRegAddress = i;
+        cubes->sendCommand(CMD_GET_SIPHRA_DATAR_CSR, data);
     }
-
-    f.close();
 }
 
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
@@ -517,4 +518,3 @@ void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int co
 
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 }
-

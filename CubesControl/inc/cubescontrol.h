@@ -96,6 +96,8 @@ private:
     bool                m_changedByUser;
     QString             m_textBeforeChange;
 
+    qint8               m_currentSiphraRegAddress;
+
     void    showConnStatus(int connUp);
 };
 
