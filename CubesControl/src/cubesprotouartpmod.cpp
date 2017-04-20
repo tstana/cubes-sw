@@ -87,8 +87,7 @@ int CubesProtoUartPmod::devError()
 
 void CubesProtoUartPmod::on_serialPort_readReady()
 {
-    qint64 tmp = m_device->bytesAvailable();
-    m_bytesLeft -= tmp;
+    m_bytesLeft -= m_device->bytesAvailable();
     if (m_bytesLeft <= 0) {
         emit devReadReady();
     }
@@ -97,23 +96,28 @@ void CubesProtoUartPmod::on_serialPort_readReady()
 qint64 CubesProtoUartPmod::sendCommand(quint8 cmdCode, QByteArray &cmdData)
 {
     QByteArray      data;
-    char            rw;
+    int             numDataBytes;
+    char            write;
 
     /* Bail out if unknown command */
     if (m_currentCommand->setCommand(cmdCode) != cmdCode) {
         return -1;
     }
 
-    rw = 0x1 & (~m_currentCommand->dataDirection());
+    write = 0x1 & (~m_currentCommand->dataDirection());
     m_bytesLeft = m_currentCommand->dataBytes();
 
-    data.resize(2 + cmdData.size());
+    numDataBytes = 2 + (cmdData.size() * write);
 
-    data[0] = (CUBES_I2C_ADDRESS << 1) | (rw);
+    data.resize(numDataBytes);
+
+    data[0] = (CUBES_I2C_ADDRESS << 1) | (write);
     data[1] = cmdCode;
     for (int i = 0; i < cmdData.size(); i++)
         data[i+2] = cmdData[i];
 
+    /* Clear data buffers and issue command */
+    m_device->clear(QSerialPort::AllDirections);
     return m_device->write(data);
 }
 
