@@ -97,27 +97,31 @@ qint64 CubesProtoUartPmod::sendCommand(quint8 cmdCode, QByteArray &cmdData)
 {
     QByteArray      data;
     int             numDataBytes;
-    char            write;
+    char            read, write;
 
     /* Bail out if unknown command */
     if (m_currentCommand->setCommand(cmdCode) != cmdCode) {
         return -1;
     }
 
+    /*
+     * Create I2C R/nW ('1' = Read, '0' = Write) bit based on current command's
+     * data direction, and assign number of data bytes and I2C Address + R/nW
+     * byte to mimic an I2C transfer over UART.
+     */
     write = 0x1 & (~m_currentCommand->dataDirection());
+    read = 0x1 & (~write);
     m_bytesLeft = m_currentCommand->dataBytes();
 
     numDataBytes = 2 + (cmdData.size() * write);
-
     data.resize(numDataBytes);
 
-    data[0] = (CUBES_I2C_ADDRESS << 1) | (write);
+    data[0] = (CUBES_I2C_ADDRESS << 1) | (read);
     data[1] = cmdCode;
-    for (int i = 0; i < cmdData.size(); i++)
+    for (int i = 0; i < numDataBytes-2; i++)
         data[i+2] = cmdData[i];
 
     /* Clear data buffers and issue command */
-    m_device->clear(QSerialPort::AllDirections);
     return m_device->write(data);
 }
 
