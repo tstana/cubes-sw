@@ -47,9 +47,10 @@ class CubesCommand
 {
 public:
 
+    /* Data direction is same as I2C R/nW bit: '1' = Read, '0' = Write. */
     typedef enum Direction {
-        Read = 0,
-        Write = 1
+        Write = 0,
+        Read = 1
     } DataDirection;
 
     CubesCommand();
