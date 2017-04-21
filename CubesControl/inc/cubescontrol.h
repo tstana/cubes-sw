@@ -46,7 +46,6 @@
 #include <QString>
 #include <QLabel>
 #include <QTreeWidgetItem>
-
 #include <QSerialPort>
 
 namespace Ui {
@@ -82,6 +81,9 @@ private slots:
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
 
+signals:
+    void startSiphraReadRegThread(qint8 addr);
+
 private:
     Ui::CubesControl    *ui;
 
@@ -95,8 +97,6 @@ private:
 
     bool                m_changedByUser;
     QString             m_textBeforeChange;
-
-    qint8               m_currentSiphraRegAddress;
 
     void    showConnStatus(int connUp);
 };

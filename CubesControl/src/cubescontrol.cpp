@@ -49,6 +49,82 @@
 #include <QFile>
 #include <QTextStream>
 #include <QThread>
+#include <QWaitCondition>
+#include <QMutex>
+
+class ReadAllSiphraRegsThread : public QThread
+{
+public:
+    ReadAllSiphraRegsThread(CubesProtoUartPmod *cubesIn)
+    {
+        cubes = cubesIn;
+        killed = false;
+        startedBySlot = false;
+    }
+
+    ~ReadAllSiphraRegsThread()
+    {
+        mutex.lock();
+        killed = true;
+        condition.wakeOne();
+        mutex.unlock();
+        wait();
+    }
+
+    void run() override
+    {
+        QByteArray data;
+        data.resize(8);
+
+        /*
+         * Issue commands for SIPHRA register operation and reading the FPGA
+         * SIPHRA-dedicated register values. Updating the register fields in the
+         * UI register map is handled inside on_cubes_devReadReady() slot.
+         */
+        while (true) {
+            if (!startedBySlot) {
+                mutex.lock();
+                condition.wait(&mutex);
+                mutex.unlock();
+            }
+
+            if (killed) {
+                break;
+            }
+
+            for (int j = 0; j < 8; j++) {
+                data[j] = 0x00;
+            }
+            data[3] = (currentSiphraRegAddress << 1);
+
+            cubes->sendCommand(CMD_GET_SIPHRA_DATAR_CSR, data);
+            mutex.lock();
+            startedBySlot = false;
+            condition.wait(&mutex);
+            mutex.unlock();
+        }
+    }
+
+public slots:
+    void readSiphraReg(quint8 addr)
+    {
+        currentSiphraRegAddress = addr;
+        mutex.lock();
+        startedBySlot = true;
+        condition.wakeOne();
+        mutex.unlock();
+    }
+
+private:
+    CubesProtoUartPmod *cubes;
+
+    qint8 currentSiphraRegAddress;
+    bool startedBySlot;
+    bool killed;
+
+    QWaitCondition condition;
+    QMutex mutex;
+};
 
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
@@ -140,6 +216,12 @@ CubesControl::CubesControl(QWidget *parent) :
             this, &CubesControl::on_cubes_devErrorOccured);
     connect(cubes, &CubesProtoUartPmod::devReadReady,
             this, &CubesControl::on_cubes_devReadReady);
+
+    /* Create and start the thread for reading all SIPHRA registers */
+    ReadAllSiphraRegsThread *thread = new ReadAllSiphraRegsThread(cubes);
+    connect(this, &CubesControl::startSiphraReadRegThread,
+            thread, &ReadAllSiphraRegsThread::readSiphraReg);
+    thread->start();
 }
 
 CubesControl::~CubesControl()
@@ -280,6 +362,8 @@ void CubesControl::on_cubes_devReadReady()
     data.resize(cubes->currentCommand()->dataBytes());
     data = cubes->readAll();
 
+    static quint8 currentSiphraRegAddress;
+
     switch (cubes->currentCommand()->code()){
     case CMD_READ_ALL_REGS:
         for (int i = 0; i < data.size(); i += 4) {
@@ -293,8 +377,13 @@ void CubesControl::on_cubes_devReadReady()
     case CMD_GET_SIPHRA_DATAR_CSR:
     {
         SiphraTreeWidgetItem *reg;
-        reg = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_currentSiphraRegAddress);
+        reg = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(currentSiphraRegAddress);
         reg->setRegisterValue((data[0] << 24) | (data[1] << 16) | (data[2] <<  8) | (data[3]));
+        ++currentSiphraRegAddress;
+        if (currentSiphraRegAddress >= ui->treeSiphraRegMap->topLevelItemCount())
+            currentSiphraRegAddress = 0;
+        else
+            emit startSiphraReadRegThread(currentSiphraRegAddress);
         break;
     }
     default:
@@ -425,31 +514,13 @@ void CubesControl::on_btnWriteAllSiphraRegs_clicked()
 
 void CubesControl::on_btnReadAllSiphraRegs_clicked()
 {
-    QByteArray data;
-    data.resize(8);
-
     //    /* The command can't be executed without an open connection */
     //    if (!connStatus) {
     //        statusBar()->showMessage("Connection not open!", 5000);
     //        return;
     //    }
 
-    /*
-     * Issue commands for SIPHRA register operation and reading the FPGA
-     * SIPHRA-dedicated register values. Updating the register fields in the
-     * UI register map is handled inside on_cubes_devReadReady() slot.
-     */
-    for (int i = 0; i < ui->treeSiphraRegMap->topLevelItemCount(); i++) {
-        for (int j = 0; j < 8; j++) {
-            data[j] = 0x00;
-        }
-        data[3] = (i << 1);
-
-        cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
-
-        m_currentSiphraRegAddress = i;
-        cubes->sendCommand(CMD_GET_SIPHRA_DATAR_CSR, data);
-    }
+    emit startSiphraReadRegThread(0x00);
 }
 
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
