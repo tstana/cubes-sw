@@ -417,11 +417,11 @@ void CubesControl::on_btnWriteAllSiphraRegs_clicked()
     QByteArray data;
     data.resize(8);
 
-//    /* The command can't be executed without an open connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
+    /* The command can't be executed without an open connection */
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open!", 5000);
+        return;
+    }
 
     /* Issue write commands to the ASIC registers */
     for (int i = 0; i < ui->treeSiphraRegMap->topLevelItemCount(); i++) {
@@ -443,11 +443,11 @@ void CubesControl::on_btnWriteAllSiphraRegs_clicked()
 
 void CubesControl::on_btnReadAllSiphraRegs_clicked()
 {
-    //    /* The command can't be executed without an open connection */
-    //    if (!connStatus) {
-    //        statusBar()->showMessage("Connection not open!", 5000);
-    //        return;
-    //    }
+    /* The command can't be executed without an open connection */
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open!", 5000);
+        return;
+    }
 
     QByteArray data;
     data.resize(8);
@@ -475,14 +475,15 @@ void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, 
 
 void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column)
 {
-    //    /* The command can't be executed without an open connection */
-    //    if (!connStatus) {
-    //        statusBar()->showMessage("Connection not open!", 5000);
-    //        return;
-    //    }
-
     /* If by _any chance_, _somehow_, another column gets edited, bail !!! */
     if (column != 2) {
+        return;
+    }
+
+    /* The command can't be executed without an open connection */
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open!", 5000);
+        item->setText(column, m_textBeforeChange);
         return;
     }
 
