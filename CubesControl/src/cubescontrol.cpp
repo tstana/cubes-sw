@@ -68,10 +68,12 @@ CubesControl::CubesControl(QWidget *parent) :
     showConnStatus(connStatus);
     statusBar()->addPermanentWidget(lblConnStatus);
 
-    /* Make CommSettingsDialog modal and attach action to show it */
+    /* CommSettingsDialog interaction to main UI */
     commSettings->setModal(true);
     connect(ui->actionConfigConnection, &QAction::triggered,
             commSettings, &CubesControl::show);
+    connect(commSettings, SIGNAL(accepted()),
+            ui->actionConnect, SIGNAL(triggered()));
 
     /* Connect LED check box clicks to single handler */
     connect(ui->checkboxLed0, &QCheckBox::clicked,

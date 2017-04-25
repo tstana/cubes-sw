@@ -92,12 +92,14 @@ void CommSettingsDialog::addCommTypes()
 void CommSettingsDialog::on_btnOk_clicked()
 {
     updateSettings();
-    hide();
+    QDialog::accept();
+//    hide();
 }
 
 void CommSettingsDialog::on_btnCancel_clicked()
 {
-    hide();
+    QDialog::reject();
+//    hide();
 }
 
 void CommSettingsDialog::on_cbCommType_currentIndexChanged(int index)
