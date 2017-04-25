@@ -755,8 +755,94 @@ void SiphraTreeWidgetItem::setRegisterValue(qint32 value)
         return;
     }
 
+    /*
+     * Adapt the value to the appropriate number of bits inside the register.
+     * If this is not done, the fact that the SIPHRA outputs 1s for unused bits,
+     * will lead to incorrect hex values being written in the register field box.
+     */
+    switch (m_registerAddress) {
+    case SIPHRA_CTRL_CH_01:
+    case SIPHRA_CTRL_CH_02:
+    case SIPHRA_CTRL_CH_03:
+    case SIPHRA_CTRL_CH_04:
+    case SIPHRA_CTRL_CH_05:
+    case SIPHRA_CTRL_CH_06:
+    case SIPHRA_CTRL_CH_07:
+    case SIPHRA_CTRL_CH_08:
+    case SIPHRA_CTRL_CH_09:
+    case SIPHRA_CTRL_CH_10:
+    case SIPHRA_CTRL_CH_11:
+    case SIPHRA_CTRL_CH_12:
+    case SIPHRA_CTRL_CH_13:
+    case SIPHRA_CTRL_CH_14:
+    case SIPHRA_CTRL_CH_15:
+    case SIPHRA_CTRL_CH_16:
+        value &= 0x3fffffff;
+        break;
+
+    case SIPHRA_CTRL_CH_SUM:
+        value &= 0x00003fff;
+        break;
+
+    case SIPHRA_CHANNEL_CONTROL:
+        value &= 0x007fffff;
+        break;
+
+    case SIPHRA_CAL_CTRL:
+        value &= 0x0000003f;
+        break;
+
+    case SIPHRA_READOUT_MODE:
+        value &= 0x00007fff;
+        break;
+
+    case SIPHRA_AMUX_CTRL:
+        value &= 0x0000003f;
+        break;
+
+    /* Registers with single multiple-bit field */
+    case SIPHRA_CAL_DAC:
+    case SIPHRA_ADC_CLK_DIV_FACTOR:
+        value &= 0x000000ff;
+        break;
+
+    case SIPHRA_ADC_OUT:
+        value &= 0x00000fff;
+        break;
+
+    /* Registers with multiple single-bit fields */
+    case SIPHRA_POWER_MODULES:
+        value &= 0x0003ffff;
+        break;
+
+    case SIPHRA_READOUT_FIXED_LIST:
+        value &= 0x0007ffff;
+        break;
+
+    case SIPHRA_TRIGGER_LATCHES:
+        value &= 0x0001ffff;
+        break;
+
+    case SIPHRA_PARITY_ERR_REG:
+        value &= 0x0fffffff;
+        break;
+
+    case SIPHRA_SYSCLOCK_CTRL:
+        value &= 0x00000003;
+        break;
+
+    /* Registers with single single-bit field */
+    case SIPHRA_CMD_DCAL:
+    case SIPHRA_CMD_READOUT:
+        value &= 0x00000001;
+        break;
+
+    default:
+        break;
+    }
+
     /* Set register hex value  */
-    setText(2, "0x" + QString::number(value, 16).rightJustified(8, '0'));
+    setText(2, "0x" + QString::number(value & 0xffffffff, 16).rightJustified(8, '0'));
     updateRegisterBitFields();
 }
 
