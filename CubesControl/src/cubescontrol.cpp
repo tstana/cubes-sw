@@ -52,80 +52,6 @@
 #include <QWaitCondition>
 #include <QMutex>
 
-class ReadAllSiphraRegsThread : public QThread
-{
-public:
-    ReadAllSiphraRegsThread(CubesProtoUartPmod *cubesIn)
-    {
-        cubes = cubesIn;
-        killed = false;
-        startedBySlot = false;
-    }
-
-    ~ReadAllSiphraRegsThread()
-    {
-        mutex.lock();
-        killed = true;
-        condition.wakeOne();
-        mutex.unlock();
-        wait();
-    }
-
-    void run() override
-    {
-        QByteArray data;
-        data.resize(8);
-
-        /*
-         * Issue commands for SIPHRA register operation and reading the FPGA
-         * SIPHRA-dedicated register values. Updating the register fields in the
-         * UI register map is handled inside on_cubes_devReadReady() slot.
-         */
-        while (true) {
-            if (!startedBySlot) {
-                mutex.lock();
-                condition.wait(&mutex);
-                mutex.unlock();
-            }
-
-            if (killed) {
-                break;
-            }
-
-            for (int j = 0; j < 8; j++) {
-                data[j] = 0x00;
-            }
-            data[3] = (currentSiphraRegAddress << 1);
-
-            cubes->sendCommand(CMD_GET_SIPHRA_DATAR_CSR, data);
-            mutex.lock();
-            startedBySlot = false;
-            condition.wait(&mutex);
-            mutex.unlock();
-        }
-    }
-
-public slots:
-    void readSiphraReg(quint8 addr)
-    {
-        currentSiphraRegAddress = addr;
-        mutex.lock();
-        startedBySlot = true;
-        condition.wakeOne();
-        mutex.unlock();
-    }
-
-private:
-    CubesProtoUartPmod *cubes;
-
-    qint8 currentSiphraRegAddress;
-    bool startedBySlot;
-    bool killed;
-
-    QWaitCondition condition;
-    QMutex mutex;
-};
-
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CubesControl),
@@ -216,12 +142,6 @@ CubesControl::CubesControl(QWidget *parent) :
             this, &CubesControl::on_cubes_devErrorOccured);
     connect(cubes, &CubesProtoUartPmod::devReadReady,
             this, &CubesControl::on_cubes_devReadReady);
-
-    /* Create and start the thread for reading all SIPHRA registers */
-    ReadAllSiphraRegsThread *thread = new ReadAllSiphraRegsThread(cubes);
-    connect(this, &CubesControl::startSiphraReadRegThread,
-            thread, &ReadAllSiphraRegsThread::readSiphraReg);
-    thread->start();
 }
 
 CubesControl::~CubesControl()
@@ -378,12 +298,21 @@ void CubesControl::on_cubes_devReadReady()
     {
         SiphraTreeWidgetItem *reg;
         reg = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(currentSiphraRegAddress);
-        reg->setRegisterValue((data[0] << 24) | (data[1] << 16) | (data[2] <<  8) | (data[3]));
+        reg->setRegisterValue( ((data[0] & 0xff) << 24) |
+                               ((data[1] & 0xff) << 16) |
+                               ((data[2] & 0xff) <<  8) |
+                               ((data[3] & 0xff)) );
         ++currentSiphraRegAddress;
-        if (currentSiphraRegAddress >= ui->treeSiphraRegMap->topLevelItemCount())
+        if (currentSiphraRegAddress >= ui->treeSiphraRegMap->topLevelItemCount()) {
             currentSiphraRegAddress = 0;
-        else
-            emit startSiphraReadRegThread(currentSiphraRegAddress);
+        } else {
+            for (int i = 0; i < 7; ++i) {
+                data[i] = 0x00;
+            }
+            data[7] = (currentSiphraRegAddress << 1);
+            cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+            cubes->sendCommand(CMD_GET_SIPHRA_DATAR_CSR, data);
+        }
         break;
     }
     default:
@@ -520,7 +449,13 @@ void CubesControl::on_btnReadAllSiphraRegs_clicked()
     //        return;
     //    }
 
-    emit startSiphraReadRegThread(0x00);
+    QByteArray data;
+    data.resize(8);
+    for (int i = 0; i < 8; ++i) {
+        data[i] = 0x00;
+    }
+    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+    cubes->sendCommand(CMD_GET_SIPHRA_DATAR_CSR, data);
 }
 
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
