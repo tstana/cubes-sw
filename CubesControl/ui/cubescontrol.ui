@@ -42,8 +42,8 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources.qrc">
-              <normaloff>:/ui/collapsebutton/collapse-ico.png</normaloff>:/ui/collapsebutton/collapse-ico.png</iconset>
+             <iconset resource="resources/resources.qrc">
+              <normaloff>:/cubescontrol/collapsebutton/collapse-ico.png</normaloff>:/cubescontrol/collapsebutton/collapse-ico.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -62,8 +62,8 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources.qrc">
-              <normaloff>:/ui/expandbutton/expand-ico.png</normaloff>:/ui/expandbutton/expand-ico.png</iconset>
+             <iconset resource="resources/resources.qrc">
+              <normaloff>:/cubescontrol/expandbutton/expand-ico.png</normaloff>:/cubescontrol/expandbutton/expand-ico.png</iconset>
             </property>
             <property name="iconSize">
              <size>

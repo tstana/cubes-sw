@@ -1,11 +1,11 @@
 <RCC>
-    <qresource prefix="/ui/refreshbutton">
+    <qresource prefix="/commsettingsdialog/refreshbutton">
         <file>reload.png</file>
     </qresource>
-    <qresource prefix="/ui/expandbutton">
+    <qresource prefix="/cubescontrol/expandbutton">
         <file>expand-ico.png</file>
     </qresource>
-    <qresource prefix="/ui/collapsebutton">
+    <qresource prefix="/cubescontrol/collapsebutton">
         <file>collapse-ico.png</file>
     </qresource>
 </RCC>

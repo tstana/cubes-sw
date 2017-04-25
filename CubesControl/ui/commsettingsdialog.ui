@@ -83,8 +83,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/ui/refreshbutton/reload.png</normaloff>:/ui/refreshbutton/reload.png</iconset>
+            <iconset resource="resources/resources.qrc">
+             <normaloff>:/commsettingsdialog/refreshbutton/reload.png</normaloff>:/commsettingsdialog/refreshbutton/reload.png</iconset>
            </property>
           </widget>
          </item>
