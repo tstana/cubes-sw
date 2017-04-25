@@ -1083,12 +1083,14 @@ void SiphraTreeWidgetItem::setRegisterValue(qint8 bitFieldIndex, qint32 value)
         }
         break;
 
-    /* Registers with multiple single-bit fields */
+    /* Registers with single-bit fields */
     case SIPHRA_POWER_MODULES:
     case SIPHRA_READOUT_FIXED_LIST:
     case SIPHRA_TRIGGER_LATCHES:
     case SIPHRA_PARITY_ERR_REG:
     case SIPHRA_SYSCLOCK_CTRL:
+    case SIPHRA_CMD_DCAL:
+    case SIPHRA_CMD_READOUT:
         if (value > 0x01) {
             value = 0x01;
         }
@@ -1221,12 +1223,14 @@ void SiphraTreeWidgetItem::updateRegisterValue()
         regval = child(0)->text(2).toInt();
         break;
 
-    /* Registers with multiple single-bit fields */
+    /* Registers with single-bit fields */
     case SIPHRA_POWER_MODULES:
     case SIPHRA_READOUT_FIXED_LIST:
     case SIPHRA_TRIGGER_LATCHES:
     case SIPHRA_PARITY_ERR_REG:
     case SIPHRA_SYSCLOCK_CTRL:
+    case SIPHRA_CMD_DCAL:
+    case SIPHRA_CMD_READOUT:
         for (int i = 0; i < childCount(); i++) {
             regval |= child(i)->text(2).toInt() << (childCount()-1 - i);
         }
@@ -1344,6 +1348,8 @@ void SiphraTreeWidgetItem::updateRegisterBitFields()
     case SIPHRA_TRIGGER_LATCHES:
     case SIPHRA_PARITY_ERR_REG:
     case SIPHRA_SYSCLOCK_CTRL:
+    case SIPHRA_CMD_DCAL:
+    case SIPHRA_CMD_READOUT:
         for (int i = 0; i < childCount(); i++) {
             child(i)->setText(2, QString::number((registerValue() >> (childCount()-1 - i)) & 0x01));
         }
