@@ -307,6 +307,7 @@ void CubesControl::on_cubes_devReadReady()
         ++currentSiphraRegAddress;
         if (currentSiphraRegAddress >= ui->treeSiphraRegMap->topLevelItemCount()) {
             currentSiphraRegAddress = 0;
+            statusBar()->showMessage("Read all SIPHRA registers finished.");
         } else {
             for (int i = 0; i < 7; ++i) {
                 data[i] = 0x00;
@@ -524,6 +525,9 @@ void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int co
     data[5] = 0x00;
     data[6] = 0x00;
     data[7] = (siphraItem->registerAddress() << 1) | 0x1;
+
+    statusBar()->showMessage("Writing SIPHRA register at address 0x" +
+            QString::number(siphraItem->registerAddress() & 0xff, 16).rightJustified(2, '0').toUpper());
 
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 }
