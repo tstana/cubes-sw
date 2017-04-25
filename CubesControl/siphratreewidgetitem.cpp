@@ -842,7 +842,7 @@ void SiphraTreeWidgetItem::setRegisterValue(qint32 value)
     }
 
     /* Set register hex value  */
-    setText(2, "0x" + QString::number(value & 0xffffffff, 16).rightJustified(8, '0'));
+    setText(2, "0x" + QString::number(value & 0xffffffff, 16).rightJustified(8, '0').toUpper());
     updateRegisterBitFields();
 }
 
@@ -1240,7 +1240,7 @@ void SiphraTreeWidgetItem::updateRegisterValue()
     }
 
     /* Finally, set the text */
-    setText(2, "0x" + QString::number(regval, 16).rightJustified(8, '0'));
+    setText(2, "0x" + QString::number(regval, 16).rightJustified(8, '0').toUpper());
 }
 
 void SiphraTreeWidgetItem::updateRegisterBitFields()
