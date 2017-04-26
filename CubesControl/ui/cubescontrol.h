@@ -70,12 +70,14 @@ private slots:
     void on_actionConnect_triggered();
     void on_actionDisconnect_triggered();
     void on_actionLoadSiphraConfig_triggered();
+    void on_actionSaveSiphraConfig_triggered();
 
     void on_anyLedCheckbox_clicked();
     void on_btnReadAllCubesRegs_clicked();
     void on_btnExpandSiphraRegTable_clicked();
     void on_btnCollapseSiphraRegTable_clicked();
     void on_btnLoadSiphraConfig_clicked();
+    void on_btnSaveSiphraConfig_clicked();
     void on_btnWriteAllSiphraRegs_clicked();
     void on_btnReadAllSiphraRegs_clicked();
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);

@@ -276,6 +276,26 @@ void CubesControl::on_actionLoadSiphraConfig_triggered()
     }
 }
 
+void CubesControl::on_actionSaveSiphraConfig_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Save file",
+                                                    QString(), "CSV files (*.csv)");
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        statusBar()->showMessage("Could not open " + fileName, 5000);
+        return;
+    }
+
+    QTextStream fileData(&file);
+    fileData << "1\n"
+             << "2\n"
+             << "3\n"
+             << "4\n"
+             << "5\n";
+
+    file.close();
+}
+
 void CubesControl::on_cubes_devReadReady()
 {
     QString s;
@@ -412,6 +432,11 @@ void CubesControl::on_btnCollapseSiphraRegTable_clicked()
 void CubesControl::on_btnLoadSiphraConfig_clicked()
 {
     on_actionLoadSiphraConfig_triggered();
+}
+
+void CubesControl::on_btnSaveSiphraConfig_clicked()
+{
+    on_actionSaveSiphraConfig_triggered();
 }
 
 void CubesControl::on_btnWriteAllSiphraRegs_clicked()
