@@ -42,7 +42,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources/resources.qrc">
+             <iconset resource="../resources/resources.qrc">
               <normaloff>:/cubescontrol/collapsebutton/collapse-ico.png</normaloff>:/cubescontrol/collapsebutton/collapse-ico.png</iconset>
             </property>
             <property name="iconSize">
@@ -62,7 +62,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources/resources.qrc">
+             <iconset resource="../resources/resources.qrc">
               <normaloff>:/cubescontrol/expandbutton/expand-ico.png</normaloff>:/cubescontrol/expandbutton/expand-ico.png</iconset>
             </property>
             <property name="iconSize">
@@ -606,7 +606,7 @@
   </action>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
