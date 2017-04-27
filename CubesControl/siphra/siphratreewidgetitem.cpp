@@ -85,7 +85,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
         case SIPHRA_CTRL_CH_15:
         case SIPHRA_CTRL_CH_16:
             /* Set register's name */
-            setText(1, "CTRL_CH_" + QString::number(registerAddress+1).rightJustified(2, QLatin1Char('0')));
+            m_registerName = "CTRL_CH_" + QString::number(registerAddress+1).rightJustified(2, QLatin1Char('0'));
+            setText(1, m_registerName);
             setText(3, "Channel " + QString::number(registerAddress+1) + " configuration register");
 
             /* Bit fields */
@@ -125,7 +126,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_CTRL_CH_SUM:
             /* Set register's name */
-            setText(1, "CTRL_CH_SUM");
+            m_registerName = "CTRL_CH_SUM";
+            setText(1, m_registerName);
             setText(3, "Summing channel configuration register");
 
             /* Bit fields */
@@ -156,7 +158,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_CHANNEL_CONFIG:
             /* Set register's name */
-            setText(1, "CHANNEL_CONFIG");
+            m_registerName = "CHANNEL_CONFIG";
+            setText(1, m_registerName);
             setText(3, "Configuration register applying to all channels");
 
             /* Bit fields */
@@ -196,7 +199,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_CHANNEL_CONTROL:
             /* Set register's name */
-            setText(1, "CHANNEL_CONTROL");
+            m_registerName = "CHANNEL_CONTROL";
+            setText(1, m_registerName);
             setText(3, "Configuration register applying to all channels");
 
             /* Bit fields */
@@ -236,7 +240,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_ADC_CONFIG:
             /* Set register's name */
-            setText(1, "ADC_CONFIG");
+            m_registerName = "ADC_CONFIG";
+            setText(1, m_registerName);
             setText(3, "ADC configuration register");
 
             /* Bit fields */
@@ -261,7 +266,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_CAL_DAC:
             /* Set register's name */
-            setText(1, "CAL_DAC");
+            m_registerName = "CAL_DAC";
+            setText(1, m_registerName);
             setText(3, "Gain Calibration Unit, Voltage DAC setting");
 
             /* Bit fields */
@@ -278,7 +284,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_POWER_MODULES:
             /* Set register's name */
-            setText(1, "POWER_MODULES");
+            m_registerName = "POWER_MODULES";
+            setText(1, m_registerName);
             setText(3, "Module power up register");
 
             /* Bit fields */
@@ -348,7 +355,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_CAL_CTRL:
             /* Set register's name */
-            setText(1, "CAL_CTRL");
+            m_registerName = "CAL_CTRL";
+            setText(1, m_registerName);
             setText(3, "Gain Calibration Unit control register");
 
             /* Bit fields */
@@ -379,7 +387,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_READOUT_FIXED_LIST:
             /* Set register's name */
-            setText(1, "READOUT_FIXED_LIST");
+            m_registerName = "READOUT_FIXED_LIST";
+            setText(1, m_registerName);
             setText(3, "Enable fixed list readout mode");
 
             /* Bit fields */
@@ -452,7 +461,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_READOUT_MODE:
             /* Set register's name */
-            setText(1, "READOUT_MODE");
+            m_registerName = "READOUT_MODE";
+            setText(1, m_registerName);
             setText(3, "Readout mode configuration register");
 
             /* Bit fields */
@@ -489,7 +499,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_AMUX_CTRL:
             /* Set register's name */
-            setText(1, "AMUX_CTRL");
+            m_registerName = "AMUX_CTRL";
+            setText(1, m_registerName);
             setText(3, "Source selection for ADC input");
 
             /* Bit fields */
@@ -511,7 +522,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_ADC_CLK_DIV_FACTOR:
             /* Set register's name */
-            setText(1, "ADC_CLK_DIV_FACTOR");
+            m_registerName = "ADC_CLK_DIV_FACTOR";
+            setText(1, m_registerName);
             setText(3, "ADC clock divider register");
 
             /* Bit fields */
@@ -528,7 +540,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_SYSCLOCK_CTRL:
             /* Set register's name */
-            setText(1, "SYSCLOCK_CTRL");
+            m_registerName = "SYSCLOCK_CTRL";
+            setText(1, m_registerName);
             setText(3, "System clock control register");
 
             /* Bit fields */
@@ -550,7 +563,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_CMD_DCAL:
             /* Set register's name */
-            setText(1, "CMD_DCAL");
+            m_registerName = "CMD_DCAL";
+            setText(1, m_registerName);
             setText(3, "Trigger internal DCAL");
 
             /* Bit fields */
@@ -567,7 +581,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_CMD_READOUT:
             /* Set register's name */
-            setText(1, "CMD_READOUT");
+            m_registerName = "CMD_READOUT";
+            setText(1, m_registerName);
             setText(3, "Start forced readout");
 
             /* Bit fields */
@@ -584,7 +599,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_TRIGGER_LATCHES:
             /* Set register's name */
-            setText(1, "TRIGGER_LATCHES");
+            m_registerName = "TRIGGER_LATCHES";
+            setText(1, m_registerName);
             setText(3, "____TBD: CC trig flags???_____ Trigger flags. NB: Reset after readout.");
 
             /* Bit fields */
@@ -651,7 +667,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_ADC_OUT:
             /* Set register's name */
-            setText(1, "ADC_OUT");
+            m_registerName = "ADC_OUT";
+            setText(1, m_registerName);
             setText(3, "ADC output value");
 
             /* Bit fields */
@@ -667,7 +684,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
 
         case SIPHRA_PARITY_ERR_REG:
             /* Set register's name */
-            setText(1, "PARITY_ERR_REG");
+            m_registerName = "PARITY_ERR_REG";
+            setText(1, m_registerName);
             setText(3, "Parity error flags");
 
             /* Bit fields */
@@ -1120,9 +1138,14 @@ qint32 SiphraTreeWidgetItem::registerValue()
 qint32 SiphraTreeWidgetItem::registerValue(qint8 bitFieldIndex)
 {
     bool ok;
-    qint32 val = child(bitFieldIndex)->text(2).toInt(&ok, 16);
+    qint32 val = child(bitFieldIndex)->text(2).toInt(&ok);
 
     return (ok ? val : -1);
+}
+
+QString& SiphraTreeWidgetItem::registerName()
+{
+    return m_registerName;
 }
 
 void SiphraTreeWidgetItem::updateRegisterValue()

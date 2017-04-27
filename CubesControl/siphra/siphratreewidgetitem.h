@@ -49,15 +49,17 @@ public:
     SiphraTreeWidgetItem(QTreeWidget *parent, qint8 registerAddress, bool registerView);
     ~SiphraTreeWidgetItem();
 
-    void    setRegisterValue(qint32 value);
-    void    setRegisterValue(qint8 bitFieldIndex, qint32 value);
-    qint32  registerValue();
-    qint32  registerValue(qint8 bitFieldIndex);
-    qint8   registerAddress();
+    void        setRegisterValue(qint32 value);
+    void        setRegisterValue(qint8 bitFieldIndex, qint32 value);
+    qint32      registerValue();
+    qint32      registerValue(qint8 bitFieldIndex);
+    qint8       registerAddress();
+    QString&    registerName();
 
 private:
     qint8   m_registerAddress;
     bool    m_registerView;
+    QString m_registerName;
 
     void    updateRegisterValue();
     void    updateRegisterBitFields();
