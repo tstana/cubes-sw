@@ -287,12 +287,20 @@ void CubesControl::on_actionSaveSiphraConfig_triggered()
     }
 
     QTextStream fileData(&file);
-    fileData << "1\n"
-             << "2\n"
-             << "3\n"
-             << "4\n"
-             << "5\n";
+    SiphraTreeWidgetItem *item;
 
+    for (int i = 0; i < ui->treeSiphraRegMap->topLevelItemCount(); i++) {
+        item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(i);
+        fileData << "\n";
+        fileData << "# " + item->registerName() + "\n";
+        if ((i == SIPHRA_READOUT_FIXED_LIST) || (i == SIPHRA_TRIGGER_LATCHES)) {
+            fileData << QString::number(item->registerValue()) + "\n";
+            continue;
+        }
+        for (int j = 0; j < ui->treeSiphraRegMap->topLevelItem(i)->childCount(); j++) {
+            fileData << QString::number(item->registerValue(j)) + "\n";
+        }
+    }
     file.close();
 }
 
