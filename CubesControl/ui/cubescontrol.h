@@ -83,9 +83,6 @@ private slots:
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
 
-signals:
-    void startSiphraReadRegThread(qint8 addr);
-
 private:
     Ui::CubesControl    *ui;
 
