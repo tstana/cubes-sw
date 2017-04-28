@@ -539,28 +539,4 @@ void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int co
     ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::CurrentChanged);
     siphraItem->setRegisterValue(siphraItem->indexOfChild(item), bitFieldValue);
     ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    /* Cannot execute CUBES command without an open connection, so exit here */
-    if (!connStatus) {
-        statusBar()->showMessage("Connection not open!", 5000);
-        item->setText(column, m_textBeforeChange);
-        return;
-    }
-
-    /* Finally, issue a command to write the changed SIPHRA register */
-    QByteArray data;
-    data.resize(8);
-    data[0] = (siphraItem->registerValue() >> 24) & 0xff;
-    data[1] = (siphraItem->registerValue() >> 16) & 0xff;
-    data[2] = (siphraItem->registerValue() >>  8) & 0xff;
-    data[3] = (siphraItem->registerValue() & 0xff);
-    data[4] = 0x00;
-    data[5] = 0x00;
-    data[6] = 0x00;
-    data[7] = (siphraItem->registerAddress() << 1) | 0x1;
-
-    statusBar()->showMessage("Writing SIPHRA register at address 0x" +
-            QString::number(siphraItem->registerAddress() & 0xff, 16).rightJustified(2, '0').toUpper());
-
-    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 }
