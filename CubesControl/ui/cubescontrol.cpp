@@ -52,8 +52,6 @@
 #include <QWaitCondition>
 #include <QMutex>
 
-#include <QDebug>
-
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CubesControl),
@@ -313,26 +311,56 @@ void CubesControl::on_actionSaveSiphraConfig_triggered()
 
 void CubesControl::on_actionReadSiphraReg_triggered()
 {
-    QMessageBox box;
-    QString s;
-    s = "Reading: \n\n";
-    s += "0x" + QString::number(m_siphraRegAddr&0xff, 16).rightJustified(2, '0').toUpper()
-         + " : " +
-        "0x" + QString::number(m_siphraRegVal&0xffffffff, 16).rightJustified(8, '0').toUpper();
-    box.setText(s);
-    box.exec();
+    /* The command can't be executed without an open connection */
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open!", 5000);
+        return;
+    }
+
+    /* Initiate CUBES command to read SIPHRA register */
+    QByteArray data;
+    data.resize(8);
+    for (int i = 0; i < 7; i++) {
+        data [i] = 0x00;
+    }
+    data[7] = (m_siphraRegAddr << 1);
+
+    statusBar()->showMessage("Reading SIPHRA register at address 0x" +
+            QString::number(m_siphraRegAddr & 0xff, 16).rightJustified(2, '0').toUpper());
+
+    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 }
 
 void CubesControl::on_actionWriteSiphraReg_triggered()
 {
-    QMessageBox box;
-    QString s;
-    s = "Writing: \n\n";
-    s += "0x" + QString::number(m_siphraRegAddr&0xff, 16).rightJustified(2, '0').toUpper()
-         + " : " +
-        "0x" + QString::number(m_siphraRegVal&0xffffffff, 16).rightJustified(8, '0').toUpper();
-    box.setText(s);
-    box.exec();
+    /* The command can't be executed without an open connection */
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open!", 5000);
+        return;
+    }
+
+    /* m_siphraRegVal = 0xffffffff if no value is set in the value column */
+    if (m_siphraRegVal = 0xffffffff) {
+        statusBar()->showMessage("Please set a register value to write!", 5000);
+        return;
+    }
+
+    /* Initiate CUBES command to write SIPHRA register*/
+    QByteArray data;
+    data.resize(8);
+    data[0] = (m_siphraRegVal >> 24) & 0xff;
+    data[1] = (m_siphraRegVal >> 16) & 0xff;
+    data[2] = (m_siphraRegVal >>  8) & 0xff;
+    data[3] = (m_siphraRegVal & 0xff);
+    data[4] = 0x00;
+    data[5] = 0x00;
+    data[6] = 0x00;
+    data[7] = (m_siphraRegAddr << 1) | 0x1;
+
+    statusBar()->showMessage("Writing SIPHRA register at address 0x" +
+            QString::number(m_siphraRegAddr & 0xff, 16).rightJustified(2, '0').toUpper());
+
+    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 }
 
 void CubesControl::on_cubes_devReadReady()
