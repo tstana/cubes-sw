@@ -329,6 +329,10 @@ void CubesControl::on_actionReadSiphraReg_triggered()
             QString::number(m_siphraRegAddr & 0xff, 16).rightJustified(2, '0').toUpper());
 
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+
+    /* Finally, initiate command to read out the register value */
+    m_readAllSiphraRegs = false;
+    cubes->sendCommand(CMD_GET_SIPHRA_DATAR, data);
 }
 
 void CubesControl::on_actionWriteSiphraReg_triggered()
@@ -340,7 +344,7 @@ void CubesControl::on_actionWriteSiphraReg_triggered()
     }
 
     /* m_siphraRegVal = 0xffffffff if no value is set in the value column */
-    if (m_siphraRegVal = 0xffffffff) {
+    if (m_siphraRegVal == 0xffffffff) {
         statusBar()->showMessage("Please set a register value to write!", 5000);
         return;
     }
@@ -371,8 +375,6 @@ void CubesControl::on_cubes_devReadReady()
     data.resize(cubes->currentCommand()->dataBytes());
     data = cubes->readAll();
 
-    static quint8 currentSiphraRegAddress;
-
     switch (cubes->currentCommand()->code()){
     case CMD_READ_ALL_REGS:
         for (int i = 0; i < data.size(); i += 4) {
@@ -383,25 +385,30 @@ void CubesControl::on_cubes_devReadReady()
             ui->tableCubesRegs->item(i/4, 2)->setText(s);
         }
         break;
-    case CMD_GET_SIPHRA_DATAR_CSR:
+    case CMD_GET_SIPHRA_DATAR:
     {
+        /* Apply the value to the tree widget item */
         SiphraTreeWidgetItem *reg;
-        reg = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(currentSiphraRegAddress);
+        reg = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_siphraRegAddr);
         reg->setRegisterValue( ((data[0] & 0xff) << 24) |
                                ((data[1] & 0xff) << 16) |
                                ((data[2] & 0xff) <<  8) |
                                ((data[3] & 0xff)) );
-        ++currentSiphraRegAddress;
-        if (currentSiphraRegAddress >= ui->treeSiphraRegMap->topLevelItemCount()) {
-            currentSiphraRegAddress = 0;
-            statusBar()->showMessage("Read all SIPHRA registers finished.");
-        } else {
-            for (int i = 0; i < 7; ++i) {
-                data[i] = 0x00;
+
+        /* Continue if reading all registers */
+        if (m_readAllSiphraRegs) {
+            ++m_siphraRegAddr;
+            if (m_siphraRegAddr >= ui->treeSiphraRegMap->topLevelItemCount()) {
+                m_siphraRegAddr = 0;
+                statusBar()->showMessage("Read all SIPHRA registers finished.");
+            } else {
+                for (int i = 0; i < 7; ++i) {
+                    data[i] = 0x00;
+                }
+                data[7] = (m_siphraRegAddr << 1);
+                cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+                cubes->sendCommand(CMD_GET_SIPHRA_DATAR, data);
             }
-            data[7] = (currentSiphraRegAddress << 1);
-            cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
-            cubes->sendCommand(CMD_GET_SIPHRA_DATAR_CSR, data);
         }
         break;
     }
@@ -550,7 +557,9 @@ void CubesControl::on_btnReadAllSiphraRegs_clicked()
         data[i] = 0x00;
     }
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
-    cubes->sendCommand(CMD_GET_SIPHRA_DATAR_CSR, data);
+    m_readAllSiphraRegs = true;
+    m_siphraRegAddr = 0x00;
+    cubes->sendCommand(CMD_GET_SIPHRA_DATAR, data);
 }
 
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)

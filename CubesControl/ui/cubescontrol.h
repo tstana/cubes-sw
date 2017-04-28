@@ -100,6 +100,7 @@ private:
     bool                m_changedByUser;
     QString             m_textBeforeChange;
 
+    bool                m_readAllSiphraRegs;
     qint8               m_siphraRegAddr;
     qint32              m_siphraRegVal;
 
