@@ -131,6 +131,9 @@
         </item>
         <item>
          <widget class="QTreeWidget" name="treeSiphraRegMap">
+          <property name="toolTip">
+           <string>Right-click to read and write individual registers</string>
+          </property>
           <property name="alternatingRowColors">
            <bool>true</bool>
           </property>
@@ -615,6 +618,22 @@
   <action name="actionSaveSiphraConfig">
    <property name="text">
     <string>Save SIPHRA config...</string>
+   </property>
+  </action>
+  <action name="actionReadSiphraReg">
+   <property name="text">
+    <string>Read</string>
+   </property>
+   <property name="toolTip">
+    <string>Read SIPHRA register</string>
+   </property>
+  </action>
+  <action name="actionWriteSiphraReg">
+   <property name="text">
+    <string>Write</string>
+   </property>
+   <property name="toolTip">
+    <string>Write SIPHRA register</string>
    </property>
   </action>
  </widget>

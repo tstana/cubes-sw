@@ -52,6 +52,8 @@
 #include <QWaitCondition>
 #include <QMutex>
 
+#include <QDebug>
+
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CubesControl),
@@ -135,6 +137,11 @@ CubesControl::CubesControl(QWidget *parent) :
     ui->treeSiphraRegMap->setColumnWidth(1, 200);
     ui->treeSiphraRegMap->setColumnWidth(2, 100);
     ui->treeSiphraRegMap->header()->setSectionResizeMode(3, QHeaderView::Stretch);
+
+    /* Prepare treeSiphraRegMap for a custom context menu */
+    ui->treeSiphraRegMap->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->treeSiphraRegMap, &QWidget::customContextMenuRequested,
+            this, &CubesControl::on_treeSiphraRegMap_contextMenuRequested);
 
     /* Create communication objects */
     serialPort = new QSerialPort();
@@ -302,6 +309,30 @@ void CubesControl::on_actionSaveSiphraConfig_triggered()
         }
     }
     file.close();
+}
+
+void CubesControl::on_actionReadSiphraReg_triggered()
+{
+    QMessageBox box;
+    QString s;
+    s = "Reading: \n\n";
+    s += "0x" + QString::number(m_siphraRegAddr&0xff, 16).rightJustified(2, '0').toUpper()
+         + " : " +
+        "0x" + QString::number(m_siphraRegVal&0xffffffff, 16).rightJustified(8, '0').toUpper();
+    box.setText(s);
+    box.exec();
+}
+
+void CubesControl::on_actionWriteSiphraReg_triggered()
+{
+    QMessageBox box;
+    QString s;
+    s = "Writing: \n\n";
+    s += "0x" + QString::number(m_siphraRegAddr&0xff, 16).rightJustified(2, '0').toUpper()
+         + " : " +
+        "0x" + QString::number(m_siphraRegVal&0xffffffff, 16).rightJustified(8, '0').toUpper();
+    box.setText(s);
+    box.exec();
 }
 
 void CubesControl::on_cubes_devReadReady()
@@ -539,4 +570,36 @@ void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int co
     ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::CurrentChanged);
     siphraItem->setRegisterValue(siphraItem->indexOfChild(item), bitFieldValue);
     ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::NoEditTriggers);
+}
+
+void CubesControl::on_treeSiphraRegMap_contextMenuRequested(const QPoint &p)
+{
+    SiphraTreeWidgetItem *item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->itemAt(p);
+
+    /*
+     * Make sure we write the whole register, not just the bit field value
+     *
+     * If the user right-clicks the top-level item in the tree view, parent()
+     * returns 0, therefore we can leave the SiphraTreeWidgetItem as previously
+     * set.
+     *
+     * Alternatively, right-clicking on a bit-field value in the
+     * SiphraTreeWidgetItem will result in parent() returning a pointer to the
+     * top-level item, which holds the full value of the register we need to write.
+     *
+     * This all needs to be done because of the current implementation of
+     * SiphraTreeWidgetItem, which doesn't hold a member for the register value,
+     * but instead it relies on the value written in column 2 of the tree widget.
+     */
+    if (item->parent() != 0) {
+        item = (SiphraTreeWidgetItem *)item->parent();
+    }
+
+    m_siphraRegAddr = item->registerAddress();
+    m_siphraRegVal = item->registerValue();
+
+    QMenu menu;
+    menu.addAction(ui->actionReadSiphraReg);
+    menu.addAction(ui->actionWriteSiphraReg);
+    menu.exec(QCursor::pos());
 }
