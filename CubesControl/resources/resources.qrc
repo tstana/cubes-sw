@@ -8,4 +8,10 @@
     <qresource prefix="/cubescontrol/collapsebutton">
         <file>collapse-ico.png</file>
     </qresource>
+    <qresource prefix="/cubescontrol/arrow_right">
+        <file>arrow-right.png</file>
+    </qresource>
+    <qresource prefix="/cubescontrol/arrow_left">
+        <file>arrow-left.png</file>
+    </qresource>
 </RCC>

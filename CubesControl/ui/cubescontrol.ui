@@ -621,6 +621,10 @@
    </property>
   </action>
   <action name="actionReadSiphraReg">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/cubescontrol/arrow_left/arrow-left.png</normaloff>:/cubescontrol/arrow_left/arrow-left.png</iconset>
+   </property>
    <property name="text">
     <string>Read</string>
    </property>
@@ -629,6 +633,10 @@
    </property>
   </action>
   <action name="actionWriteSiphraReg">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/cubescontrol/arrow_right/arrow-right.png</normaloff>:/cubescontrol/arrow_right/arrow-right.png</iconset>
+   </property>
    <property name="text">
     <string>Write</string>
    </property>
