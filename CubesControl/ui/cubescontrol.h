@@ -47,6 +47,7 @@
 #include <QLabel>
 #include <QTreeWidgetItem>
 #include <QSerialPort>
+#include <QTimer>
 
 namespace Ui {
 class CubesControl;
@@ -90,6 +91,8 @@ private slots:
 
     void on_siphraAdcPollToggled();
 
+    void on_tmrSiphraAdcPoll_timeout();
+
 signals:
     void siphraAdcPollToggled();
 
@@ -114,6 +117,8 @@ private:
     double              m_siphraAdcValue;
     qint8               m_siphraAdcChan;
     bool                m_siphraAdcPollEnabled;
+
+    QTimer              *tmrSiphraAdcPoll;
 
     void    showConnStatus(int connUp);
 };

@@ -75,14 +75,18 @@ CubesControl::CubesControl(QWidget *parent) :
     connect(commSettings, SIGNAL(accepted()),
             ui->actionConnect, SIGNAL(triggered()));
 
-    /* Prepare ADC poll view */
+    /* Prepare ADC poll */
     ui->lblAdcChan->setText("");
-    m_siphraAdcValue = 1.23;
+    m_siphraAdcValue = 0.0;
     ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
     m_siphraAdcPollEnabled = false;
     ui->btnToggleAdcPoll->setText("Enable");
     connect(this, &CubesControl::siphraAdcPollToggled,
             this, &CubesControl::on_siphraAdcPollToggled);
+
+    tmrSiphraAdcPoll = new QTimer(this);
+    connect(tmrSiphraAdcPoll, &QTimer::timeout,
+            this, &CubesControl::on_tmrSiphraAdcPoll_timeout);
 
     /* Connect LED check box clicks to single handler */
     connect(ui->checkboxLed0, &QCheckBox::clicked,
@@ -475,9 +479,18 @@ void CubesControl::on_siphraAdcPollToggled()
 {
     if (m_siphraAdcPollEnabled) {
         ui->btnToggleAdcPoll->setText("Disable");
+        tmrSiphraAdcPoll->start(500);
     } else {
         ui->btnToggleAdcPoll->setText("Enable");
+        tmrSiphraAdcPoll->stop();
     }
+}
+
+void CubesControl::on_tmrSiphraAdcPoll_timeout()
+{
+    ++m_siphraAdcChan;
+    m_siphraAdcChan %= 18;
+    ui->lblAdcChan->setText(QString::number(m_siphraAdcChan));
 }
 
 void CubesControl::on_anyLedCheckbox_clicked()
