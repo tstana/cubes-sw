@@ -175,6 +175,13 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>Click to turn on:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QCheckBox" name="checkboxLed7">
                <property name="text">
                 <string>7</string>
