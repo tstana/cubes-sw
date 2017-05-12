@@ -104,6 +104,9 @@ private:
     qint8               m_siphraRegAddr;
     qint32              m_siphraRegVal;
 
+    double              m_siphraAdcValue;
+    qint8               m_siphraAdcChan;
+
     void    showConnStatus(int connUp);
 };
 

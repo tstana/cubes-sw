@@ -75,6 +75,12 @@ CubesControl::CubesControl(QWidget *parent) :
     connect(commSettings, SIGNAL(accepted()),
             ui->actionConnect, SIGNAL(triggered()));
 
+    /* Prepare ADC poll view */
+    ui->lblAdcChan->setText("");
+    m_siphraAdcValue = 1.23;
+    ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
+    ui->btnToggleAdcPoll->setText("Enable");
+
     /* Connect LED check box clicks to single handler */
     connect(ui->checkboxLed0, &QCheckBox::clicked,
             this, on_anyLedCheckbox_clicked);
