@@ -83,5 +83,6 @@ private:
 #define CMD_GET_LEDS                0x92
 #define CMD_SIPHRA_REG_OP           0x93
 #define CMD_GET_SIPHRA_DATAR        0x94
+#define CMD_GET_SIPHRA_ADCR         0x95
 
 #endif // __CUBESCOMMANDS_H_

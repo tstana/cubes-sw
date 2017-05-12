@@ -105,7 +105,12 @@ quint8 CubesCommand::decode(const quint8 code)
     case CMD_GET_SIPHRA_DATAR:
         m_dataBytes = 4;
         m_dataDirection = Read;
-        m_description = "Get SIPHRA data and control and status register values";
+        m_description = "Get SIPHRA data register value";
+        break;
+    case CMD_GET_SIPHRA_ADCR:
+        m_dataBytes = 4;
+        m_dataDirection = Read;
+        m_description = "Get SIPHRA ADC register value";
         break;
     default:
         return -1;
