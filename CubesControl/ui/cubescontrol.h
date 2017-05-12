@@ -74,6 +74,7 @@ private slots:
     void on_actionReadSiphraReg_triggered();
     void on_actionWriteSiphraReg_triggered();
 
+    void on_btnToggleAdcPoll_clicked();
     void on_anyLedCheckbox_clicked();
     void on_btnReadAllCubesRegs_clicked();
     void on_btnExpandSiphraRegTable_clicked();
@@ -85,6 +86,12 @@ private slots:
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_contextMenuRequested(const QPoint &p);
+    void on_tabWidget_currentChanged(int index);
+
+    void on_siphraAdcPollToggled();
+
+signals:
+    void siphraAdcPollToggled();
 
 private:
     Ui::CubesControl    *ui;
@@ -106,6 +113,7 @@ private:
 
     double              m_siphraAdcValue;
     qint8               m_siphraAdcChan;
+    bool                m_siphraAdcPollEnabled;
 
     void    showConnStatus(int connUp);
 };

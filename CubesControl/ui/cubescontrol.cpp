@@ -79,7 +79,10 @@ CubesControl::CubesControl(QWidget *parent) :
     ui->lblAdcChan->setText("");
     m_siphraAdcValue = 1.23;
     ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
+    m_siphraAdcPollEnabled = false;
     ui->btnToggleAdcPoll->setText("Enable");
+    connect(this, &CubesControl::siphraAdcPollToggled,
+            this, &CubesControl::on_siphraAdcPollToggled);
 
     /* Connect LED check box clicks to single handler */
     connect(ui->checkboxLed0, &QCheckBox::clicked,
@@ -458,6 +461,25 @@ void CubesControl::on_cubes_devErrorOccured(int error)
         statusBar()->showMessage(msg, 5000);
 }
 
+void CubesControl::on_btnToggleAdcPoll_clicked()
+{
+    if (m_siphraAdcPollEnabled)
+        m_siphraAdcPollEnabled = false;
+    else
+        m_siphraAdcPollEnabled = true;
+
+    emit siphraAdcPollToggled();
+}
+
+void CubesControl::on_siphraAdcPollToggled()
+{
+    if (m_siphraAdcPollEnabled) {
+        ui->btnToggleAdcPoll->setText("Disable");
+    } else {
+        ui->btnToggleAdcPoll->setText("Enable");
+    }
+}
+
 void CubesControl::on_anyLedCheckbox_clicked()
 {
     if (!connStatus) {
@@ -645,4 +667,12 @@ void CubesControl::on_treeSiphraRegMap_contextMenuRequested(const QPoint &p)
     menu.addAction(ui->actionReadSiphraReg);
     menu.addAction(ui->actionWriteSiphraReg);
     menu.exec(QCursor::pos());
+}
+
+void CubesControl::on_tabWidget_currentChanged(int index)
+{
+    if (index != 1) {
+        m_siphraAdcPollEnabled = false;
+        emit siphraAdcPollToggled();
+    }
 }
