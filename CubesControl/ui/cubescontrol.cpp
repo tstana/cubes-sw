@@ -425,6 +425,14 @@ void CubesControl::on_cubes_devReadReady()
         }
         break;
     }
+    case CMD_GET_SIPHRA_ADCR:
+        m_siphraAdcChan = data[1] & 0x1f;
+        m_siphraAdcValue = ((data[2] & 0x7) << 8) | (data[3] & 0xff);
+        if (m_siphraAdcPollEnabled) {
+            ui->lblAdcChan->setText(QString::number(m_siphraAdcChan));
+            ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
+        }
+        break;
     default:
         break;
     }
@@ -488,9 +496,9 @@ void CubesControl::on_siphraAdcPollToggled()
 
 void CubesControl::on_tmrSiphraAdcPoll_timeout()
 {
-    ++m_siphraAdcChan;
-    m_siphraAdcChan %= 18;
-    ui->lblAdcChan->setText(QString::number(m_siphraAdcChan));
+    QByteArray dummy;
+    dummy.resize(4);
+    cubes->sendCommand(CMD_GET_SIPHRA_ADCR, dummy);
 }
 
 void CubesControl::on_anyLedCheckbox_clicked()
