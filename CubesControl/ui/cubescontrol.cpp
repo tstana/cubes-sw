@@ -426,13 +426,20 @@ void CubesControl::on_cubes_devReadReady()
         break;
     }
     case CMD_GET_SIPHRA_ADCR:
+    {
+        /*
+         * Get the trigger channel and data, and adjust the data to 610uV
+         * per MSB before displaying
+         */
         m_siphraAdcChan = data[1] & 0x1f;
-        m_siphraAdcValue = ((data[2] & 0x7) << 8) | (data[3] & 0xff);
+        m_siphraAdcValue = (double)(((data[2] & 0xf) << 8) | (data[3] & 0xff));
+        m_siphraAdcValue *= 0.610;
         if (m_siphraAdcPollEnabled) {
             ui->lblAdcChan->setText(QString::number(m_siphraAdcChan));
             ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
         }
         break;
+    }
     default:
         break;
     }
