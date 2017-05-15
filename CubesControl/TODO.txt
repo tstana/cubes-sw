@@ -1,5 +1,6 @@
 - CommSettingsDialog: implement btnConnect instead of btnOk
 - ADC_CONFIG register writing and reading weird
+- replace all "m_" members with "this->"
 - comment code
 - (if changed in cubes-gw) endianness of receiving data from FPGA
 - SiphraAsic
