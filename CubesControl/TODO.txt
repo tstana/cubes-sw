@@ -1,0 +1,10 @@
+- CommSettingsDialog: implement btnConnect instead of btnOk
+- ADC_CONFIG register writing and reading weird
+- comment code
+- (if changed in cubes-gw) endianness of receiving data from FPGA
+- SiphraAsic
+- SiphraConfigDevice
+- decodeIdeasConfigFile()
+- implement MSP
+- implement ICubesProtocol as base class of proto implementations using
+SiphraConfigDevice
