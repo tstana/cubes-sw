@@ -48,6 +48,9 @@
 #include <QTreeWidgetItem>
 #include <QSerialPort>
 #include <QTimer>
+#include <QtCharts/QtCharts>
+
+using namespace QtCharts;
 
 namespace Ui {
 class CubesControl;
@@ -88,6 +91,7 @@ private slots:
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_contextMenuRequested(const QPoint &p);
     void on_tabWidget_currentChanged(int index);
+    void on_cbNumBins_currentTextChanged(const QString &arg1);
 
     void on_siphraAdcPollToggled();
 
@@ -119,6 +123,9 @@ private:
     bool                m_siphraAdcPollEnabled;
 
     QTimer              *tmrSiphraAdcPoll;
+
+    QVector<quint16>    histogramData;
+    int                 histogramNumBins;
 
     void    showConnStatus(int connUp);
 };

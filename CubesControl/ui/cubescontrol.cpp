@@ -52,6 +52,10 @@
 #include <QWaitCondition>
 #include <QMutex>
 
+#include <QtCharts/QBarSet>
+#include <QtCharts/QBarSeries>
+#include <QtCharts/QBarCategoryAxis>
+
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CubesControl),
@@ -153,6 +157,41 @@ CubesControl::CubesControl(QWidget *parent) :
     ui->treeSiphraRegMap->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->treeSiphraRegMap, &QWidget::customContextMenuRequested,
             this, &CubesControl::on_treeSiphraRegMap_contextMenuRequested);
+
+    /* Create histogram chart view */
+    histogramNumBins = ui->cbNumBins->currentText().toInt();
+    histogramData.fill(0, histogramNumBins);
+
+    QBarSet *set = new QBarSet("Channel amplitude");
+    for (int i = 0; i < histogramNumBins; i++) {
+        set->append(histogramData[i]);
+        set->setColor(QColor(0, 0, 128, 255));
+        set->setBorderColor(QColor(0, 0, 128, 255));
+    }
+    QBarSeries *series = new QBarSeries;
+    series->append(set);
+    series->setBarWidth(1);
+
+    QBarCategoryAxis *axisX = new QBarCategoryAxis;
+    axisX->setLabelsVisible(false);
+    axisX->setGridLineVisible(false);
+    for (int i = 0; i < histogramNumBins; i++) {
+        axisX->append(QString::number(i));
+    }
+
+    QValueAxis *axisY = new QValueAxis;
+    axisY->setRange(0, 64);
+    axisY->setLabelFormat("%d");
+
+    QChart *chart = new QChart;
+    chart->addSeries(series);
+    chart->setTitle("Histogram");
+    chart->setAxisX(axisX, series);
+    chart->setAxisY(axisY, series);
+    chart->legend()->setVisible(false);
+
+    ui->histogram->setChart(chart);
+//    ui->histogram->setRenderHint(QPainter::Antialiasing);
 
     /* Create communication objects */
     serialPort = new QSerialPort();
@@ -616,6 +655,48 @@ void CubesControl::on_btnReadAllSiphraRegs_clicked()
     m_readAllSiphraRegs = true;
     m_siphraRegAddr = 0x00;
     cubes->sendCommand(CMD_GET_SIPHRA_DATAR, data);
+}
+
+void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
+{
+    tmrSiphraAdcPoll->stop();
+
+    histogramNumBins = arg1.toInt();
+    histogramData.fill(0, histogramNumBins);
+
+    QBarSet *set = new QBarSet("ADC value", this);
+    for (int i = 0; i < histogramNumBins; i++) {
+        set->append(histogramData[i]);
+        set->setColor(QColor(0, 0, 128, 255));
+        set->setBorderColor(QColor(0, 0, 128, 255));
+    }
+    QBarSeries *series = new QBarSeries();
+    series->append(set);
+    series->setBarWidth(1);
+
+    QChart *chart = new QChart;
+    chart->setTitle("Histogram");
+    chart->setAnimationOptions(QChart::NoAnimation);
+    chart->addSeries(series);
+
+    QBarCategoryAxis *axisX = new QBarCategoryAxis;
+    axisX->setLabelsVisible(false);
+    axisX->setGridLineVisible(false);
+    QValueAxis *axisY = new QValueAxis;
+    axisY->setRange(0, 64);
+    axisY->setLabelFormat("%d");
+
+    chart->setAxisX(axisX, series);
+    chart->setAxisY(axisY, series);
+
+    chart->legend()->setVisible(false);
+
+    QChart *oldChart = ui->histogram->chart();
+    ui->histogram->setChart(chart);
+    delete oldChart;
+
+    if (m_siphraAdcPollEnabled)
+        tmrSiphraAdcPoll->start();
 }
 
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
