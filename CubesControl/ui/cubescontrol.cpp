@@ -85,8 +85,7 @@ CubesControl::CubesControl(QWidget *parent) :
     ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
     m_siphraAdcPollEnabled = false;
     ui->btnToggleAdcPoll->setText("Enable");
-    connect(this, &CubesControl::siphraAdcPollToggled,
-            this, &CubesControl::on_siphraAdcPollToggled);
+    ui->btnToggleAdcPollHisto->setText("Enable");
 
     tmrSiphraAdcPoll = new QTimer(this);
     connect(tmrSiphraAdcPoll, &QTimer::timeout,
@@ -419,6 +418,41 @@ void CubesControl::on_actionWriteSiphraReg_triggered()
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 }
 
+void CubesControl::on_actionToggleAdcPoll_triggered()
+{
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open!", 5000);
+        return;
+    }
+
+    if (m_siphraAdcPollEnabled)
+        m_siphraAdcPollEnabled = false;
+    else
+        m_siphraAdcPollEnabled = true;
+
+    on_actionToggleAdcPoll_triggered(m_siphraAdcPollEnabled);
+}
+
+void CubesControl::on_actionToggleAdcPoll_triggered(bool checked)
+{
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open!", 5000);
+        return;
+    }
+
+    m_siphraAdcPollEnabled = checked;
+
+    if (checked) {
+        ui->btnToggleAdcPoll->setText("Disable");
+        ui->btnToggleAdcPollHisto->setText("Disable");
+        tmrSiphraAdcPoll->start(500);
+    } else {
+        ui->btnToggleAdcPoll->setText("Enable");
+        ui->btnToggleAdcPollHisto->setText("Enable");
+        tmrSiphraAdcPoll->stop();
+    }
+}
+
 void CubesControl::on_cubes_devReadReady()
 {
     QString s;
@@ -521,23 +555,7 @@ void CubesControl::on_cubes_devErrorOccured(int error)
 
 void CubesControl::on_btnToggleAdcPoll_clicked()
 {
-    if (m_siphraAdcPollEnabled)
-        m_siphraAdcPollEnabled = false;
-    else
-        m_siphraAdcPollEnabled = true;
-
-    emit siphraAdcPollToggled();
-}
-
-void CubesControl::on_siphraAdcPollToggled()
-{
-    if (m_siphraAdcPollEnabled) {
-        ui->btnToggleAdcPoll->setText("Disable");
-        tmrSiphraAdcPoll->start(500);
-    } else {
-        ui->btnToggleAdcPoll->setText("Enable");
-        tmrSiphraAdcPoll->stop();
-    }
+    on_actionToggleAdcPoll_triggered();
 }
 
 void CubesControl::on_tmrSiphraAdcPoll_timeout()
@@ -699,6 +717,11 @@ void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
         tmrSiphraAdcPoll->start();
 }
 
+void CubesControl::on_btnToggleAdcPollHisto_clicked()
+{
+    on_actionToggleAdcPoll_triggered();
+}
+
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     if (column == 2) {
@@ -776,12 +799,4 @@ void CubesControl::on_treeSiphraRegMap_contextMenuRequested(const QPoint &p)
     menu.addAction(ui->actionReadSiphraReg);
     menu.addAction(ui->actionWriteSiphraReg);
     menu.exec(QCursor::pos());
-}
-
-void CubesControl::on_tabWidget_currentChanged(int index)
-{
-    if (index != 1) {
-        m_siphraAdcPollEnabled = false;
-        emit siphraAdcPollToggled();
-    }
 }

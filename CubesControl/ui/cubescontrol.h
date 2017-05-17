@@ -77,8 +77,9 @@ private slots:
     void on_actionSaveSiphraConfig_triggered();
     void on_actionReadSiphraReg_triggered();
     void on_actionWriteSiphraReg_triggered();
+    void on_actionToggleAdcPoll_triggered();
+    void on_actionToggleAdcPoll_triggered(bool checked);
 
-    void on_btnToggleAdcPoll_clicked();
     void on_anyLedCheckbox_clicked();
     void on_btnReadAllCubesRegs_clicked();
     void on_btnExpandSiphraRegTable_clicked();
@@ -87,18 +88,15 @@ private slots:
     void on_btnSaveSiphraConfig_clicked();
     void on_btnWriteAllSiphraRegs_clicked();
     void on_btnReadAllSiphraRegs_clicked();
+    void on_btnToggleAdcPoll_clicked();
+    void on_btnToggleAdcPollHisto_clicked();
+    void on_cbNumBins_currentTextChanged(const QString &arg1);
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_contextMenuRequested(const QPoint &p);
-    void on_tabWidget_currentChanged(int index);
-    void on_cbNumBins_currentTextChanged(const QString &arg1);
-
-    void on_siphraAdcPollToggled();
 
     void on_tmrSiphraAdcPoll_timeout();
 
-signals:
-    void siphraAdcPollToggled();
 
 private:
     Ui::CubesControl    *ui;
