@@ -244,6 +244,13 @@
            </spacer>
           </item>
           <item>
+           <widget class="QPushButton" name="btnToggleAdcPollHisto">
+            <property name="text">
+             <string>PushButton</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="btnClear">
             <property name="text">
              <string>Clear</string>
@@ -879,6 +886,11 @@
    </property>
    <property name="toolTip">
     <string>Write SIPHRA register</string>
+   </property>
+  </action>
+  <action name="actionToggleAdcPoll">
+   <property name="text">
+    <string>Toggle ADC poll</string>
    </property>
   </action>
  </widget>
