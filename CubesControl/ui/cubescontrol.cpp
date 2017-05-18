@@ -507,7 +507,7 @@ void CubesControl::on_cubes_devReadReady()
             ++m_siphraRegAddr;
             if (m_siphraRegAddr >= ui->treeSiphraRegMap->topLevelItemCount()) {
                 m_siphraRegAddr = 0;
-                statusBar()->showMessage("Read all SIPHRA registers finished.");
+                statusBar()->showMessage("Read all SIPHRA registers finished.", 5000);
             } else {
                 for (int i = 0; i < 7; ++i) {
                     data[i] = 0x00;
