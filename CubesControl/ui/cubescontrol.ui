@@ -251,7 +251,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btnClear">
+           <widget class="QPushButton" name="btnClearHistogram">
             <property name="text">
              <string>Clear</string>
             </property>

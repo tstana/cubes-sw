@@ -700,6 +700,17 @@ void CubesControl::on_btnReadAllSiphraRegs_clicked()
     cubes->sendCommand(CMD_GET_SIPHRA_DATAR, data);
 }
 
+void CubesControl::on_btnClearHistogram_clicked()
+{
+    histogramData.fill(0);
+
+    QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
+    for (int i = 0; i < histogramNumBins; i++) {
+        series->barSets()[0]->replace(i, 0);
+    }
+    ui->histogram->chart()->axisY(series)->setRange(0, 64);
+}
+
 void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
 {
     tmrSiphraAdcPoll->stop();

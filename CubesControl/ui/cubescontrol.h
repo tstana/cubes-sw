@@ -90,6 +90,7 @@ private slots:
     void on_btnReadAllSiphraRegs_clicked();
     void on_btnToggleAdcPoll_clicked();
     void on_btnToggleAdcPollHisto_clicked();
+    void on_btnClearHistogram_clicked();
     void on_cbNumBins_currentTextChanged(const QString &arg1);
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
