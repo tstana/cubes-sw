@@ -5,6 +5,8 @@
 - (if changed in cubes-gw) endianness of receiving data from FPGA
 - SiphraAsic
 - SiphraConfigDevice
+- ADC_MAX_VALUE belongs to SiphraConfigDevice
+- update ADC_MAX_VALUE in cubescontrol.cpp
 - decodeIdeasConfigFile()
 - implement MSP
 - implement ICubesProtocol as base class of proto implementations using

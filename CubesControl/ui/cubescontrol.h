@@ -94,9 +94,9 @@ private slots:
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_contextMenuRequested(const QPoint &p);
+    void on_tabWidget_currentChanged(int index);
 
     void on_tmrSiphraAdcPoll_timeout();
-
 
 private:
     Ui::CubesControl    *ui;
@@ -126,6 +126,7 @@ private:
     int                 histogramNumBins;
 
     void    showConnStatus(int connUp);
+    void    updateHistogram();
 };
 
 #endif // CUBESCONTROL_H

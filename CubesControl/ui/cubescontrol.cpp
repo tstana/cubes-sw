@@ -231,6 +231,25 @@ void CubesControl::showConnStatus(int connUp)
     }
 }
 
+/* TODO: Move this define to a more generic place... */
+#define ADC_MAX_VALUE           4096;
+
+void CubesControl::updateHistogram()
+{
+    int idx = m_siphraAdcValue*histogramNumBins / ADC_MAX_VALUE;
+    ++histogramData[idx];
+
+    if (ui->tabWidget->currentIndex() == 1) {
+        QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
+        series->barSets()[0]->replace(idx, histogramData[idx]);
+
+        QValueAxis *axisY = (QValueAxis *)ui->histogram->chart()->axisY(series);
+        if (histogramData[idx] > axisY->max()) {
+            axisY->setMax(2*axisY->max());
+        }
+    }
+}
+
 void CubesControl::on_actionConnect_triggered()
 {
     QString msg = "";
@@ -501,16 +520,21 @@ void CubesControl::on_cubes_devReadReady()
     case CMD_GET_SIPHRA_ADCR:
     {
         /*
-         * Get the trigger channel and data, and adjust the data to 610uV
-         * per MSB before displaying
+         * Get the trigger channel and data, and update the histogram data set.
+         * The viewing widgets are updated only if they are visible (the tab
+         * which they are a child of is being dispalyed).
          */
         bool trigged = (data[0] & 0x80);
         m_siphraAdcChan = data[1] & 0x1f;
         m_siphraAdcValue = (double)(((data[2] & 0xf) << 8) | (data[3] & 0xff));
-        m_siphraAdcValue *= 0.610;
         if (m_siphraAdcPollEnabled && trigged) {
-            ui->lblAdcChan->setText(QString::number(m_siphraAdcChan));
-            ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
+            updateHistogram();
+            if (ui->tabWidget->currentIndex() == 2) {
+                /* Adjust the data to 610uV per MSB before displaying */
+                m_siphraAdcValue *= 0.610;
+                ui->lblAdcChan->setText(QString::number(m_siphraAdcChan));
+                ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
+            }
         }
         break;
     }
@@ -800,4 +824,16 @@ void CubesControl::on_treeSiphraRegMap_contextMenuRequested(const QPoint &p)
     menu.addAction(ui->actionReadSiphraReg);
     menu.addAction(ui->actionWriteSiphraReg);
     menu.exec(QCursor::pos());
+}
+
+void CubesControl::on_tabWidget_currentChanged(int index)
+{
+    /* Update histogram chart with new values */
+    if (index == 1) {
+        QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
+        QBarSet *set = series->barSets()[0];
+        for (int i = 0; i < histogramNumBins; i++) {
+            set->replace(i, histogramData[i]);
+        }
+    }
 }
