@@ -445,7 +445,7 @@ void CubesControl::on_actionToggleAdcPoll_triggered(bool checked)
     if (checked) {
         ui->btnToggleAdcPoll->setText("Disable");
         ui->btnToggleAdcPollHisto->setText("Disable");
-        tmrSiphraAdcPoll->start(500);
+        tmrSiphraAdcPoll->start(10);
     } else {
         ui->btnToggleAdcPoll->setText("Enable");
         ui->btnToggleAdcPollHisto->setText("Enable");
@@ -504,10 +504,11 @@ void CubesControl::on_cubes_devReadReady()
          * Get the trigger channel and data, and adjust the data to 610uV
          * per MSB before displaying
          */
+        bool trigged = (data[0] & 0x80);
         m_siphraAdcChan = data[1] & 0x1f;
         m_siphraAdcValue = (double)(((data[2] & 0xf) << 8) | (data[3] & 0xff));
         m_siphraAdcValue *= 0.610;
-        if (m_siphraAdcPollEnabled) {
+        if (m_siphraAdcPollEnabled && trigged) {
             ui->lblAdcChan->setText(QString::number(m_siphraAdcChan));
             ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
         }
