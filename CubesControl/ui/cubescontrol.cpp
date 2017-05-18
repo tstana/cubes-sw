@@ -236,16 +236,18 @@ void CubesControl::showConnStatus(int connUp)
 
 void CubesControl::updateHistogram()
 {
-    int idx = m_siphraAdcValue*histogramNumBins / ADC_MAX_VALUE;
-    ++histogramData[idx];
+    if (m_siphraAdcChan == ui->spinboxHistogramChannel->value()) {
+        int idx = m_siphraAdcValue*histogramNumBins / ADC_MAX_VALUE;
+        ++histogramData[idx];
 
-    if (ui->tabWidget->currentIndex() == 1) {
-        QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
-        series->barSets()[0]->replace(idx, histogramData[idx]);
+        if (ui->tabWidget->currentIndex() == 1) {
+            QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
+            series->barSets()[0]->replace(idx, histogramData[idx]);
 
-        QValueAxis *axisY = (QValueAxis *)ui->histogram->chart()->axisY(series);
-        if (histogramData[idx] > axisY->max()) {
-            axisY->setMax(2*axisY->max());
+            QValueAxis *axisY = (QValueAxis *)ui->histogram->chart()->axisY(series);
+            if (histogramData[idx] > axisY->max()) {
+                axisY->setMax(2*axisY->max());
+            }
         }
     }
 }
