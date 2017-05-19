@@ -234,8 +234,23 @@ void CubesControl::showConnStatus(int connUp)
 /* TODO: Move this define to a more generic place... */
 #define ADC_MAX_VALUE           4096;
 
-void CubesControl::updateHistogram()
+void CubesControl::updateHistogram(bool updateAll = false)
 {
+    /* No update to be done if not connected or polling not enabled! */
+    if ((!connStatus) || (!m_siphraAdcPollEnabled))
+        return;
+
+    /* Update all values and return - this is in case the user changes to the histogram pane */
+    if (updateAll) {
+        QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
+        QBarSet *set = series->barSets()[0];
+        for (int i = 0; i < histogramNumBins; i++) {
+            set->replace(i, histogramData[i]);
+        }
+        return;
+    }
+
+    /* Update histogram iff triggered channel is the one we should update */
     if (m_siphraAdcChan == ui->spinboxHistogramChannel->value()) {
         int idx = m_siphraAdcValue*histogramNumBins / ADC_MAX_VALUE;
         ++histogramData[idx];
@@ -843,10 +858,6 @@ void CubesControl::on_tabWidget_currentChanged(int index)
 {
     /* Update histogram chart with new values */
     if (index == 1) {
-        QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
-        QBarSet *set = series->barSets()[0];
-        for (int i = 0; i < histogramNumBins; i++) {
-            set->replace(i, histogramData[i]);
-        }
+        updateHistogram(true);
     }
 }
