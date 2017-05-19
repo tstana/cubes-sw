@@ -250,7 +250,10 @@ void CubesControl::updateHistogram(bool updateAll = false)
         return;
     }
 
-    /* Update histogram iff triggered channel is the one we should update */
+    /*
+     * Update histogram iff triggered channel is the one we should update AND
+     * we are on the histogram pane/
+     */
     if (m_siphraAdcChan == ui->spinboxHistogramChannel->value()) {
         int idx = m_siphraAdcValue*histogramNumBins / ADC_MAX_VALUE;
         ++histogramData[idx];
@@ -260,8 +263,11 @@ void CubesControl::updateHistogram(bool updateAll = false)
             series->barSets()[0]->replace(idx, histogramData[idx]);
 
             QValueAxis *axisY = (QValueAxis *)ui->histogram->chart()->axisY(series);
-            if (histogramData[idx] > axisY->max()) {
-                axisY->setMax(2*axisY->max());
+            int currentMax = axisY->max();
+            /* Adapt Y axis range based on max value in histogram */
+            if (histogramData[idx] > currentMax) {
+                (currentMax < 256) ? axisY->setMax(currentMax * 2) :
+                                     axisY->setMax(currentMax + 256);
             }
         }
     }
