@@ -106,7 +106,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             child(1)->setText(3, "AIN input current offset");
             child(2)->setText(0, "14");
             child(2)->setText(1, "cmis_impedance_reduction");
-            child(2)->setText(3, "AIN input impedance (VBIAS. 0=5uA, 1=10uA)");
+            child(2)->setText(3, "AIN input impedance (VBIAS)\n0 = 5uA\n1 = 10uA");
             child(3)->setText(0, "13");
             child(3)->setText(1, "cal_select_channel");
             child(3)->setText(3, "Calibration Test Enable");
@@ -173,10 +173,10 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             }
             child(0)->setText(0, "23:21");
             child(0)->setText(1, "cmis_gain");
-            child(0)->setText(3, "CMIS gain setting, inverted in analog core");
+            child(0)->setText(3, "CMIS gain setting\n0 = 1/10\n1 = 1/100\n3 = 1/200\n7 = 1/400");
             child(1)->setText(0, "20:19");
             child(1)->setText(1, "ci_gain");
-            child(1)->setText(3, "Current integrator gain setting");
+            child(1)->setText(3, "Current integrator gain setting\n0 = 1V/30pC\n1 = 1V/27.75pC\n2 = 1V/3pC\n3 = 1V/0.75pC");
             child(2)->setText(0, "18");
             child(2)->setText(1, "ci_compmode");
             child(2)->setText(3, "Current integrator compensation mode");
@@ -217,25 +217,25 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             child(0)->setText(3, "Current integrator high-impedance feedback DAC (decay time)");
             child(1)->setText(0, "14");
             child(1)->setText(1, "ci_use_reset");
-            child(1)->setText(3, "Current integrator reset use\n 0=don't use reset\n 1=use readout reset");
+            child(1)->setText(3, "Current integrator reset use\n0 = don't use reset\n1 = use readout reset");
             child(2)->setText(0, "13");
             child(2)->setText(1, "th_select_input");
-            child(2)->setText(3, "Track and hold\n 0=Select Shaper\n 1=Select Current Integrator");
+            child(2)->setText(3, "Track and hold\n0 = Select Shaper\n1 = Select Current Integrator");
             child(3)->setText(0, "12:11");
             child(3)->setText(1, "cb_select_input");
-            child(3)->setText(3, "Channel Buffer, selects CI, TH or SHA_BUF");
+            child(3)->setText(3, "Select input to AOUT channel buffers\n0 = TH\n1 = SHA\n2 = CI");
             child(4)->setText(0, "10");
             child(4)->setText(1, "ms_select_input");
-            child(4)->setText(3, "Trigger Buffer Source\n 0=Use QT\n 1=Use CT");
+            child(4)->setText(3, "Trigger Buffer source\n0 = Use QT\n1 = Use CT");
             child(5)->setText(0, "9");
             child(5)->setText(1, "cc_enable_dcc");
-            child(5)->setText(3, "Current Comparator dark current compensation\n 0=disable\n 1=enable");
+            child(5)->setText(3, "Enable current comparator dark current compensation");
             child(6)->setText(0, "8:1");
             child(6)->setText(1, "cc_threshold");
             child(6)->setText(3, "Current Comparator reference threshold");
             child(7)->setText(0, "0");
             child(7)->setText(1, "pt100_enable_excitation");
-            child(7)->setText(3, "PT100 preamplifier 0.5mA excitation current\n 0=disable\n 1=enable");
+            child(7)->setText(3, "Enable PT100 preamplifier 0.5mA excitation current");
             break;
 
         case SIPHRA_ADC_CONFIG:
@@ -255,13 +255,13 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             }
             child(0)->setText(0, "5");
             child(0)->setText(1, "analog_readout_mode");
-            child(0)->setText(3, "1=Disable ADC");
+            child(0)->setText(3, "1 = Disable ADC;\ncaptured analog data presented for adc_sample_duration clock cycles;\nTXD is '1' during first SYSCLK cycle of first data presented");
             child(1)->setText(0, "4:1");
             child(1)->setText(1, "adc_sample_duration");
-            child(1)->setText(3, "ADC sampling duration in clock cycles\n Default = 4");
+            child(1)->setText(3, "ADC sampling duration in clock cycles (default = 4)");
             child(2)->setText(0, "0");
             child(2)->setText(1, "adc_mode");
-            child(2)->setText(3, "0=standby & automatic wakeup\n1=always on");
+            child(2)->setText(3, "0 = standby & automatic wakeup\n1 = always on");
             break;
 
         case SIPHRA_CAL_DAC:
@@ -341,7 +341,7 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             child(13)->setText(3, "Power up Channel Buffer");
             child(14)->setText(0, "3");
             child(14)->setText(1, "trigger_output_enable");
-            child(14)->setText(3, "Trigger Buffer\n0=Powerdown/High-Z\n1=Enable (only functional if CB is also powered down)");
+            child(14)->setText(3, "Trigger Buffer\n0 = Powerdown/High-Z\n1 = Enable (only functional if CB is also powered down)");
             child(15)->setText(0, "2");
             child(15)->setText(1, "adc_ref");
             child(15)->setText(3, "Power up ADC reference");
@@ -370,19 +370,19 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             }
             child(0)->setText(0, "5");
             child(0)->setText(1, "cal_cv_range_low");
-            child(0)->setText(3, "Enable low range\n0=disable\n1=enable");
+            child(0)->setText(3, "Enable Low Charge Range calibration (7.8fC to 526fC)");
             child(1)->setText(0, "4");
             child(1)->setText(1, "cal_cv_range_mid");
-            child(1)->setText(3, "Enable mid range\n0=disable\n1=enable");
+            child(1)->setText(3, "Enable Mid Charge Range calibration (78fC to 5.26pC)");
             child(2)->setText(0, "3");
             child(2)->setText(1, "cal_cv_range_high");
-            child(2)->setText(3, "Enable high range\n0=disable\n1=enable");
+            child(2)->setText(3, "Enable High Charge Range calibration (780fC to 52.6pC)");
             child(3)->setText(0, "2");
             child(3)->setText(1, "cal_trigger_select");
-            child(3)->setText(3, "Select trigger type\n0=external\n1=internal");
+            child(3)->setText(3, "Select trigger type\n0 = External (via DCAL_I)\n1 = Internal");
             child(4)->setText(0, "1:0");
             child(4)->setText(1, "cal_mode");
-            child(4)->setText(3, "Gain Calibration Unit mode\n\"00\"=off\n\"01\"=internal capacitor/voltage\n\"10\"=external voltage/internal capacitor\n\"11\" external voltage/capacitor");
+            child(4)->setText(3, "Gain Calibration Unit mode\n0 = off\n1 = internal capacitor/voltage\n2 = external voltage/internal capacitor\n3 = external voltage/capacitor");
             break;
 
         case SIPHRA_READOUT_FIXED_LIST:
@@ -482,10 +482,10 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
             child(1)->setText(3, "Internal Hold Delay 1/x setting");
             child(2)->setText(0, "5:4");
             child(2)->setText(1, "int_hold_source");
-            child(2)->setText(3, "Source for internal HOLD signal\n0=OR(CT[15:0],CTS)\n1=CTS\n2=OR(QT[15:0],QTS)\n3=QTS");
+            child(2)->setText(3, "Source for internal HOLD signal\n0 = OR(CT[15:0],CTS)\n1 = CTS\n2 = OR(QT[15:0],QTS)\n3 = QTS");
             child(3)->setText(0, "3");
             child(3)->setText(1, "list_mode");
-            child(3)->setText(3, "0=List-mode only\n1=List-mode+triggered channels");
+            child(3)->setText(3, "0 = List-mode only\n1 = List-mode+triggered channels");
             child(4)->setText(0, "2");
             child(4)->setText(1, "en_spi_forced_start");
             child(4)->setText(3, "Enable SPI forced readout command");
