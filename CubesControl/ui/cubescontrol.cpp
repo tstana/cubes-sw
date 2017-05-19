@@ -728,8 +728,9 @@ void CubesControl::on_btnClearHistogram_clicked()
     histogramData.fill(0);
 
     QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
+    QBarSet *set = series->barSets()[0];
     for (int i = 0; i < histogramNumBins; i++) {
-        series->barSets()[0]->replace(i, 0);
+        set->replace(i, 0);
     }
     ui->histogram->chart()->axisY(series)->setRange(0, 64);
 }
