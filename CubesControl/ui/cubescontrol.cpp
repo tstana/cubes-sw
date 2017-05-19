@@ -234,7 +234,7 @@ void CubesControl::showConnStatus(int connUp)
 /* TODO: Move this define to a more generic place... */
 #define ADC_MAX_VALUE           4096;
 
-void CubesControl::updateHistogram(bool updateAll = false)
+void CubesControl::updateHistogram(bool updateAll)
 {
     /* No update to be done if not connected or polling not enabled! */
     if ((!connStatus) || (!m_siphraAdcPollEnabled))

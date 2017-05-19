@@ -127,7 +127,7 @@ private:
     int                 histogramNumBins;
 
     void    showConnStatus(int connUp);
-    void    updateHistogram(bool updateAll);
+    void    updateHistogram(bool updateAll = false);
 };
 
 #endif // CUBESCONTROL_H
