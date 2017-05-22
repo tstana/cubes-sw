@@ -495,6 +495,35 @@ void CubesControl::on_actionToggleAdcPoll_triggered(bool checked)
     }
 }
 
+void CubesControl::on_actionExportHistogram_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Save file",
+                                                    QString(), ".bin");
+
+    if (!fileName.isEmpty()) {
+        QFile file(fileName);
+
+        if (!file.open(QIODevice::WriteOnly)) {
+            statusBar()->showMessage("Could not open " + fileName, 5000);
+            return;
+        }
+
+        QByteArray data;
+        data.resize(2*histogramNumBins);    // not more than 16348 counts per bin!
+
+        for (int i = 0; i < 2*histogramNumBins; i+=2) {
+            data[i] = (histogramData[i/2] & 0xff00) >> 8;
+            data[i+1] = histogramData[i/2] & 0xff;
+        }
+
+        file.write(data);
+
+        statusBar()->showMessage("Histogram values exported to " + fileName, 5000);
+
+        file.close();
+    }
+}
+
 void CubesControl::on_cubes_devReadReady()
 {
     QString s;
@@ -780,6 +809,11 @@ void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
 void CubesControl::on_btnToggleAdcPollHisto_clicked()
 {
     on_actionToggleAdcPoll_triggered();
+}
+
+void CubesControl::on_btnExportHistogram_clicked()
+{
+    on_actionExportHistogram_triggered();
 }
 
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)

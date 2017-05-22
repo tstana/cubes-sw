@@ -79,6 +79,7 @@ private slots:
     void on_actionWriteSiphraReg_triggered();
     void on_actionToggleAdcPoll_triggered();
     void on_actionToggleAdcPoll_triggered(bool checked);
+    void on_actionExportHistogram_triggered();
 
     void on_anyLedCheckbox_clicked();
     void on_btnReadAllCubesRegs_clicked();
@@ -91,6 +92,7 @@ private slots:
     void on_btnToggleAdcPoll_clicked();
     void on_btnToggleAdcPollHisto_clicked();
     void on_btnClearHistogram_clicked();
+    void on_btnExportHistogram_clicked();
     void on_cbNumBins_currentTextChanged(const QString &arg1);
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);

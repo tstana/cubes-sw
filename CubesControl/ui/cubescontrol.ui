@@ -292,6 +292,13 @@
            </spacer>
           </item>
           <item>
+           <widget class="QPushButton" name="btnExportHistogram">
+            <property name="text">
+             <string>Export...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="btnClearHistogram">
             <property name="text">
              <string>Clear</string>
@@ -838,6 +845,8 @@
     <addaction name="actionLoadSiphraConfig"/>
     <addaction name="actionSaveSiphraConfig"/>
     <addaction name="separator"/>
+    <addaction name="actionExportHistogram"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuConnection">
@@ -919,6 +928,11 @@
   <action name="actionToggleAdcPoll">
    <property name="text">
     <string>Toggle ADC poll</string>
+   </property>
+  </action>
+  <action name="actionExportHistogram">
+   <property name="text">
+    <string>Export histogram...</string>
    </property>
   </action>
  </widget>
