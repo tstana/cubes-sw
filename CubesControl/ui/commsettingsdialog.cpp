@@ -54,7 +54,7 @@ CommSettingsDialog::CommSettingsDialog(QWidget *parent) :
     ui->lblManufacturer->setText("");
     ui->lblProductIdent->setText("");
     ui->lblVendor->setText("");
-    ui->btnOk->setEnabled(false);
+    ui->btnConnect->setEnabled(false);
     ui->btnCancel->setEnabled(false);
 
     ui->commSettingsPage->setCurrentIndex(0);
@@ -89,7 +89,7 @@ void CommSettingsDialog::addCommTypes()
     ui->cbCommType->addItem("Serial Port");
 }
 
-void CommSettingsDialog::on_btnOk_clicked()
+void CommSettingsDialog::on_btnConnect_clicked()
 {
     updateSettings();
     QDialog::accept();
@@ -135,7 +135,7 @@ void CommSettingsDialog::on_btnRefreshPorts_clicked()
         ui->lblManufacturer->setText("");
         ui->lblProductIdent->setText("");
         ui->lblVendor->setText("");
-        ui->btnOk->setEnabled(false);
+        ui->btnConnect->setEnabled(false);
         ui->btnCancel->setEnabled(false);
     }
 }
@@ -177,7 +177,7 @@ void CommSettingsDialog::populateSerialPortInfo(int selectedPort)
     ui->lblProductIdent->setText(QString::number(info.productIdentifier(), 16));
     ui->lblVendor->setText(QString::number(info.vendorIdentifier(), 16));
 
-    ui->btnOk->setEnabled(true);
+    ui->btnConnect->setEnabled(true);
     ui->btnCancel->setEnabled(true);
 }
 
