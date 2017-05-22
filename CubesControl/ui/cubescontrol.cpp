@@ -498,7 +498,7 @@ void CubesControl::on_actionToggleAdcPoll_triggered(bool checked)
 void CubesControl::on_actionExportHistogram_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this, "Save file",
-                                                    QString(), ".bin");
+                                                    QString(), "*.bin");
 
     if (!fileName.isEmpty()) {
         QFile file(fileName);
@@ -509,11 +509,18 @@ void CubesControl::on_actionExportHistogram_triggered()
         }
 
         QByteArray data;
-        data.resize(2*histogramNumBins);    // not more than 16348 counts per bin!
 
+        /* First two bytes are number of histograms */
+        data.append((histogramNumBins & 0xff00) >> 8);
+        data.append(histogramNumBins & 0xff);
+
+        /*
+         * Then the actual histogram counts. This currently assumes no more than
+         * 65535 (16-bit) counts per bin.
+         */
         for (int i = 0; i < 2*histogramNumBins; i+=2) {
-            data[i] = (histogramData[i/2] & 0xff00) >> 8;
-            data[i+1] = histogramData[i/2] & 0xff;
+            data.append((histogramData[i/2] & 0xff00) >> 8);
+            data.append(histogramData[i/2] & 0xff);
         }
 
         file.write(data);
