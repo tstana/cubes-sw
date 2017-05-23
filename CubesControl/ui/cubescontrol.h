@@ -105,6 +105,10 @@ private slots:
 
     void on_checkboxEnableChannelTriggering_clicked();
 
+    void on_sliderQcThreshold_valueChanged(int value);
+
+    void on_spinboxQcThreshold_valueChanged(int arg1);
+
 private:
     Ui::CubesControl    *ui;
 
@@ -126,6 +130,8 @@ private:
     double              m_siphraAdcValue;
     qint8               m_siphraAdcChan;
     bool                m_siphraAdcPollEnabled;
+
+    bool                siphraVisualRegChange = false;
 
     QTimer              *tmrSiphraAdcPoll;
 

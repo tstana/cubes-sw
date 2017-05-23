@@ -294,7 +294,7 @@ int CubesControl::uiSiphraChannelRegValue()
 
 void CubesControl::writeSiphraChannelReg(int value)
 {
-    qDebug() << "0x" + QString::number(value, 16).rightJustified(8, '0');
+    qDebug() << QString::number(value, 16).rightJustified(8, '0');
 }
 
 
@@ -944,7 +944,63 @@ void CubesControl::on_checkboxPowerUpChannel_clicked()
 
 void CubesControl::on_checkboxEnableChannelTriggering_clicked()
 {
-    int regValue = uiSiphraChannelRegValue();
+    writeSiphraChannelReg(uiSiphraChannelRegValue());
+}
 
-    writeSiphraChannelReg(regValue);
+void CubesControl::on_sliderQcThreshold_valueChanged(int value)
+{
+    /* Refuse operation on no connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
+    /*
+     * This widget has been changed by another widget, not the user. In this case,
+     * no further operation is needed, clear the visual reg change notification
+     * member and exit.
+     */
+    if (siphraVisualRegChange) {
+        siphraVisualRegChange = false;
+        return;
+    }
+
+    /*
+     * If we've made it up to here, the user has initiated the value change.
+     * Update the other widget, set the visual reg change member to notice the
+     * other widget's value/indexChanged slot and issue the register operation
+     * before exiting.
+     */
+    siphraVisualRegChange = true;
+    ui->spinboxQcThreshold->setValue(value);
+    writeSiphraChannelReg(uiSiphraChannelRegValue());
+}
+
+void CubesControl::on_spinboxQcThreshold_valueChanged(int value)
+{
+    /* Refuse operation on no connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
+    /*
+     * This widget has been changed by another widget, not the user. In this case,
+     * no further operation is needed, clear the visual reg change notification
+     * member and exit.
+     */
+    if (siphraVisualRegChange) {
+        siphraVisualRegChange = false;
+        return;
+    }
+
+    /*
+     * If we've made it up to here, the user has initiated the value change.
+     * Update the other widget, set the visual reg change member to notice the
+     * other widget's value/indexChanged slot and issue the register operation
+     * before exiting.
+     */
+    siphraVisualRegChange = true;
+    ui->sliderQcThreshold->setValue(value);
+    writeSiphraChannelReg(uiSiphraChannelRegValue());
 }
