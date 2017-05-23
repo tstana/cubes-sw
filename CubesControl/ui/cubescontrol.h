@@ -109,6 +109,10 @@ private slots:
 
     void on_spinboxQcThreshold_valueChanged(int arg1);
 
+    void on_sliderQcHysteresis_valueChanged(int value);
+
+    void on_comboboxQcHysteresis_currentIndexChanged(int index);
+
 private:
     Ui::CubesControl    *ui;
 
