@@ -37,29 +37,9 @@
         <item row="1" column="0">
          <widget class="QGroupBox" name="groupboxGainSettings">
           <property name="title">
-           <string>Gain settings</string>
+           <string>Settings applicable to all channels (CHANNEL_CONFIG)</string>
           </property>
           <layout class="QGridLayout" name="gridLayout">
-           <item row="1" column="1">
-            <widget class="QSlider" name="sliderCiGain">
-             <property name="maximum">
-              <number>3</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSlider" name="sliderCmisGain">
-             <property name="maximum">
-              <number>3</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="2">
             <widget class="QComboBox" name="comboboxCmisGain">
              <item>
@@ -91,6 +71,33 @@
              </property>
             </widget>
            </item>
+           <item row="1" column="1">
+            <widget class="QSlider" name="sliderCiGain">
+             <property name="maximum">
+              <number>3</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSlider" name="sliderCmisGain">
+             <property name="maximum">
+              <number>3</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>CMIS gain:</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="2">
             <widget class="QComboBox" name="comboboxCiGain">
              <item>
@@ -115,14 +122,51 @@
              </item>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>CMIS gain:</string>
+           <item row="2" column="2">
+            <widget class="QComboBox" name="comboboxShapingTime">
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
              </property>
+             <item>
+              <property name="text">
+               <string>200 ns</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>400 ns</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>800 ns</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>1600 ns</string>
+              </property>
+             </item>
             </widget>
            </item>
            <item row="2" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Shaping time:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QSlider" name="sliderShapingTime">
+             <property name="maximum">
+              <number>3</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
             <spacer name="verticalSpacer_3">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -144,7 +188,7 @@
         <item row="0" column="0" colspan="2">
          <widget class="QGroupBox" name="groupboxChanSettings">
           <property name="title">
-           <string>Channel settings</string>
+           <string>Individual channel settings (CTRL_CH_xx)</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="0" column="3">
@@ -316,30 +360,13 @@
         <item row="1" column="1">
          <widget class="QGroupBox" name="groupboxShaperSettings">
           <property name="title">
-           <string>Shaper and Track-and-Hold settings</string>
+           <string>Track-and-Hold settings (READOUT_FIXED_LIST)</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_7">
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_11">
              <property name="text">
-              <string>Shaping time:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSlider" name="sliderTune">
-             <property name="maximum">
-              <number>31</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QSpinBox" name="spinboxTune">
-             <property name="maximum">
-              <number>31</number>
+              <string>TH delay:</string>
              </property>
             </widget>
            </item>
@@ -353,17 +380,17 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>TH delay:</string>
-             </property>
-            </widget>
-           </item>
            <item row="2" column="2">
             <widget class="QSpinBox" name="spinboxDelay">
              <property name="maximum">
               <number>15</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QSpinBox" name="spinboxTune">
+             <property name="maximum">
+              <number>31</number>
              </property>
             </widget>
            </item>
@@ -374,41 +401,14 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QSlider" name="sliderShapingTime">
+           <item row="1" column="1">
+            <widget class="QSlider" name="sliderTune">
              <property name="maximum">
-              <number>3</number>
+              <number>31</number>
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QComboBox" name="comboboxShapingTime">
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
-             </property>
-             <item>
-              <property name="text">
-               <string>200 ns</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>400 ns</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>800 ns</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>1600 ns</string>
-              </property>
-             </item>
             </widget>
            </item>
            <item row="3" column="0">
