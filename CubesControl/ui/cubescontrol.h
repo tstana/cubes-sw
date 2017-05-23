@@ -121,6 +121,10 @@ private slots:
 
     void on_comboboxCiGain_currentIndexChanged(int index);
 
+    void on_sliderShapingTime_valueChanged(int value);
+
+    void on_comboboxShapingTime_currentIndexChanged(int index);
+
 private:
     Ui::CubesControl    *ui;
 

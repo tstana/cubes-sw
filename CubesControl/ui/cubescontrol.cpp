@@ -368,11 +368,11 @@ int CubesControl::uiSiphraChannelConfigValue()
             (shaper_input_cap);
 
     qDebug() << "cmis_gain =" << cmis_gain;
-    qDebug() << "shaper_bias =" << shaper_bias;
     qDebug() << "shaper_feedback_cap =" << shaper_feedback_cap;
     qDebug() << "shaper_feedback_res =" << shaper_feedback_res;
-    qDebug() << "shaper_hold_cap =" << shaper_hold_cap;
     qDebug() << "shaper_input_cap =" << shaper_input_cap;
+    qDebug() << "shaper_hold_cap =" << shaper_hold_cap;
+    qDebug() << "shaper_bias =" << shaper_bias;
 
     //    SiphraTreeWidgetItem *siphraReg =
     //            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
@@ -1271,5 +1271,63 @@ void CubesControl::on_comboboxCiGain_currentIndexChanged(int index)
      */
     siphraVisualRegChange = true;
     ui->sliderCiGain->setValue(index);
+    writeSiphraChannelConfig(uiSiphraChannelConfigValue());
+}
+
+void CubesControl::on_sliderShapingTime_valueChanged(int value)
+{
+    /* Refuse operation on no connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
+    /*
+     * This widget has been changed by another widget, not the user. In this case,
+     * no further operation is needed, clear the visual reg change notification
+     * member and exit.
+     */
+    if (siphraVisualRegChange) {
+        siphraVisualRegChange = false;
+        return;
+    }
+
+    /*
+     * If we've made it up to here, the user has initiated the value change.
+     * Update the other widget, set the visual reg change member to notice the
+     * other widget's value/indexChanged slot and issue the register operation
+     * before exiting.
+     */
+    siphraVisualRegChange = true;
+    ui->comboboxShapingTime->setCurrentIndex(value);
+    writeSiphraChannelConfig(uiSiphraChannelConfigValue());
+}
+
+void CubesControl::on_comboboxShapingTime_currentIndexChanged(int index)
+{
+    /* Refuse operation on no connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
+    /*
+     * This widget has been changed by another widget, not the user. In this case,
+     * no further operation is needed, clear the visual reg change notification
+     * member and exit.
+     */
+    if (siphraVisualRegChange) {
+        siphraVisualRegChange = false;
+        return;
+    }
+
+    /*
+     * If we've made it up to here, the user has initiated the value change.
+     * Update the other widget, set the visual reg change member to notice the
+     * other widget's value/indexChanged slot and issue the register operation
+     * before exiting.
+     */
+    siphraVisualRegChange = true;
+    ui->sliderShapingTime->setValue(index);
     writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }
