@@ -284,10 +284,14 @@ int CubesControl::uiSiphraChannelRegValue()
             ((ui->checkboxPowerUpChannel->checkState() == 2) << 1) |
             (ui->checkboxEnableChannelTriggering->checkState() == 2);
 
-//    SiphraTreeWidgetItem *siphraReg =
-//            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
+    /*
+     * OR register value with currently existing bits, masking settings the user
+     * makes via the UI, before applying
+     */
+    SiphraTreeWidgetItem *siphraReg =
+            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
 
-//    value |= siphraReg->registerValue();
+    value |= siphraReg->registerValue() & 0x03ffe000;
 
     return value;
 }
@@ -367,10 +371,14 @@ int CubesControl::uiSiphraChannelConfigValue()
             (shaper_hold_cap << 4) |
             (shaper_input_cap);
 
-    //    SiphraTreeWidgetItem *siphraReg =
-    //            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
+    /*
+     * OR register value with currently existing bits, masking settings the user
+     * makes via the UI, before applying
+     */
+    SiphraTreeWidgetItem *siphraReg =
+            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
 
-    //    value |= siphraReg->registerValue();
+    value |= siphraReg->registerValue() & 0x40000;
 
     return value;
 }
@@ -384,10 +392,14 @@ int CubesControl::uiSiphraReadoutModeValue()
             (ui->sliderDelay->value() << 6) |
             0x1;
 
-    //    SiphraTreeWidgetItem *siphraReg =
-    //            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
+    /*
+     * OR register value with currently existing bits, masking settings the user
+     * makes via the UI, before applying
+     */
+    SiphraTreeWidgetItem *siphraReg =
+            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
 
-    //    value |= siphraReg->registerValue();
+    value |= siphraReg->registerValue() & 0xe;
 
     return value;
 }
