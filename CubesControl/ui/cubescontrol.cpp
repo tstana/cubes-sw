@@ -367,12 +367,12 @@ int CubesControl::uiSiphraChannelConfigValue()
             (shaper_hold_cap << 4) |
             (shaper_input_cap);
 
-    qDebug() << "cmis_gain =" << cmis_gain;
-    qDebug() << "shaper_feedback_cap =" << shaper_feedback_cap;
-    qDebug() << "shaper_feedback_res =" << shaper_feedback_res;
-    qDebug() << "shaper_input_cap =" << shaper_input_cap;
-    qDebug() << "shaper_hold_cap =" << shaper_hold_cap;
-    qDebug() << "shaper_bias =" << shaper_bias;
+//    qDebug() << "cmis_gain =" << cmis_gain;
+//    qDebug() << "shaper_feedback_cap =" << shaper_feedback_cap;
+//    qDebug() << "shaper_feedback_res =" << shaper_feedback_res;
+//    qDebug() << "shaper_input_cap =" << shaper_input_cap;
+//    qDebug() << "shaper_hold_cap =" << shaper_hold_cap;
+//    qDebug() << "shaper_bias =" << shaper_bias;
 
     //    SiphraTreeWidgetItem *siphraReg =
     //            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
@@ -401,17 +401,33 @@ int CubesControl::uiSiphraReadoutModeValue()
 
 void CubesControl::writeSiphraChannelReg(int value)
 {
-    qDebug() << QString::number(value, 16).rightJustified(8, '0');
+    int address;
+
+    /* Channel reg address is spinbox setting minus 1 (SIPHRA CTRL_CH_01 is at 0x00) */
+    address = ui->spinboxSiphraChannelToConfig->value();
+    address -= 1;
+
+    qDebug() << QString::number(address, 16).rightJustified(2,'0')
+             << ":"
+             << QString::number(value, 16).rightJustified(8, '0');
 }
 
 void CubesControl::writeSiphraChannelConfig(int value)
 {
-    qDebug() << QString::number(value, 16).rightJustified(8, '0');
+    int address = 0x11;
+
+    qDebug() << QString::number(address, 16).rightJustified(2, '0')
+             << ":"
+             << QString::number(value, 16).rightJustified(8, '0');
 }
 
 void CubesControl::writeSiphraReadoutMode(int value)
 {
-    qDebug() << QString::number(value, 16).rightJustified(8, '0');
+    int address = 0x18;
+
+    qDebug() << QString::number(address, 16).rightJustified(2, '0')
+             << ":"
+             << QString::number(value, 16).rightJustified(8, '0');
 }
 
 void CubesControl::on_actionConnect_triggered()
