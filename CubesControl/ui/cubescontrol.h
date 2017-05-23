@@ -125,6 +125,14 @@ private slots:
 
     void on_comboboxShapingTime_currentIndexChanged(int index);
 
+    void on_sliderTune_valueChanged(int value);
+
+    void on_spinboxTune_valueChanged(int arg1);
+
+    void on_sliderDelay_valueChanged(int value);
+
+    void on_spinboxDelay_valueChanged(int arg1);
+
 private:
     Ui::CubesControl    *ui;
 
@@ -159,11 +167,11 @@ private:
 
     int     uiSiphraChannelRegValue();
     int     uiSiphraChannelConfigValue();
-    int     uiSiphraReadoutFixedListValue();
+    int     uiSiphraReadoutModeValue();
 
     void    writeSiphraChannelReg(int value);
     void    writeSiphraChannelConfig(int value);
-    void    writeSiphraReadoutFixedList(int value);
+    void    writeSiphraReadoutMode(int value);
 
     void    decodeShaperSettings(int setting, int *bias, int *feedback_cap,
                                  int *feedback_res, int *hold_cap,

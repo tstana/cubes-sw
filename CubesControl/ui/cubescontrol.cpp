@@ -382,6 +382,23 @@ int CubesControl::uiSiphraChannelConfigValue()
     return value;
 }
 
+int CubesControl::uiSiphraReadoutModeValue()
+{
+    int value;
+
+    // make sure readout_en_int_hold_start is ON, to avoid lots of trouble...
+    value = (ui->sliderTune->value() << 10) |
+            (ui->sliderDelay->value() << 6) |
+            0x1;
+
+    //    SiphraTreeWidgetItem *siphraReg =
+    //            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
+
+    //    value |= siphraReg->registerValue();
+
+    return value;
+}
+
 void CubesControl::writeSiphraChannelReg(int value)
 {
     qDebug() << QString::number(value, 16).rightJustified(8, '0');
@@ -392,6 +409,10 @@ void CubesControl::writeSiphraChannelConfig(int value)
     qDebug() << QString::number(value, 16).rightJustified(8, '0');
 }
 
+void CubesControl::writeSiphraReadoutMode(int value)
+{
+    qDebug() << QString::number(value, 16).rightJustified(8, '0');
+}
 
 void CubesControl::on_actionConnect_triggered()
 {
@@ -1330,4 +1351,120 @@ void CubesControl::on_comboboxShapingTime_currentIndexChanged(int index)
     siphraVisualRegChange = true;
     ui->sliderShapingTime->setValue(index);
     writeSiphraChannelConfig(uiSiphraChannelConfigValue());
+}
+
+void CubesControl::on_sliderTune_valueChanged(int value)
+{
+    /* Refuse operation on no connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
+    /*
+     * This widget has been changed by another widget, not the user. In this case,
+     * no further operation is needed, clear the visual reg change notification
+     * member and exit.
+     */
+    if (siphraVisualRegChange) {
+        siphraVisualRegChange = false;
+        return;
+    }
+
+    /*
+     * If we've made it up to here, the user has initiated the value change.
+     * Update the other widget, set the visual reg change member to notice the
+     * other widget's value/indexChanged slot and issue the register operation
+     * before exiting.
+     */
+    siphraVisualRegChange = true;
+    ui->spinboxTune->setValue(value);
+    writeSiphraReadoutMode(uiSiphraReadoutModeValue());
+}
+
+void CubesControl::on_spinboxTune_valueChanged(int value)
+{
+    /* Refuse operation on no connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
+    /*
+     * This widget has been changed by another widget, not the user. In this case,
+     * no further operation is needed, clear the visual reg change notification
+     * member and exit.
+     */
+    if (siphraVisualRegChange) {
+        siphraVisualRegChange = false;
+        return;
+    }
+
+    /*
+     * If we've made it up to here, the user has initiated the value change.
+     * Update the other widget, set the visual reg change member to notice the
+     * other widget's value/indexChanged slot and issue the register operation
+     * before exiting.
+     */
+    siphraVisualRegChange = true;
+    ui->sliderTune->setValue(value);
+    writeSiphraReadoutMode(uiSiphraReadoutModeValue());
+}
+
+void CubesControl::on_sliderDelay_valueChanged(int value)
+{
+    /* Refuse operation on no connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
+    /*
+     * This widget has been changed by another widget, not the user. In this case,
+     * no further operation is needed, clear the visual reg change notification
+     * member and exit.
+     */
+    if (siphraVisualRegChange) {
+        siphraVisualRegChange = false;
+        return;
+    }
+
+    /*
+     * If we've made it up to here, the user has initiated the value change.
+     * Update the other widget, set the visual reg change member to notice the
+     * other widget's value/indexChanged slot and issue the register operation
+     * before exiting.
+     */
+    siphraVisualRegChange = true;
+    ui->spinboxDelay->setValue(value);
+    writeSiphraReadoutMode(uiSiphraReadoutModeValue());
+}
+
+void CubesControl::on_spinboxDelay_valueChanged(int value)
+{
+    /* Refuse operation on no connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
+    /*
+     * This widget has been changed by another widget, not the user. In this case,
+     * no further operation is needed, clear the visual reg change notification
+     * member and exit.
+     */
+    if (siphraVisualRegChange) {
+        siphraVisualRegChange = false;
+        return;
+    }
+
+    /*
+     * If we've made it up to here, the user has initiated the value change.
+     * Update the other widget, set the visual reg change member to notice the
+     * other widget's value/indexChanged slot and issue the register operation
+     * before exiting.
+     */
+    siphraVisualRegChange = true;
+    ui->sliderDelay->setValue(value);
+    writeSiphraReadoutMode(uiSiphraReadoutModeValue());
 }
