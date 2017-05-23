@@ -117,6 +117,10 @@ private slots:
 
     void on_comboboxCmisGain_currentIndexChanged(int index);
 
+    void on_sliderCiGain_valueChanged(int value);
+
+    void on_comboboxCiGain_currentIndexChanged(int index);
+
 private:
     Ui::CubesControl    *ui;
 
