@@ -292,7 +292,98 @@ int CubesControl::uiSiphraChannelRegValue()
     return value;
 }
 
+void CubesControl::decodeShaperSettings(int setting,
+                                        int *bias,
+                                        int *feedback_cap,
+                                        int *feedback_res,
+                                        int *hold_cap,
+                                        int *input_cap)
+{
+    /* Values below obtained from SIHPRA datasheet */
+    switch (setting) {
+    // 200 ns
+    case 0:
+        *feedback_cap = 2;
+        *feedback_res = 1;
+        *input_cap = 2;
+        *hold_cap = 0;
+        *bias = 7;
+        break;
+    // 400 ns
+    case 1:
+        *feedback_cap = 5;
+        *feedback_res = 1;
+        *input_cap = 4;
+        *hold_cap = 1;
+        *bias = 6;
+        break;
+    // 800 ns
+    case 2:
+        *feedback_cap = 14;
+        *feedback_res = 4;
+        *input_cap = 5;
+        *hold_cap = 3;
+        *bias = 6;
+        break;
+    // 1600 ns
+    case 3:
+        *feedback_cap = 15;
+        *feedback_res = 7;
+        *input_cap = 14;
+        *hold_cap = 7;
+        *bias = 5;
+        break;
+    // fail -- assume all zeroes
+    default:
+        *feedback_cap = 0;
+        *feedback_res = 0;
+        *input_cap = 0;
+        *hold_cap = 0;
+        *bias = 0;
+        break;
+    }
+}
+
+int CubesControl::uiSiphraChannelConfigValue()
+{
+    int value, shaper_bias, shaper_feedback_cap, shaper_feedback_res,
+            shaper_hold_cap, shaper_input_cap;
+
+    decodeShaperSettings(ui->sliderShapingTime->value(),
+                         &shaper_bias,
+                         &shaper_feedback_cap,
+                         &shaper_feedback_res,
+                         &shaper_hold_cap,
+                         &shaper_input_cap);
+
+    value = (ui->sliderCmisGain->value() << 21) |
+            (ui->sliderCiGain->value() << 19) |
+            (shaper_bias << 14) |
+            (shaper_feedback_cap << 10) |
+            (shaper_feedback_res << 7) |
+            (shaper_hold_cap << 4) |
+            (shaper_input_cap);
+
+    qDebug() << "shaper_bias =" << shaper_bias;
+    qDebug() << "shaper_feedback_cap =" << shaper_feedback_cap;
+    qDebug() << "shaper_feedback_res =" << shaper_feedback_res;
+    qDebug() << "shaper_hold_cap =" << shaper_hold_cap;
+    qDebug() << "shaper_input_cap =" << shaper_input_cap;
+
+    //    SiphraTreeWidgetItem *siphraReg =
+    //            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
+
+    //    value |= siphraReg->registerValue();
+
+    return value;
+}
+
 void CubesControl::writeSiphraChannelReg(int value)
+{
+    qDebug() << QString::number(value, 16).rightJustified(8, '0');
+}
+
+void CubesControl::writeSiphraChannelConfig(int value)
 {
     qDebug() << QString::number(value, 16).rightJustified(8, '0');
 }
@@ -1061,4 +1152,62 @@ void CubesControl::on_comboboxQcHysteresis_currentIndexChanged(int index)
     siphraVisualRegChange = true;
     ui->sliderQcHysteresis->setValue(index);
     writeSiphraChannelReg(uiSiphraChannelRegValue());
+}
+
+void CubesControl::on_sliderCmisGain_valueChanged(int value)
+{
+    /* Refuse operation on no connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
+    /*
+     * This widget has been changed by another widget, not the user. In this case,
+     * no further operation is needed, clear the visual reg change notification
+     * member and exit.
+     */
+    if (siphraVisualRegChange) {
+        siphraVisualRegChange = false;
+        return;
+    }
+
+    /*
+     * If we've made it up to here, the user has initiated the value change.
+     * Update the other widget, set the visual reg change member to notice the
+     * other widget's value/indexChanged slot and issue the register operation
+     * before exiting.
+     */
+    siphraVisualRegChange = true;
+    ui->comboboxCmisGain->setCurrentIndex(value);
+    writeSiphraChannelConfig(uiSiphraChannelConfigValue());
+}
+
+void CubesControl::on_comboboxCmisGain_currentIndexChanged(int index)
+{
+    /* Refuse operation on no connection */
+//    if (!connStatus) {
+//        statusBar()->showMessage("Connection not open!", 5000);
+//        return;
+//    }
+
+    /*
+     * This widget has been changed by another widget, not the user. In this case,
+     * no further operation is needed, clear the visual reg change notification
+     * member and exit.
+     */
+    if (siphraVisualRegChange) {
+        siphraVisualRegChange = false;
+        return;
+    }
+
+    /*
+     * If we've made it up to here, the user has initiated the value change.
+     * Update the other widget, set the visual reg change member to notice the
+     * other widget's value/indexChanged slot and issue the register operation
+     * before exiting.
+     */
+    siphraVisualRegChange = true;
+    ui->sliderCmisGain->setValue(index);
+    writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }

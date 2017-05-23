@@ -113,6 +113,10 @@ private slots:
 
     void on_comboboxQcHysteresis_currentIndexChanged(int index);
 
+    void on_sliderCmisGain_valueChanged(int value);
+
+    void on_comboboxCmisGain_currentIndexChanged(int index);
+
 private:
     Ui::CubesControl    *ui;
 
@@ -152,6 +156,10 @@ private:
     void    writeSiphraChannelReg(int value);
     void    writeSiphraChannelConfig(int value);
     void    writeSiphraReadoutFixedList(int value);
+
+    void    decodeShaperSettings(int setting, int *bias, int *feedback_cap,
+                                 int *feedback_res, int *hold_cap,
+                                 int *input_cap);
 };
 
 #endif // CUBESCONTROL_H
