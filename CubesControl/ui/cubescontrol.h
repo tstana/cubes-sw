@@ -94,12 +94,16 @@ private slots:
     void on_btnClearHistogram_clicked();
     void on_btnExportHistogram_clicked();
     void on_cbNumBins_currentTextChanged(const QString &arg1);
+    void on_checkboxPowerUpChannel_clicked();
+
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_contextMenuRequested(const QPoint &p);
     void on_tabWidget_currentChanged(int index);
 
     void on_tmrSiphraAdcPoll_timeout();
+
+    void on_checkboxEnableChannelTriggering_clicked();
 
 private:
     Ui::CubesControl    *ui;
@@ -130,6 +134,14 @@ private:
 
     void    showConnStatus(int connUp);
     void    updateHistogram(bool updateAll = false);
+
+    int     uiSiphraChannelRegValue();
+    int     uiSiphraChannelConfigValue();
+    int     uiSiphraReadoutFixedListValue();
+
+    void    writeSiphraChannelReg(int value);
+    void    writeSiphraChannelConfig(int value);
+    void    writeSiphraReadoutFixedList(int value);
 };
 
 #endif // CUBESCONTROL_H

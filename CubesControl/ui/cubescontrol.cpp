@@ -56,6 +56,8 @@
 #include <QtCharts/QBarSeries>
 #include <QtCharts/QBarCategoryAxis>
 
+#include <QDebug>
+
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CubesControl),
@@ -272,6 +274,29 @@ void CubesControl::updateHistogram(bool updateAll)
         }
     }
 }
+
+int CubesControl::uiSiphraChannelRegValue()
+{
+    int value;
+
+    value = (ui->sliderQcThreshold->value() << 5) |
+            (ui->sliderQcHysteresis->value() << 2) |
+            ((ui->checkboxPowerUpChannel->checkState() == 2) << 1) |
+            (ui->checkboxEnableChannelTriggering->checkState() == 2);
+
+//    SiphraTreeWidgetItem *siphraReg =
+//            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
+
+//    value |= siphraReg->registerValue();
+
+    return value;
+}
+
+void CubesControl::writeSiphraChannelReg(int value)
+{
+    qDebug() << "0x" + QString::number(value, 16).rightJustified(8, '0');
+}
+
 
 void CubesControl::on_actionConnect_triggered()
 {
@@ -908,4 +933,18 @@ void CubesControl::on_tabWidget_currentChanged(int index)
     if (index == 1) {
         updateHistogram(true);
     }
+}
+
+void CubesControl::on_checkboxPowerUpChannel_clicked()
+{
+    int regValue = uiSiphraChannelRegValue();
+
+    writeSiphraChannelReg(regValue);
+}
+
+void CubesControl::on_checkboxEnableChannelTriggering_clicked()
+{
+    int regValue = uiSiphraChannelRegValue();
+
+    writeSiphraChannelReg(regValue);
 }
