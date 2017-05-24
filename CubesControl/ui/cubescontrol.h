@@ -95,6 +95,21 @@ private slots:
     void on_btnExportHistogram_clicked();
     void on_cbNumBins_currentTextChanged(const QString &arg1);
     void on_checkboxPowerUpChannel_clicked();
+    void on_checkboxEnableChannelTriggering_clicked();
+    void on_sliderQcThreshold_valueChanged(int value);
+    void on_spinboxQcThreshold_valueChanged(int arg1);
+    void on_sliderQcHysteresis_valueChanged(int value);
+    void on_comboboxQcHysteresis_currentIndexChanged(int index);
+    void on_sliderCmisGain_valueChanged(int value);
+    void on_comboboxCmisGain_currentIndexChanged(int index);
+    void on_sliderCiGain_valueChanged(int value);
+    void on_comboboxCiGain_currentIndexChanged(int index);
+    void on_sliderShapingTime_valueChanged(int value);
+    void on_comboboxShapingTime_currentIndexChanged(int index);
+    void on_sliderTune_valueChanged(int value);
+    void on_spinboxTune_valueChanged(int arg1);
+    void on_sliderDelay_valueChanged(int value);
+    void on_spinboxDelay_valueChanged(int arg1);
 
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
@@ -102,36 +117,6 @@ private slots:
     void on_tabWidget_currentChanged(int index);
 
     void on_tmrSiphraAdcPoll_timeout();
-
-    void on_checkboxEnableChannelTriggering_clicked();
-
-    void on_sliderQcThreshold_valueChanged(int value);
-
-    void on_spinboxQcThreshold_valueChanged(int arg1);
-
-    void on_sliderQcHysteresis_valueChanged(int value);
-
-    void on_comboboxQcHysteresis_currentIndexChanged(int index);
-
-    void on_sliderCmisGain_valueChanged(int value);
-
-    void on_comboboxCmisGain_currentIndexChanged(int index);
-
-    void on_sliderCiGain_valueChanged(int value);
-
-    void on_comboboxCiGain_currentIndexChanged(int index);
-
-    void on_sliderShapingTime_valueChanged(int value);
-
-    void on_comboboxShapingTime_currentIndexChanged(int index);
-
-    void on_sliderTune_valueChanged(int value);
-
-    void on_spinboxTune_valueChanged(int arg1);
-
-    void on_sliderDelay_valueChanged(int value);
-
-    void on_spinboxDelay_valueChanged(int arg1);
 
 private:
     Ui::CubesControl    *ui;

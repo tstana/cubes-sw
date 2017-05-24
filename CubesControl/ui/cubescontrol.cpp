@@ -1048,93 +1048,6 @@ void CubesControl::on_btnExportHistogram_clicked()
     on_actionExportHistogram_triggered();
 }
 
-void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
-{
-    if (column == 2) {
-        /* Ignore editing whole register value -- accept only bit field edits */
-        if (item->parent() == (QTreeWidgetItem *)ui->treeSiphraRegMap) {
-            return;
-        }
-
-        /* Edit the item and allow for itemChanged() event to operate */
-        ui->treeSiphraRegMap->editItem(item, column);
-        m_changedByUser = true;
-        m_textBeforeChange = item->text(column);
-    }
-}
-
-void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column)
-{
-    /* If by _any chance_, _somehow_, another column gets edited, bail !!! */
-    if (column != 2) {
-        return;
-    }
-
-    /* Also bail out on change not due to user double clicking */
-    if (!m_changedByUser) {
-        return;
-    }
-
-    m_changedByUser = false;
-
-    /* Try to convert the value into a number, give up if NaN */
-    bool isNumber;
-    int bitFieldValue;
-    bitFieldValue = item->text(column).toInt(&isNumber);
-    if (!isNumber) {
-        item->setText(column, m_textBeforeChange);
-        return;
-    }
-
-    /* The clicked item should be a child of a SiphraTreeWidgetItem */
-    SiphraTreeWidgetItem *siphraItem = (SiphraTreeWidgetItem *)item->parent();
-
-    /* Update the value and prevent user from changing other items */
-    ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::CurrentChanged);
-    siphraItem->setRegisterValue(siphraItem->indexOfChild(item), bitFieldValue);
-    ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::NoEditTriggers);
-}
-
-void CubesControl::on_treeSiphraRegMap_contextMenuRequested(const QPoint &p)
-{
-    SiphraTreeWidgetItem *item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->itemAt(p);
-
-    /*
-     * Make sure we write the whole register, not just the bit field value
-     *
-     * If the user right-clicks the top-level item in the tree view, parent()
-     * returns 0, therefore we can leave the SiphraTreeWidgetItem as previously
-     * set.
-     *
-     * Alternatively, right-clicking on a bit-field value in the
-     * SiphraTreeWidgetItem will result in parent() returning a pointer to the
-     * top-level item, which holds the full value of the register we need to write.
-     *
-     * This all needs to be done because of the current implementation of
-     * SiphraTreeWidgetItem, which doesn't hold a member for the register value,
-     * but instead it relies on the value written in column 2 of the tree widget.
-     */
-    if (item->parent() != 0) {
-        item = (SiphraTreeWidgetItem *)item->parent();
-    }
-
-    m_siphraRegAddr = item->registerAddress();
-    m_siphraRegVal = item->registerValue();
-
-    QMenu menu;
-    menu.addAction(ui->actionReadSiphraReg);
-    menu.addAction(ui->actionWriteSiphraReg);
-    menu.exec(QCursor::pos());
-}
-
-void CubesControl::on_tabWidget_currentChanged(int index)
-{
-    /* Update histogram chart with new values */
-    if (index == 1) {
-        updateHistogram(true);
-    }
-}
-
 void CubesControl::on_checkboxPowerUpChannel_clicked()
 {
     int regValue = uiSiphraChannelRegValue();
@@ -1467,4 +1380,91 @@ void CubesControl::on_spinboxDelay_valueChanged(int value)
     siphraVisualRegChange = true;
     ui->sliderDelay->setValue(value);
     writeSiphraReadoutMode(uiSiphraReadoutModeValue());
+}
+
+void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+    if (column == 2) {
+        /* Ignore editing whole register value -- accept only bit field edits */
+        if (item->parent() == (QTreeWidgetItem *)ui->treeSiphraRegMap) {
+            return;
+        }
+
+        /* Edit the item and allow for itemChanged() event to operate */
+        ui->treeSiphraRegMap->editItem(item, column);
+        m_changedByUser = true;
+        m_textBeforeChange = item->text(column);
+    }
+}
+
+void CubesControl::on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column)
+{
+    /* If by _any chance_, _somehow_, another column gets edited, bail !!! */
+    if (column != 2) {
+        return;
+    }
+
+    /* Also bail out on change not due to user double clicking */
+    if (!m_changedByUser) {
+        return;
+    }
+
+    m_changedByUser = false;
+
+    /* Try to convert the value into a number, give up if NaN */
+    bool isNumber;
+    int bitFieldValue;
+    bitFieldValue = item->text(column).toInt(&isNumber);
+    if (!isNumber) {
+        item->setText(column, m_textBeforeChange);
+        return;
+    }
+
+    /* The clicked item should be a child of a SiphraTreeWidgetItem */
+    SiphraTreeWidgetItem *siphraItem = (SiphraTreeWidgetItem *)item->parent();
+
+    /* Update the value and prevent user from changing other items */
+    ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::CurrentChanged);
+    siphraItem->setRegisterValue(siphraItem->indexOfChild(item), bitFieldValue);
+    ui->treeSiphraRegMap->setEditTriggers(QAbstractItemView::NoEditTriggers);
+}
+
+void CubesControl::on_treeSiphraRegMap_contextMenuRequested(const QPoint &p)
+{
+    SiphraTreeWidgetItem *item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->itemAt(p);
+
+    /*
+     * Make sure we write the whole register, not just the bit field value
+     *
+     * If the user right-clicks the top-level item in the tree view, parent()
+     * returns 0, therefore we can leave the SiphraTreeWidgetItem as previously
+     * set.
+     *
+     * Alternatively, right-clicking on a bit-field value in the
+     * SiphraTreeWidgetItem will result in parent() returning a pointer to the
+     * top-level item, which holds the full value of the register we need to write.
+     *
+     * This all needs to be done because of the current implementation of
+     * SiphraTreeWidgetItem, which doesn't hold a member for the register value,
+     * but instead it relies on the value written in column 2 of the tree widget.
+     */
+    if (item->parent() != 0) {
+        item = (SiphraTreeWidgetItem *)item->parent();
+    }
+
+    m_siphraRegAddr = item->registerAddress();
+    m_siphraRegVal = item->registerValue();
+
+    QMenu menu;
+    menu.addAction(ui->actionReadSiphraReg);
+    menu.addAction(ui->actionWriteSiphraReg);
+    menu.exec(QCursor::pos());
+}
+
+void CubesControl::on_tabWidget_currentChanged(int index)
+{
+    /* Update histogram chart with new values */
+    if (index == 1) {
+        updateHistogram(true);
+    }
 }
