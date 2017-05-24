@@ -58,6 +58,9 @@
 
 #include <QDebug>
 
+/*============================================================================
+ * CONSTRUCTOR AND DESTRUCTOR
+ *============================================================================*/
 CubesControl::CubesControl(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CubesControl),
@@ -204,18 +207,20 @@ CubesControl::CubesControl(QWidget *parent) :
             this, &CubesControl::on_cubes_devReadReady);
 }
 
+/*----------------------------------------------------------------------------
+ * Destructor
+ *----------------------------------------------------------------------------*/
 CubesControl::~CubesControl()
 {
     delete ui;
     delete commSettings;
     delete cubes;
 }
+/*============================================================================*/
 
-void CubesControl::on_actionExit_triggered()
-{
-    this->close();
-}
-
+/*============================================================================
+ * PRIVATE METHODS
+ *============================================================================*/
 const QString STYLE_CONN_UP =
         "QLabel { font-weight : bold; color: white; background-color : green; border : 1px solid black }";
 const QString STYLE_CONN_DOWN =
@@ -492,6 +497,14 @@ void CubesControl::writeSiphraReadoutMode(int value)
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 }
 
+/*============================================================================
+ * ACTIONS
+ *============================================================================*/
+void CubesControl::on_actionExit_triggered()
+{
+    this->close();
+}
+
 void CubesControl::on_actionConnect_triggered()
 {
     QString msg = "";
@@ -756,6 +769,9 @@ void CubesControl::on_actionExportHistogram_triggered()
     }
 }
 
+/*============================================================================
+ * CUBES OBJECT SLOTS
+ *============================================================================*/
 void CubesControl::on_cubes_devReadReady()
 {
     QString s;
@@ -862,6 +878,9 @@ void CubesControl::on_cubes_devErrorOccured(int error)
         statusBar()->showMessage(msg, 5000);
 }
 
+/*============================================================================
+ * UI WIDGET SLOTS
+ *============================================================================*/
 void CubesControl::on_btnToggleAdcPoll_clicked()
 {
     on_actionToggleAdcPoll_triggered();
@@ -1382,6 +1401,9 @@ void CubesControl::on_spinboxDelay_valueChanged(int value)
     writeSiphraReadoutMode(uiSiphraReadoutModeValue());
 }
 
+/*============================================================================
+ * UI CONTAINER SLOTS
+ *============================================================================*/
 void CubesControl::on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
     if (column == 2) {
