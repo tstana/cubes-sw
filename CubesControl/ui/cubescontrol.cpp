@@ -1401,6 +1401,12 @@ void CubesControl::on_spinboxDelay_valueChanged(int value)
     writeSiphraReadoutMode(uiSiphraReadoutModeValue());
 }
 
+void CubesControl::on_spinboxSiphraChannelToConfig_valueChanged(int value)
+{
+    m_siphraRegAddr = value-1;
+    on_actionReadSiphraReg_triggered();
+}
+
 /*============================================================================
  * UI CONTAINER SLOTS
  *============================================================================*/

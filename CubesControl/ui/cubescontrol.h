@@ -110,6 +110,7 @@ private slots:
     void on_spinboxTune_valueChanged(int arg1);
     void on_sliderDelay_valueChanged(int value);
     void on_spinboxDelay_valueChanged(int arg1);
+    void on_spinboxSiphraChannelToConfig_valueChanged(int arg1);
 
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
