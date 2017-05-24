@@ -406,6 +406,12 @@ int CubesControl::uiSiphraReadoutModeValue()
 
 void CubesControl::writeSiphraChannelReg(int value)
 {
+    /* Exit if the connection is not open */
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open, not applying SIHPRA setting!", 5000);
+        return;
+    }
+
     int address;
 
     /* Channel reg address is spinbox setting minus 1 (SIPHRA CTRL_CH_01 is at 0x00) */
@@ -432,6 +438,12 @@ void CubesControl::writeSiphraChannelReg(int value)
 
 void CubesControl::writeSiphraChannelConfig(int value)
 {
+    /* Exit if the connection is not open */
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open, not applying SIHPRA setting!", 5000);
+        return;
+    }
+
     int address = 0x11;
 
     /* Initiate CUBES command to write the SIPHRA register */
@@ -454,6 +466,12 @@ void CubesControl::writeSiphraChannelConfig(int value)
 
 void CubesControl::writeSiphraReadoutMode(int value)
 {
+    /* Exit if the connection is not open */
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open, not applying SIHPRA setting!", 5000);
+        return;
+    }
+
     int address = 0x18;
 
     /* Initiate CUBES command to write the SIPHRA register */
@@ -1131,12 +1149,6 @@ void CubesControl::on_checkboxEnableChannelTriggering_clicked()
 
 void CubesControl::on_sliderQcThreshold_valueChanged(int value)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1160,12 +1172,6 @@ void CubesControl::on_sliderQcThreshold_valueChanged(int value)
 
 void CubesControl::on_spinboxQcThreshold_valueChanged(int value)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1189,12 +1195,6 @@ void CubesControl::on_spinboxQcThreshold_valueChanged(int value)
 
 void CubesControl::on_sliderQcHysteresis_valueChanged(int value)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1218,12 +1218,6 @@ void CubesControl::on_sliderQcHysteresis_valueChanged(int value)
 
 void CubesControl::on_comboboxQcHysteresis_currentIndexChanged(int index)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1247,12 +1241,6 @@ void CubesControl::on_comboboxQcHysteresis_currentIndexChanged(int index)
 
 void CubesControl::on_sliderCmisGain_valueChanged(int value)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1276,12 +1264,6 @@ void CubesControl::on_sliderCmisGain_valueChanged(int value)
 
 void CubesControl::on_comboboxCmisGain_currentIndexChanged(int index)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1305,12 +1287,6 @@ void CubesControl::on_comboboxCmisGain_currentIndexChanged(int index)
 
 void CubesControl::on_sliderCiGain_valueChanged(int value)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1334,12 +1310,6 @@ void CubesControl::on_sliderCiGain_valueChanged(int value)
 
 void CubesControl::on_comboboxCiGain_currentIndexChanged(int index)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1363,12 +1333,6 @@ void CubesControl::on_comboboxCiGain_currentIndexChanged(int index)
 
 void CubesControl::on_sliderShapingTime_valueChanged(int value)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1392,12 +1356,6 @@ void CubesControl::on_sliderShapingTime_valueChanged(int value)
 
 void CubesControl::on_comboboxShapingTime_currentIndexChanged(int index)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1421,12 +1379,6 @@ void CubesControl::on_comboboxShapingTime_currentIndexChanged(int index)
 
 void CubesControl::on_sliderTune_valueChanged(int value)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1450,12 +1402,6 @@ void CubesControl::on_sliderTune_valueChanged(int value)
 
 void CubesControl::on_spinboxTune_valueChanged(int value)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1479,12 +1425,6 @@ void CubesControl::on_spinboxTune_valueChanged(int value)
 
 void CubesControl::on_sliderDelay_valueChanged(int value)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
@@ -1508,12 +1448,6 @@ void CubesControl::on_sliderDelay_valueChanged(int value)
 
 void CubesControl::on_spinboxDelay_valueChanged(int value)
 {
-    /* Refuse operation on no connection */
-//    if (!connStatus) {
-//        statusBar()->showMessage("Connection not open!", 5000);
-//        return;
-//    }
-
     /*
      * This widget has been changed by another widget, not the user. In this case,
      * no further operation is needed, clear the visual reg change notification
