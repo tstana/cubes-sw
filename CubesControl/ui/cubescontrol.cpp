@@ -1486,7 +1486,7 @@ void CubesControl::on_treeSiphraRegMap_contextMenuRequested(const QPoint &p)
 void CubesControl::on_tabWidget_currentChanged(int index)
 {
     /* Update histogram chart with new values */
-    if (index == 1) {
+    if (index == 2) {
         updateHistogram(true);
     }
 }
