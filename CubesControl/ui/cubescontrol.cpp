@@ -500,6 +500,12 @@ void CubesControl::on_actionConnect_triggered()
     }
     }
 
+    /*
+     * Issue read all SIPHRA regs on connect
+     *      TODO: Fix ugly hack of calling the on_clicked() of the button
+     */
+    on_btnReadAllSiphraRegs_clicked();
+
     statusBar()->showMessage(msg, 5000);
 }
 
