@@ -368,12 +368,6 @@ int CubesControl::uiSiphraChannelConfigValue()
                          &shaper_hold_cap,
                          &shaper_input_cap);
 
-    qDebug() << "shaper_feedback_cap" << shaper_feedback_cap;
-    qDebug() << "shaper_feedback_res" << shaper_feedback_res;
-    qDebug() << "shaper_input_cap" << shaper_input_cap;
-    qDebug() << "shaper_hold_cap" << shaper_hold_cap;
-    qDebug() << "shaper_bias" << shaper_bias;
-
     value = (cmis_gain << 21) |
             (ui->sliderCiGain->value() << 19) |
             (shaper_bias << 14) |
@@ -381,8 +375,6 @@ int CubesControl::uiSiphraChannelConfigValue()
             (shaper_feedback_res << 7) |
             (shaper_hold_cap << 4) |
             (shaper_input_cap);
-
-    qDebug() << QString::number(value,16).rightJustified(8,'0');
 
     /*
      * OR register value with currently existing bits, masking settings the user
