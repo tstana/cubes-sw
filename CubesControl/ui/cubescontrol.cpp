@@ -265,7 +265,7 @@ void CubesControl::updateHistogram(bool updateAll)
         int idx = m_siphraAdcValue*histogramNumBins / ADC_MAX_VALUE;
         ++histogramData[idx];
 
-        if (ui->tabWidget->currentIndex() == 1) {
+        if (ui->tabWidget->currentIndex() == 2) {
             QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
             series->barSets()[0]->replace(idx, histogramData[idx]);
 
@@ -829,7 +829,7 @@ void CubesControl::on_cubes_devReadReady()
         m_siphraAdcValue = (double)(((data[2] & 0xf) << 8) | (data[3] & 0xff));
         if (m_siphraAdcPollEnabled && trigged) {
             updateHistogram();
-            if (ui->tabWidget->currentIndex() == 2) {
+            if (ui->tabWidget->currentIndex() == 3) {
                 /* Adjust the data to 610uV per MSB before displaying */
                 m_siphraAdcValue *= 0.610;
                 ui->lblAdcChan->setText(QString::number(m_siphraAdcChan));
