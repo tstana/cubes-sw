@@ -1310,8 +1310,8 @@ void SiphraTreeWidgetItem::updateRegisterBitFields()
         child(2)->setText(2, QString::number((registerValue() >> 18) & 0x01));
         child(3)->setText(2, QString::number((registerValue() >> 14) & 0x0f));
         child(4)->setText(2, QString::number((registerValue() >> 10) & 0x0f));
-        child(5)->setText(2, QString::number((registerValue() >>  7) & 0x03));
-        child(6)->setText(2, QString::number((registerValue() >>  4) & 0x03));
+        child(5)->setText(2, QString::number((registerValue() >>  7) & 0x07));
+        child(6)->setText(2, QString::number((registerValue() >>  4) & 0x07));
         child(7)->setText(2, QString::number((registerValue())       & 0x0f));
         break;
 
