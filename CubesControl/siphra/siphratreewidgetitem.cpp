@@ -802,6 +802,10 @@ void SiphraTreeWidgetItem::setRegisterValue(qint32 value)
         value &= 0x00003fff;
         break;
 
+    case SIPHRA_CHANNEL_CONFIG:
+        value &= 0x00ffffff;
+        break;
+
     case SIPHRA_CHANNEL_CONTROL:
         value &= 0x007fffff;
         break;
