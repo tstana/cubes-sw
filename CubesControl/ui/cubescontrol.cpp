@@ -294,7 +294,7 @@ int CubesControl::uiSiphraChannelRegValue()
      * makes via the UI, before applying
      */
     SiphraTreeWidgetItem *siphraReg =
-            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
+            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value() - 1);
 
     value |= siphraReg->registerValue() & 0x03ffe000;
 
@@ -381,7 +381,7 @@ int CubesControl::uiSiphraChannelConfigValue()
      * makes via the UI, before applying
      */
     SiphraTreeWidgetItem *siphraReg =
-            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
+            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(0x11);
 
     value |= siphraReg->registerValue() & 0x40000;
 
@@ -392,7 +392,8 @@ int CubesControl::uiSiphraReadoutModeValue()
 {
     int value;
 
-    // make sure readout_en_int_hold_start is ON, to avoid lots of trouble...
+    // make sure readout_en_int_hold_start is ON, to avoid confusion as to why
+    // the ASIC isnt't triggering...
     value = (ui->sliderTune->value() << 10) |
             (ui->sliderDelay->value() << 6) |
             0x1;
@@ -402,7 +403,7 @@ int CubesControl::uiSiphraReadoutModeValue()
      * makes via the UI, before applying
      */
     SiphraTreeWidgetItem *siphraReg =
-            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(ui->spinboxSiphraChannelToConfig->value());
+            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(0x18);
 
     value |= siphraReg->registerValue() & 0xe;
 
