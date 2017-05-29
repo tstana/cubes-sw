@@ -495,7 +495,7 @@
         <item row="1" column="1">
          <widget class="QGroupBox" name="groupboxShaperSettings">
           <property name="title">
-           <string>Track-and-Hold settings (READOUT_FIXED_LIST)</string>
+           <string>Track-and-Hold settings (READOUT_MODE)</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
            <item row="2" column="0">
