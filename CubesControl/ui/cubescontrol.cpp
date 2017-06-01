@@ -358,9 +358,10 @@ int CubesControl::uiSiphraChannelConfigValue()
     int value, cmis_gain, shaper_bias, shaper_feedback_cap, shaper_feedback_res,
             shaper_hold_cap, shaper_input_cap;
 
-    /* Bit-extend CMIS setting from the slider (SIPHRA has three bits but four settings for CMIS gain) */
-    cmis_gain = ui->sliderCmisGain->value() + 4*(ui->sliderCmisGain->value() >= 2);
+    /* CMIS gain setting */
+    cmis_gain = 2^(ui->sliderCmisGain->value())-1;
 
+    /* Decolde shaper settings */
     decodeShaperSettings(ui->sliderShapingTime->value(),
                          &shaper_bias,
                          &shaper_feedback_cap,
@@ -368,6 +369,7 @@ int CubesControl::uiSiphraChannelConfigValue()
                          &shaper_hold_cap,
                          &shaper_input_cap);
 
+    /* Apply the CHANNEL_CONFIG register fields */
     value = (cmis_gain << 21) |
             (ui->sliderCiGain->value() << 19) |
             (shaper_bias << 14) |
