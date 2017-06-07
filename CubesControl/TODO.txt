@@ -1,3 +1,4 @@
+- Fix "Read all registers" in Diagnostics tab
 - on_btnReadAllSiphraRegs() getting stuck if ADC poll enabled
 - CommSettingsDialog: implement btnConnect instead of btnOk
 - ADC_CONFIG register writing and reading weird
