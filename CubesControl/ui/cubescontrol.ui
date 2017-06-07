@@ -1109,6 +1109,11 @@
                <string>0x308</string>
               </property>
              </row>
+             <row>
+              <property name="text">
+               <string>0x30c</string>
+              </property>
+             </row>
              <column>
               <property name="text">
                <string>Name</string>
