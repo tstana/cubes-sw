@@ -1237,6 +1237,11 @@
                <string>SIPHRA_CH01RATER</string>
               </property>
              </item>
+             <item row="8" column="1">
+              <property name="text">
+               <string>R/O</string>
+              </property>
+             </item>
              <item row="8" column="3">
               <property name="text">
                <string>Channel 1 rate register</string>
@@ -1245,6 +1250,11 @@
              <item row="9" column="0">
               <property name="text">
                <string>SIPHRA_CH02RATER</string>
+              </property>
+             </item>
+             <item row="9" column="1">
+              <property name="text">
+               <string>R/O</string>
               </property>
              </item>
              <item row="9" column="3">
@@ -1257,6 +1267,11 @@
                <string>SIPHRA_CH03RATER</string>
               </property>
              </item>
+             <item row="10" column="1">
+              <property name="text">
+               <string>R/O</string>
+              </property>
+             </item>
              <item row="10" column="3">
               <property name="text">
                <string>Channel 3 rate register</string>
@@ -1265,6 +1280,11 @@
              <item row="11" column="0">
               <property name="text">
                <string>SIPHRA_CH04RATER</string>
+              </property>
+             </item>
+             <item row="11" column="1">
+              <property name="text">
+               <string>R/O</string>
               </property>
              </item>
              <item row="11" column="3">
@@ -1277,6 +1297,11 @@
                <string>SIPHRA_CH05RATER</string>
               </property>
              </item>
+             <item row="12" column="1">
+              <property name="text">
+               <string>R/O</string>
+              </property>
+             </item>
              <item row="12" column="3">
               <property name="text">
                <string>Channel 5 rate register</string>
@@ -1285,6 +1310,11 @@
              <item row="13" column="0">
               <property name="text">
                <string>SIPHRA_CH06RATER</string>
+              </property>
+             </item>
+             <item row="13" column="1">
+              <property name="text">
+               <string>R/O</string>
               </property>
              </item>
              <item row="13" column="3">
@@ -1297,6 +1327,11 @@
                <string>SIPHRA_CH07RATER</string>
               </property>
              </item>
+             <item row="14" column="1">
+              <property name="text">
+               <string>R/O</string>
+              </property>
+             </item>
              <item row="14" column="3">
               <property name="text">
                <string>Channel 7 rate register</string>
@@ -1305,6 +1340,11 @@
              <item row="15" column="0">
               <property name="text">
                <string>SIPHRA_CH08RATER</string>
+              </property>
+             </item>
+             <item row="15" column="1">
+              <property name="text">
+               <string>R/O</string>
               </property>
              </item>
              <item row="15" column="3">
@@ -1317,6 +1357,11 @@
                <string>SIPHRA_CH09RATER</string>
               </property>
              </item>
+             <item row="16" column="1">
+              <property name="text">
+               <string>R/O</string>
+              </property>
+             </item>
              <item row="16" column="3">
               <property name="text">
                <string>Channel 9 rate register</string>
@@ -1325,6 +1370,11 @@
              <item row="17" column="0">
               <property name="text">
                <string>SIPHRA_CH10RATER</string>
+              </property>
+             </item>
+             <item row="17" column="1">
+              <property name="text">
+               <string>R/O</string>
               </property>
              </item>
              <item row="17" column="3">
@@ -1337,6 +1387,11 @@
                <string>SIPHRA_CH11RATER</string>
               </property>
              </item>
+             <item row="18" column="1">
+              <property name="text">
+               <string>R/O</string>
+              </property>
+             </item>
              <item row="18" column="3">
               <property name="text">
                <string>Channel 11 rate register</string>
@@ -1345,6 +1400,11 @@
              <item row="19" column="0">
               <property name="text">
                <string>SIPHRA_CH12RATER</string>
+              </property>
+             </item>
+             <item row="19" column="1">
+              <property name="text">
+               <string>R/O</string>
               </property>
              </item>
              <item row="19" column="3">
@@ -1357,6 +1417,11 @@
                <string>SIPHRA_CH13RATER</string>
               </property>
              </item>
+             <item row="20" column="1">
+              <property name="text">
+               <string>R/O</string>
+              </property>
+             </item>
              <item row="20" column="3">
               <property name="text">
                <string>Channel 13 rate register</string>
@@ -1365,6 +1430,11 @@
              <item row="21" column="0">
               <property name="text">
                <string>SIPHRA_CH14RATER</string>
+              </property>
+             </item>
+             <item row="21" column="1">
+              <property name="text">
+               <string>R/O</string>
               </property>
              </item>
              <item row="21" column="3">
@@ -1377,6 +1447,11 @@
                <string>SIPHRA_CH15RATER</string>
               </property>
              </item>
+             <item row="22" column="1">
+              <property name="text">
+               <string>R/O</string>
+              </property>
+             </item>
              <item row="22" column="3">
               <property name="text">
                <string>Channel 15 rate register</string>
@@ -1385,6 +1460,11 @@
              <item row="23" column="0">
               <property name="text">
                <string>SIPHRA_CH16RATER</string>
+              </property>
+             </item>
+             <item row="23" column="1">
+              <property name="text">
+               <string>R/O</string>
               </property>
              </item>
              <item row="23" column="3">
