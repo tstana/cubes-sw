@@ -787,21 +787,24 @@ void CubesControl::on_cubes_devReadReady()
 
     switch (cubes->currentCommand()->code()){
     case CMD_READ_ALL_REGS:
+    {
+        int j = 0;
         for (int i = 0; i < 0x20; i += 4) {
             s = "0x" + QString::number((quint8)data[i+0], 16).rightJustified(2, '0') +
                        QString::number((quint8)data[i+1], 16).rightJustified(2, '0') +
                        QString::number((quint8)data[i+2], 16).rightJustified(2, '0') +
                        QString::number((quint8)data[i+3], 16).rightJustified(2, '0');
-            ui->tableCubesRegs->item(i/4, 2)->setText(s);
+            ui->tableCubesRegs->item(j++, 2)->setText(s);
         }
         for (int i = 0x200; i < 0x310; i += 4) {
             s = "0x" + QString::number((quint8)data[i+0], 16).rightJustified(2, '0') +
                        QString::number((quint8)data[i+1], 16).rightJustified(2, '0') +
                        QString::number((quint8)data[i+2], 16).rightJustified(2, '0') +
                        QString::number((quint8)data[i+3], 16).rightJustified(2, '0');
-            ui->tableCubesRegs->item((i-0x200)/4, 2)->setText(s);
+            ui->tableCubesRegs->item(j++, 2)->setText(s);
         }
         break;
+    }
     case CMD_GET_SIPHRA_DATAR:
     {
         /* Apply the value to the tree widget item */
