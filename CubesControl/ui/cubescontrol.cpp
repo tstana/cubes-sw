@@ -549,9 +549,6 @@ void CubesControl::on_actionConnect_triggered()
      */
     on_btnReadAllSiphraRegs_clicked();
 
-    /* Start event readout timer */
-    tmrEventRateReadout->start();
-
     statusBar()->showMessage(msg, 5000);
 }
 
@@ -567,8 +564,6 @@ void CubesControl::on_actionDisconnect_triggered()
         showConnStatus(connStatus);
         msg = "Connection closed.";
     }
-
-    tmrEventRateReadout->stop();
 
     statusBar()->showMessage(msg, 5000);
 }
@@ -1549,5 +1544,12 @@ void CubesControl::on_tabWidget_currentChanged(int index)
     /* Update histogram chart with new values */
     if (index == 2) {
         updateHistogram(true);
+    }
+
+    /* Start and stop event rate timer based on whether the UI shows the event rate label */
+    if (index == 1 ) {
+        tmrEventRateReadout->start();
+    } else {
+        tmrEventRateReadout->stop();
     }
 }
