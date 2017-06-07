@@ -112,6 +112,26 @@ quint8 CubesCommand::decode(const quint8 code)
         m_dataDirection = Read;
         m_description = "Get SIPHRA ADC register value";
         break;
+    case CMD_GET_CH01_REGS:
+    case CMD_GET_CH02_REGS:
+    case CMD_GET_CH03_REGS:
+    case CMD_GET_CH04_REGS:
+    case CMD_GET_CH05_REGS:
+    case CMD_GET_CH06_REGS:
+    case CMD_GET_CH07_REGS:
+    case CMD_GET_CH08_REGS:
+    case CMD_GET_CH09_REGS:
+    case CMD_GET_CH10_REGS:
+    case CMD_GET_CH11_REGS:
+    case CMD_GET_CH12_REGS:
+    case CMD_GET_CH13_REGS:
+    case CMD_GET_CH14_REGS:
+    case CMD_GET_CH15_REGS:
+    case CMD_GET_CH16_REGS:
+        m_dataBytes = 4;
+        m_dataDirection = Read;
+        m_description = "Read channel registers";
+        break;
     default:
         return -1;
     }
