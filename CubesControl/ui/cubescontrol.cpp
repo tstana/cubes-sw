@@ -199,6 +199,13 @@ CubesControl::CubesControl(QWidget *parent) :
     ui->histogram->setChart(chart);
 //    ui->histogram->setRenderHint(QPainter::Antialiasing);
 
+    /* Event rate readout */
+    ui->lblEventRate->setText("0");
+    tmrEventRateReadout = new QTimer;
+    tmrEventRateReadout->setInterval(500);
+    connect(tmrEventRateReadout, &QTimer::timeout,
+            this, &CubesControl::on_tmrEventRateReadout_timeout);
+
     /* Create communication objects */
     serialPort = new QSerialPort();
 
@@ -542,6 +549,9 @@ void CubesControl::on_actionConnect_triggered()
      */
     on_btnReadAllSiphraRegs_clicked();
 
+    /* Start event readout timer */
+    tmrEventRateReadout->start();
+
     statusBar()->showMessage(msg, 5000);
 }
 
@@ -557,6 +567,8 @@ void CubesControl::on_actionDisconnect_triggered()
         showConnStatus(connStatus);
         msg = "Connection closed.";
     }
+
+    tmrEventRateReadout->stop();
 
     statusBar()->showMessage(msg, 5000);
 }
@@ -851,6 +863,27 @@ void CubesControl::on_cubes_devReadReady()
                 ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
             }
         }
+        break;
+    }
+    case CMD_GET_CH01_REGS:
+    case CMD_GET_CH02_REGS:
+    case CMD_GET_CH03_REGS:
+    case CMD_GET_CH04_REGS:
+    case CMD_GET_CH05_REGS:
+    case CMD_GET_CH06_REGS:
+    case CMD_GET_CH07_REGS:
+    case CMD_GET_CH08_REGS:
+    case CMD_GET_CH09_REGS:
+    case CMD_GET_CH10_REGS:
+    case CMD_GET_CH11_REGS:
+    case CMD_GET_CH12_REGS:
+    case CMD_GET_CH13_REGS:
+    case CMD_GET_CH14_REGS:
+    case CMD_GET_CH15_REGS:
+    case CMD_GET_CH16_REGS:
+    {
+        int regValue = 10 * ((data[2] << 16) | data[3]);
+        ui->lblEventRate->setText(QString::number(regValue));
         break;
     }
     default:
@@ -1420,6 +1453,13 @@ void CubesControl::on_spinboxSiphraChannelToConfig_valueChanged(int value)
 {
     m_siphraRegAddr = value-1;
     on_actionReadSiphraReg_triggered();
+}
+
+void CubesControl::on_tmrEventRateReadout_timeout()
+{
+    QByteArray dummy;
+    qint8 cmd = CMD_GET_CH01_REGS + ui->spinboxSiphraChannelToConfig->value()-1;
+    cubes->sendCommand(cmd, dummy);
 }
 
 /*============================================================================

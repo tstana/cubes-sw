@@ -118,6 +118,7 @@ private slots:
     void on_tabWidget_currentChanged(int index);
 
     void on_tmrSiphraAdcPoll_timeout();
+    void on_tmrEventRateReadout_timeout();
 
 private:
     Ui::CubesControl    *ui;
@@ -144,6 +145,7 @@ private:
     bool                siphraVisualRegChange = false;
 
     QTimer              *tmrSiphraAdcPoll;
+    QTimer              *tmrEventRateReadout;
 
     QVector<quint16>    histogramData;
     int                 histogramNumBins;
