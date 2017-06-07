@@ -78,7 +78,7 @@ quint8 CubesCommand::decode(const quint8 code)
 
     switch (code) {
     case CMD_READ_ALL_REGS:
-        m_dataBytes = 48;
+        m_dataBytes = 784;
         m_dataDirection = Read;
         m_description = "Request housekeeping data";
         break;
