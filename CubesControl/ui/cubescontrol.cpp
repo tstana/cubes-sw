@@ -202,7 +202,7 @@ CubesControl::CubesControl(QWidget *parent) :
     /* Event rate readout */
     ui->lblEventRate->setText("0");
     tmrEventRateReadout = new QTimer;
-    tmrEventRateReadout->setInterval(500);
+    tmrEventRateReadout->setInterval(1000);
     connect(tmrEventRateReadout, &QTimer::timeout,
             this, &CubesControl::on_tmrEventRateReadout_timeout);
 
@@ -877,7 +877,7 @@ void CubesControl::on_cubes_devReadReady()
     case CMD_GET_CH15_REGS:
     case CMD_GET_CH16_REGS:
     {
-        int regValue = 10 * ((data[2] << 16) | data[3]);
+        int regValue = (data[2] << 16) | data[3];
         ui->lblEventRate->setText(QString::number(regValue));
         break;
     }
