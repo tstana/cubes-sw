@@ -877,7 +877,7 @@ void CubesControl::on_cubes_devReadReady()
     case CMD_GET_CH15_REGS:
     case CMD_GET_CH16_REGS:
     {
-        int regValue = (data[2] << 8) | data[3];
+        int regValue = ((data[2] << 8) & 0xff00) | (data[3] & 0xff);
         ui->lblEventRate->setText(QString::number(regValue));
         break;
     }
