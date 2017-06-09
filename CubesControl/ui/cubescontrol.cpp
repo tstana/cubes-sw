@@ -460,22 +460,24 @@ void CubesControl::writeSiphraChannelReg(int value)
      * NB! This last part is temporary and may lead to mismatches with the
      * actual register value.
      */
+    address = 0x17;
+    SiphraTreeWidgetItem *item = new SiphraTreeWidgetItem;
+    item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(address);
+    value = item->registerValue();
     if (ui->checkboxEnableChannelTriggering->isChecked()) {
-        address = 0x17;
-        SiphraTreeWidgetItem *item = new SiphraTreeWidgetItem;
-        item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(address);
-        value = pow(2, ui->spinboxSiphraChannelToConfig->value());
-        value |= item->registerValue();
-        data[0] = (value >> 24) & 0xff;
-        data[1] = (value >> 16) & 0xff;
-        data[2] = (value >>  8) & 0xff;
-        data[3] = (value & 0xff);
-        data[4] = 0x00;
-        data[5] = 0x00;
-        data[6] = 0x00;
-        data[7] = (address << 1) | 0x1;
-        cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+        value |= 1 << ui->spinboxSiphraChannelToConfig->value();
+    } else {
+        value &= ~(1 << ui->spinboxSiphraChannelToConfig->value());
     }
+    data[0] = (value >> 24) & 0xff;
+    data[1] = (value >> 16) & 0xff;
+    data[2] = (value >>  8) & 0xff;
+    data[3] = (value & 0xff);
+    data[4] = 0x00;
+    data[5] = 0x00;
+    data[6] = 0x00;
+    data[7] = (address << 1) | 0x1;
+    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 }
 
 void CubesControl::writeSiphraChannelConfig(int value)
