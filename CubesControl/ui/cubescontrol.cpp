@@ -943,6 +943,14 @@ void CubesControl::on_cubes_devReadReady()
                 case 7:
                     cmis_gain = 3;
                     break;
+                default:
+                {
+                    cmis_gain = ui->sliderCmisGain->value();
+                    QMessageBox box;
+                    box.setText("Invalid CMIS gain setting detected, change it via the slider or combobox.");
+                    box.exec();
+                    break;
+                }
                 }
                 ci_gain = reg->registerValue(1);
                 shaper_bias = reg->registerValue(3);
