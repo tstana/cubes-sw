@@ -310,6 +310,19 @@ int CubesControl::uiSiphraChannelRegValue()
     return value;
 }
 
+void CubesControl::setUiSiphraChannelRegValue(bool powerUpChannel,
+                                              bool enableTriggering,
+                                              int qcThreshold,
+                                              int qcHysteresis)
+{
+    ui->checkboxPowerUpChannel->setChecked(powerUpChannel);
+    ui->checkboxEnableChannelTriggering->setChecked(enableTriggering);
+    ui->sliderQcThreshold->setValue(qcThreshold);
+    ui->spinboxQcThreshold->setValue(qcThreshold);
+    ui->sliderQcHysteresis->setValue(qcHysteresis);
+    ui->comboboxQcHysteresis->setCurrentIndex(qcHysteresis);
+}
+
 void CubesControl::decodeShaperSettings(int setting,
                                         int *bias,
                                         int *feedback_cap,
@@ -864,6 +877,19 @@ void CubesControl::on_cubes_devReadReady()
                 cubes->sendCommand(CMD_GET_SIPHRA_DATAR, data);
             }
         }
+
+        /* Update visual setting if in the visual config tab */
+        if (ui->tabWidget->currentIndex() == 1) {
+            if (m_siphraRegAddr == ui->spinboxSiphraChannelToConfig->value()-1) {
+                bool enableChannelTriggering = reg->registerValue(7),
+                     powerUpChannel = reg->registerValue(6);
+                int qcHysteresis = reg->registerValue(5),
+                    qcThreshold = reg->registerValue(4);
+                setUiSiphraChannelRegValue(powerUpChannel, enableChannelTriggering,
+                                           qcThreshold, qcHysteresis);
+            }
+        }
+
         break;
     }
     case CMD_GET_SIPHRA_ADCR:

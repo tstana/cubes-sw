@@ -157,6 +157,8 @@ private:
     int     uiSiphraChannelConfigValue();
     int     uiSiphraReadoutModeValue();
 
+    void    setUiSiphraChannelRegValue(bool powerUpChannel, bool enableTriggering, int qcThreshold, int qcHysteresis);
+
     void    writeSiphraChannelReg(int value);
     void    writeSiphraChannelConfig(int value);
     void    writeSiphraReadoutMode(int value);
