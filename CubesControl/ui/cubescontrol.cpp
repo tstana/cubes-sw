@@ -930,6 +930,20 @@ void CubesControl::on_cubes_devReadReady()
                         shaper_feedback_res, shaper_hold_cap, shaper_input_cap,
                         shapingTime;
                 cmis_gain = reg->registerValue(0);
+                switch (cmis_gain) {
+                case 0:
+                    cmis_gain = 0;
+                    break;
+                case 1:
+                    cmis_gain = 1;
+                    break;
+                case 3:
+                    cmis_gain = 2;
+                    break;
+                case 7:
+                    cmis_gain = 3;
+                    break;
+                }
                 ci_gain = reg->registerValue(1);
                 shaper_bias = reg->registerValue(3);
                 shaper_feedback_cap = reg->registerValue(4);
