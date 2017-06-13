@@ -599,6 +599,14 @@ void CubesControl::setUiSiphraChannelConfigValue(int cmisGain,
     ui->comboboxShapingTime->setCurrentIndex(shapingTime);
 }
 
+void CubesControl::setUiSiphraReadoutModeValue(int thDelay, int thTune)
+{
+    ui->sliderDelay->setValue(thDelay);
+    ui->spinboxDelay->setValue(thDelay);
+    ui->sliderTune->setValue(thTune);
+    ui->spinboxTune->setValue(thTune);
+}
+
 /*============================================================================
  * ACTIONS
  *============================================================================*/
@@ -758,13 +766,9 @@ void CubesControl::on_actionReadSiphraReg_triggered()
     }
     data[7] = (m_siphraRegAddr << 1);
 
-    statusBar()->showMessage("Reading SIPHRA register at address 0x" +
-            QString::number(m_siphraRegAddr & 0xff, 16).rightJustified(2, '0').toUpper());
-
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 
     /* Finally, initiate command to read out the register value */
-    m_readAllSiphraRegs = false;
     cubes->sendCommand(CMD_GET_SIPHRA_DATAR, data);
 }
 
@@ -912,22 +916,6 @@ void CubesControl::on_cubes_devReadReady()
                                ((data[2] & 0xff) <<  8) |
                                ((data[3] & 0xff)) );
 
-        /* Continue if reading all registers */
-        if (m_readAllSiphraRegs) {
-            ++m_siphraRegAddr;
-            if (m_siphraRegAddr >= ui->treeSiphraRegMap->topLevelItemCount()) {
-                m_siphraRegAddr = 0;
-                statusBar()->showMessage("Read all SIPHRA registers finished.", 5000);
-            } else {
-                for (int i = 0; i < 7; ++i) {
-                    data[i] = 0x00;
-                }
-                data[7] = (m_siphraRegAddr << 1);
-                cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
-                cubes->sendCommand(CMD_GET_SIPHRA_DATAR, data);
-            }
-        }
-
         /* Update visual setting if in the visual config tab */
         if (ui->tabWidget->currentIndex() == 1) {
             if (m_siphraRegAddr == ui->spinboxSiphraChannelToConfig->value()-1) {
@@ -952,6 +940,31 @@ void CubesControl::on_cubes_devReadReady()
                                                    shaper_feedback_res, shaper_hold_cap,
                                                    shaper_input_cap);
                 setUiSiphraChannelConfigValue(cmis_gain, ci_gain, shapingTime);
+            } else if (m_siphraRegAddr == 0x18) {
+                int int_hold_tune;
+                int int_hold_delay;
+
+                int_hold_tune = reg->registerValue(0);
+                int_hold_delay = reg->registerValue(1);
+
+                setUiSiphraReadoutModeValue(int_hold_delay, int_hold_tune);
+            }
+        }
+
+        /* Continue if reading all registers */
+        if (m_readAllSiphraRegs) {
+            ++m_siphraRegAddr;
+            if (m_siphraRegAddr >= ui->treeSiphraRegMap->topLevelItemCount()) {
+                m_siphraRegAddr = 0;
+                m_readAllSiphraRegs = false;
+                statusBar()->showMessage("Read all SIPHRA registers finished.", 5000);
+            } else {
+                for (int i = 0; i < 7; ++i) {
+                    data[i] = 0x00;
+                }
+                data[7] = (m_siphraRegAddr << 1);
+                cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+                cubes->sendCommand(CMD_GET_SIPHRA_DATAR, data);
             }
         }
 
@@ -1260,7 +1273,13 @@ void CubesControl::on_sliderQcThreshold_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->spinboxQcThreshold->setValue(value);
-    writeSiphraChannelReg(uiSiphraChannelRegValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelReg(uiSiphraChannelRegValue());
 }
 
 void CubesControl::on_spinboxQcThreshold_valueChanged(int value)
@@ -1283,7 +1302,13 @@ void CubesControl::on_spinboxQcThreshold_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->sliderQcThreshold->setValue(value);
-    writeSiphraChannelReg(uiSiphraChannelRegValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelReg(uiSiphraChannelRegValue());
 }
 
 void CubesControl::on_sliderQcHysteresis_valueChanged(int value)
@@ -1306,7 +1331,13 @@ void CubesControl::on_sliderQcHysteresis_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->comboboxQcHysteresis->setCurrentIndex(value);
-    writeSiphraChannelReg(uiSiphraChannelRegValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelReg(uiSiphraChannelRegValue());
 }
 
 void CubesControl::on_comboboxQcHysteresis_currentIndexChanged(int index)
@@ -1329,7 +1360,13 @@ void CubesControl::on_comboboxQcHysteresis_currentIndexChanged(int index)
      */
     siphraVisualRegChange = true;
     ui->sliderQcHysteresis->setValue(index);
-    writeSiphraChannelReg(uiSiphraChannelRegValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelReg(uiSiphraChannelRegValue());
 }
 
 void CubesControl::on_sliderCmisGain_valueChanged(int value)
@@ -1352,7 +1389,13 @@ void CubesControl::on_sliderCmisGain_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->comboboxCmisGain->setCurrentIndex(value);
-    writeSiphraChannelConfig(uiSiphraChannelConfigValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }
 
 void CubesControl::on_comboboxCmisGain_currentIndexChanged(int index)
@@ -1375,7 +1418,13 @@ void CubesControl::on_comboboxCmisGain_currentIndexChanged(int index)
      */
     siphraVisualRegChange = true;
     ui->sliderCmisGain->setValue(index);
-    writeSiphraChannelConfig(uiSiphraChannelConfigValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }
 
 void CubesControl::on_sliderCiGain_valueChanged(int value)
@@ -1398,7 +1447,13 @@ void CubesControl::on_sliderCiGain_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->comboboxCiGain->setCurrentIndex(value);
-    writeSiphraChannelConfig(uiSiphraChannelConfigValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }
 
 void CubesControl::on_comboboxCiGain_currentIndexChanged(int index)
@@ -1421,7 +1476,13 @@ void CubesControl::on_comboboxCiGain_currentIndexChanged(int index)
      */
     siphraVisualRegChange = true;
     ui->sliderCiGain->setValue(index);
-    writeSiphraChannelConfig(uiSiphraChannelConfigValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }
 
 void CubesControl::on_sliderShapingTime_valueChanged(int value)
@@ -1444,7 +1505,13 @@ void CubesControl::on_sliderShapingTime_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->comboboxShapingTime->setCurrentIndex(value);
-    writeSiphraChannelConfig(uiSiphraChannelConfigValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }
 
 void CubesControl::on_comboboxShapingTime_currentIndexChanged(int index)
@@ -1467,7 +1534,13 @@ void CubesControl::on_comboboxShapingTime_currentIndexChanged(int index)
      */
     siphraVisualRegChange = true;
     ui->sliderShapingTime->setValue(index);
-    writeSiphraChannelConfig(uiSiphraChannelConfigValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }
 
 void CubesControl::on_sliderTune_valueChanged(int value)
@@ -1490,7 +1563,13 @@ void CubesControl::on_sliderTune_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->spinboxTune->setValue(value);
-    writeSiphraReadoutMode(uiSiphraReadoutModeValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraReadoutMode(uiSiphraReadoutModeValue());
 }
 
 void CubesControl::on_spinboxTune_valueChanged(int value)
@@ -1513,7 +1592,13 @@ void CubesControl::on_spinboxTune_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->sliderTune->setValue(value);
-    writeSiphraReadoutMode(uiSiphraReadoutModeValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraReadoutMode(uiSiphraReadoutModeValue());
 }
 
 void CubesControl::on_sliderDelay_valueChanged(int value)
@@ -1536,7 +1621,13 @@ void CubesControl::on_sliderDelay_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->spinboxDelay->setValue(value);
-    writeSiphraReadoutMode(uiSiphraReadoutModeValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraReadoutMode(uiSiphraReadoutModeValue());
 }
 
 void CubesControl::on_spinboxDelay_valueChanged(int value)
@@ -1559,7 +1650,13 @@ void CubesControl::on_spinboxDelay_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->sliderDelay->setValue(value);
-    writeSiphraReadoutMode(uiSiphraReadoutModeValue());
+
+    /*
+     * The value of the control can also be changed by a read all regs command;
+     * in this case, no writing of the channel should be made
+     */
+    if (!m_readAllSiphraRegs)
+        writeSiphraReadoutMode(uiSiphraReadoutModeValue());
 }
 
 void CubesControl::on_spinboxSiphraChannelToConfig_valueChanged(int value)
@@ -1664,7 +1761,8 @@ void CubesControl::on_treeSiphraRegMap_contextMenuRequested(const QPoint &p)
 void CubesControl::on_tabWidget_currentChanged(int index)
 {
     if (index == 1) {
-        m_siphraRegAddr = 0x11;
+        m_siphraRegAddr = 0x00;
+        m_readAllSiphraRegs = true;
         on_actionReadSiphraReg_triggered();
         tmrEventRateReadout->start();
     } else {
