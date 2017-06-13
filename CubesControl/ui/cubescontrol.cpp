@@ -394,7 +394,12 @@ int CubesControl::decodeShaperSettings(int bias,
      * Warn the user and revert previous setting.
      */
     QMessageBox box;
-    box.setText("Invalid SIPHRA setting detected, change it via the slider or combo box.");
+    QString text;
+    QTextStream textStream(&text);
+    textStream << "Invalid shaping time settings detected, value shown here is no longer valid!\n"
+               << "\n"
+               << "Read the CHANNEL_CONFIG register in the register map tab to inspect the settings.";
+    box.setText(text);
     box.exec();
 
     return ui->sliderShapingTime->value();
@@ -947,7 +952,12 @@ void CubesControl::on_cubes_devReadReady()
                 {
                     cmis_gain = ui->sliderCmisGain->value();
                     QMessageBox box;
-                    box.setText("Invalid CMIS gain setting detected, change it via the slider or combobox.");
+                    QString text;
+                    QTextStream textStream(&text);
+                    textStream << "Invalid CMIS gain setting detected, value shown here is no longer valid!\n"
+                               << "\n"
+                               << "Read the CHANNEL_CONFIG register in the register map tab to inspect the setting.";
+                    box.setText(text);
                     box.exec();
                     break;
                 }
