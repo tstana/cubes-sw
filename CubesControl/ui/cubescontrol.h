@@ -157,15 +157,20 @@ private:
     int     uiSiphraChannelConfigValue();
     int     uiSiphraReadoutModeValue();
 
-    void    setUiSiphraChannelRegValue(bool powerUpChannel, bool enableTriggering, int qcThreshold, int qcHysteresis);
+    void    setUiSiphraChannelRegValue(bool powerUpChannel, bool enableTriggering,
+                                       int qcThreshold, int qcHysteresis);
+    void    setUiSiphraChannelConfigValue(int cmisGain, int ciGain, int shapingTime);
+    void    setUiSiphraReadoutModeValue(int thDelay, int thTune);
 
     void    writeSiphraChannelReg(int value);
     void    writeSiphraChannelConfig(int value);
     void    writeSiphraReadoutMode(int value);
 
-    void    decodeShaperSettings(int setting, int *bias, int *feedback_cap,
-                                 int *feedback_res, int *hold_cap,
-                                 int *input_cap);
+    void    decodeShapingTime(int setting, int *bias, int *feedback_cap,
+                              int *feedback_res, int *hold_cap,
+                              int *input_cap);
+    int     decodeShaperSettings(int bias, int feedback_cap, int feedback_res,
+                                 int hold_cap, int input_cap);
 };
 
 #endif // CUBESCONTROL_H

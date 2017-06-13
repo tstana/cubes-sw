@@ -310,25 +310,12 @@ int CubesControl::uiSiphraChannelRegValue()
     return value;
 }
 
-void CubesControl::setUiSiphraChannelRegValue(bool powerUpChannel,
-                                              bool enableTriggering,
-                                              int qcThreshold,
-                                              int qcHysteresis)
-{
-    ui->checkboxPowerUpChannel->setChecked(powerUpChannel);
-    ui->checkboxEnableChannelTriggering->setChecked(enableTriggering);
-    ui->sliderQcThreshold->setValue(qcThreshold);
-    ui->spinboxQcThreshold->setValue(qcThreshold);
-    ui->sliderQcHysteresis->setValue(qcHysteresis);
-    ui->comboboxQcHysteresis->setCurrentIndex(qcHysteresis);
-}
-
-void CubesControl::decodeShaperSettings(int setting,
-                                        int *bias,
-                                        int *feedback_cap,
-                                        int *feedback_res,
-                                        int *hold_cap,
-                                        int *input_cap)
+void CubesControl::decodeShapingTime(int setting,
+                                     int *bias,
+                                     int *feedback_cap,
+                                     int *feedback_res,
+                                     int *hold_cap,
+                                     int *input_cap)
 {
     /* Values below obtained from SIHPRA datasheet */
     switch (setting) {
@@ -375,6 +362,40 @@ void CubesControl::decodeShaperSettings(int setting,
     }
 }
 
+int CubesControl::decodeShaperSettings(int bias,
+                                       int feedback_cap,
+                                       int feedback_res,
+                                       int hold_cap,
+                                       int input_cap)
+{
+    /* 200 ns */
+    if ((bias == 7) && (feedback_cap == 2) && (feedback_res == 1) &&
+            (input_cap == 2) && (hold_cap == 0))
+        return 0;
+
+    /* 400 ns */
+    if ((bias == 6) && (feedback_cap == 5) && (feedback_res == 1) &&
+            (input_cap == 4) && (hold_cap == 1))
+        return 1;
+
+    /* 800 ns */
+    if ((bias == 6) && (feedback_cap == 14) && (feedback_res == 4) &&
+            (input_cap == 5) && (hold_cap == 5))
+        return 2;
+
+    /* 1600 ns */
+    if ((bias == 5) && (feedback_cap == 15) && (feedback_res == 7) &&
+            (input_cap == 14) && (hold_cap == 7))
+        return 3;
+
+    /* If we've reached this point, an invalid SIPHRA setting has been detected */
+    QMessageBox box;
+    box.setText("Warning! Invalid SIPHRA setting detected, change it via the slider or combo box.");
+    box.exec();
+
+    return 0;
+}
+
 int CubesControl::uiSiphraChannelConfigValue()
 {
     int value, cmis_gain, shaper_bias, shaper_feedback_cap, shaper_feedback_res,
@@ -384,12 +405,12 @@ int CubesControl::uiSiphraChannelConfigValue()
     cmis_gain = pow(2,ui->sliderCmisGain->value())-1;
 
     /* Decolde shaper settings */
-    decodeShaperSettings(ui->sliderShapingTime->value(),
-                         &shaper_bias,
-                         &shaper_feedback_cap,
-                         &shaper_feedback_res,
-                         &shaper_hold_cap,
-                         &shaper_input_cap);
+    decodeShapingTime(ui->sliderShapingTime->value(),
+                      &shaper_bias,
+                      &shaper_feedback_cap,
+                      &shaper_feedback_res,
+                      &shaper_hold_cap,
+                      &shaper_input_cap);
 
     /* Apply the CHANNEL_CONFIG register fields */
     value = (cmis_gain << 21) |
@@ -547,6 +568,31 @@ void CubesControl::writeSiphraReadoutMode(int value)
             QString::number(address & 0xff, 16).rightJustified(2, '0').toUpper());
 
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+}
+
+void CubesControl::setUiSiphraChannelRegValue(bool powerUpChannel,
+                                              bool enableTriggering,
+                                              int qcThreshold,
+                                              int qcHysteresis)
+{
+    ui->checkboxPowerUpChannel->setChecked(powerUpChannel);
+    ui->checkboxEnableChannelTriggering->setChecked(enableTriggering);
+    ui->sliderQcThreshold->setValue(qcThreshold);
+    ui->spinboxQcThreshold->setValue(qcThreshold);
+    ui->sliderQcHysteresis->setValue(qcHysteresis);
+    ui->comboboxQcHysteresis->setCurrentIndex(qcHysteresis);
+}
+
+void CubesControl::setUiSiphraChannelConfigValue(int cmisGain,
+                                                 int ciGain,
+                                                 int shapingTime)
+{
+    ui->sliderCmisGain->setValue(cmisGain);
+    ui->comboboxCmisGain->setCurrentIndex(cmisGain);
+    ui->sliderCiGain->setValue(ciGain);
+    ui->comboboxCiGain->setCurrentIndex(ciGain);
+    ui->sliderShapingTime->setValue(shapingTime);
+    ui->comboboxShapingTime->setCurrentIndex(shapingTime);
 }
 
 /*============================================================================
@@ -887,6 +933,21 @@ void CubesControl::on_cubes_devReadReady()
                     qcThreshold = reg->registerValue(4);
                 setUiSiphraChannelRegValue(powerUpChannel, enableChannelTriggering,
                                            qcThreshold, qcHysteresis);
+            } else if (m_siphraRegAddr == 0x11) {
+                int cmis_gain, ci_gain, shaper_bias, shaper_feedback_cap,
+                        shaper_feedback_res, shaper_hold_cap, shaper_input_cap,
+                        shapingTime;
+                cmis_gain = reg->registerValue(0);
+                ci_gain = reg->registerValue(1);
+                shaper_bias = reg->registerValue(3);
+                shaper_feedback_cap = reg->registerValue(4);
+                shaper_feedback_res = reg->registerValue(5);
+                shaper_hold_cap = reg->registerValue(6);
+                shaper_input_cap = reg->registerValue(7);
+                shapingTime = decodeShaperSettings(shaper_bias, shaper_feedback_cap,
+                                                   shaper_feedback_res, shaper_hold_cap,
+                                                   shaper_input_cap);
+                setUiSiphraChannelConfigValue(cmis_gain, ci_gain, shapingTime);
             }
         }
 
