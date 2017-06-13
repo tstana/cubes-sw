@@ -368,6 +368,7 @@ int CubesControl::decodeShaperSettings(int bias,
                                        int hold_cap,
                                        int input_cap)
 {
+
     /* 200 ns */
     if ((bias == 7) && (feedback_cap == 2) && (feedback_res == 1) &&
             (input_cap == 2) && (hold_cap == 0))
@@ -388,12 +389,15 @@ int CubesControl::decodeShaperSettings(int bias,
             (input_cap == 14) && (hold_cap == 7))
         return 3;
 
-    /* If we've reached this point, an invalid SIPHRA setting has been detected */
+    /*
+     * If we've reached this point, an invalid SIPHRA setting has been detected.
+     * Warn the user and revert previous setting.
+     */
     QMessageBox box;
-    box.setText("Warning! Invalid SIPHRA setting detected, change it via the slider or combo box.");
+    box.setText("Invalid SIPHRA setting detected, change it via the slider or combo box.");
     box.exec();
 
-    return 0;
+    return ui->sliderShapingTime->value();
 }
 
 int CubesControl::uiSiphraChannelConfigValue()
