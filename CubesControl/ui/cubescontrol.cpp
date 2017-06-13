@@ -380,7 +380,7 @@ int CubesControl::decodeShaperSettings(int bias,
 
     /* 800 ns */
     if ((bias == 6) && (feedback_cap == 14) && (feedback_res == 4) &&
-            (input_cap == 5) && (hold_cap == 5))
+            (input_cap == 5) && (hold_cap == 3))
         return 2;
 
     /* 1600 ns */
@@ -1659,15 +1659,15 @@ void CubesControl::on_treeSiphraRegMap_contextMenuRequested(const QPoint &p)
 
 void CubesControl::on_tabWidget_currentChanged(int index)
 {
-    /* Update histogram chart with new values */
-    if (index == 2) {
-        updateHistogram(true);
-    }
-
-    /* Start and stop event rate timer based on whether the UI shows the event rate label */
-    if (index == 1 ) {
+    if (index == 1) {
+        m_siphraRegAddr = 0x11;
+        on_actionReadSiphraReg_triggered();
         tmrEventRateReadout->start();
     } else {
         tmrEventRateReadout->stop();
+    }
+
+    if (index == 2) {
+        updateHistogram(true);
     }
 }
