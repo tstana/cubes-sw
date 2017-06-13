@@ -1479,6 +1479,10 @@ void CubesControl::on_spinboxSiphraChannelToConfig_valueChanged(int value)
 
 void CubesControl::on_tmrEventRateReadout_timeout()
 {
+    if (!connStatus) {
+        return;
+    }
+
     QByteArray dummy;
     qint8 cmd = CMD_GET_CH01_REGS + ui->spinboxSiphraChannelToConfig->value()-1;
     cubes->sendCommand(cmd, dummy);
