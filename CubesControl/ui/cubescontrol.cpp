@@ -41,8 +41,6 @@
 #include "cubesprotouartpmod.h"
 #include "ui_cubescontrol.h"
 
-#include <math.h>
-
 #include <QLabel>
 #include <QString>
 #include <QMessageBox>
@@ -411,7 +409,7 @@ int CubesControl::uiSiphraChannelConfigValue()
             shaper_hold_cap, shaper_input_cap;
 
     /* CMIS gain setting */
-    cmis_gain = pow(2,ui->sliderCmisGain->value())-1;
+    cmis_gain = (1 << ui->sliderCmisGain->value())-1;
 
     /* Decolde shaper settings */
     decodeShapingTime(ui->sliderShapingTime->value(),
