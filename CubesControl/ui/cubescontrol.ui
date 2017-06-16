@@ -352,6 +352,46 @@
            <string>Track-and-Hold settings (READOUT_MODE)</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
+           <item row="2" column="1">
+            <widget class="QSlider" name="sliderDelay">
+             <property name="maximum">
+              <number>15</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>TH delay:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QSpinBox" name="spinboxDelay">
+             <property name="maximum">
+              <number>15</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Minimum</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
            <item row="1" column="2">
             <widget class="QSpinBox" name="spinboxTune">
              <property name="maximum">
@@ -376,45 +416,36 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QSlider" name="sliderDelay">
-             <property name="maximum">
-              <number>15</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QSpinBox" name="spinboxDelay">
-             <property name="maximum">
-              <number>15</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>TH delay:</string>
-             </property>
-            </widget>
-           </item>
            <item row="3" column="0">
-            <spacer name="verticalSpacer_4">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
+            <widget class="QLabel" name="label_17">
+             <property name="text">
+              <string>Hold source:</string>
              </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Minimum</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
+            </widget>
+           </item>
+           <item row="3" column="1" colspan="2">
+            <widget class="QComboBox" name="comboboxHoldSource">
+             <item>
+              <property name="text">
+               <string>OR(CT[15:0], CTS)</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>CTS</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>OR(QT[15:0], QTS)</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>QTS</string>
+              </property>
+             </item>
+            </widget>
            </item>
           </layout>
          </widget>
