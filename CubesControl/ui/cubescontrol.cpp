@@ -440,6 +440,18 @@ int CubesControl::uiSiphraChannelConfigValue()
     return value;
 }
 
+int CubesControl::uiSiphraChannelControlValue()
+{
+    int value = ui->comboboxCbInput->currentIndex();
+
+    SiphraTreeWidgetItem *siphraReg =
+            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(0x12);
+
+    value |= siphraReg->registerValue() & 0x7fe7ff;
+
+    return value;
+}
+
 int CubesControl::uiSiphraReadoutModeValue()
 {
     int value;
@@ -549,6 +561,34 @@ void CubesControl::writeSiphraChannelConfig(int value)
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 }
 
+void CubesControl::writeSiphraChannelControl(int value)
+{
+    /* Exit if the connection is not open */
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open, not applying SIHPRA setting!", 5000);
+        return;
+    }
+
+    int address = 0x12;
+
+    /* Initiate CUBES command to write the SIPHRA register */
+    QByteArray data;
+    data.resize(8);
+    data[0] = (value >> 24) & 0xff;
+    data[1] = (value >> 16) & 0xff;
+    data[2] = (value >>  8) & 0xff;
+    data[3] = (value & 0xff);
+    data[4] = 0x00;
+    data[5] = 0x00;
+    data[6] = 0x00;
+    data[7] = (address << 1) | 0x1;
+
+    statusBar()->showMessage("Writing SIPHRA register at address 0x" +
+            QString::number(address & 0xff, 16).rightJustified(2, '0').toUpper());
+
+    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+}
+
 void CubesControl::writeSiphraReadoutMode(int value)
 {
     /* Exit if the connection is not open */
@@ -600,6 +640,11 @@ void CubesControl::setUiSiphraChannelConfigValue(int cmisGain,
     ui->comboboxCiGain->setCurrentIndex(ciGain);
     ui->sliderShapingTime->setValue(shapingTime);
     ui->comboboxShapingTime->setCurrentIndex(shapingTime);
+}
+
+void CubesControl::setUiSiphraChannelControlValue(int cbInput)
+{
+    ui->comboboxCbInput->setCurrentIndex(cbInput);
 }
 
 void CubesControl::setUiSiphraReadoutModeValue(int thDelay, int thTune)
@@ -970,6 +1015,20 @@ void CubesControl::on_cubes_devReadReady()
                                                    shaper_feedback_res, shaper_hold_cap,
                                                    shaper_input_cap);
                 setUiSiphraChannelConfigValue(cmis_gain, ci_gain, shapingTime);
+            } else if (m_siphraRegAddr == 0x12) {
+                int cb_input = reg->registerValue(3);
+                if (cb_input > 2) {
+                    QMessageBox box;
+                    QString text;
+                    QTextStream textStream(&text);
+                    textStream << "Invalid CB input setting detected, value shown here no longer valid!\n"
+                               << "\n"
+                               << "Read the CHANNEL_CONTROL register in the register map tab to inspect the setting.";
+                    box.setText(text);
+                    box.exec();
+                    cb_input = ui->comboboxCbInput->currentIndex();
+                }
+                setUiSiphraChannelControlValue(cb_input);
             } else if (m_siphraRegAddr == 0x18) {
                 int int_hold_tune;
                 int int_hold_delay;
@@ -1704,6 +1763,12 @@ void CubesControl::on_tmrEventRateReadout_timeout()
     QByteArray dummy;
     qint8 cmd = CMD_GET_CH01_REGS + ui->spinboxSiphraChannelToConfig->value()-1;
     cubes->sendCommand(cmd, dummy);
+}
+
+void CubesControl::on_comboBox_currentIndexChanged(int index)
+{
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelControl(uiSiphraChannelControlValue());
 }
 
 /*============================================================================
