@@ -818,6 +818,9 @@ void CubesControl::on_actionReadSiphraReg_triggered()
     }
     data[7] = (m_siphraRegAddr << 1);
 
+    statusBar()->showMessage("Reading SIPHRA register at address 0x" +
+                QString::number(m_siphraRegAddr & 0xff, 16).rightJustified(2, '0').toUpper());
+
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
 
     /* Finally, initiate command to read out the register value */
