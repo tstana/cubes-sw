@@ -460,6 +460,7 @@ int CubesControl::uiSiphraReadoutModeValue()
     // the ASIC isn't triggering...
     value = (ui->sliderTune->value() << 10) |
             (ui->sliderDelay->value() << 6) |
+            (ui->comboboxHoldSource->currentIndex() << 4) |
             0x1;
 
     /*
@@ -469,7 +470,7 @@ int CubesControl::uiSiphraReadoutModeValue()
     SiphraTreeWidgetItem *siphraReg =
             (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(0x18);
 
-    value |= siphraReg->registerValue() & 0x3e;
+    value |= siphraReg->registerValue() & 0xe;
 
     return value;
 }
@@ -647,12 +648,15 @@ void CubesControl::setUiSiphraChannelControlValue(int cbInput)
     ui->comboboxCbInput->setCurrentIndex(cbInput);
 }
 
-void CubesControl::setUiSiphraReadoutModeValue(int thDelay, int thTune)
+void CubesControl::setUiSiphraReadoutModeValue(int thDelay,
+                                               int thTune,
+                                               int holdSource)
 {
     ui->sliderDelay->setValue(thDelay);
     ui->spinboxDelay->setValue(thDelay);
     ui->sliderTune->setValue(thTune);
     ui->spinboxTune->setValue(thTune);
+    ui->comboboxHoldSource->setCurrentIndex(holdSource);
 }
 
 /*============================================================================
@@ -1032,11 +1036,14 @@ void CubesControl::on_cubes_devReadReady()
             } else if (m_siphraRegAddr == 0x18) {
                 int int_hold_tune;
                 int int_hold_delay;
+                int int_hold_source;
 
                 int_hold_tune = reg->registerValue(0);
                 int_hold_delay = reg->registerValue(1);
+                int_hold_source = reg->registerValue(2);
 
-                setUiSiphraReadoutModeValue(int_hold_delay, int_hold_tune);
+                setUiSiphraReadoutModeValue(int_hold_delay, int_hold_tune,
+                                            int_hold_source);
             }
         }
 
@@ -1765,10 +1772,16 @@ void CubesControl::on_tmrEventRateReadout_timeout()
     cubes->sendCommand(cmd, dummy);
 }
 
-void CubesControl::on_comboBox_currentIndexChanged(int index)
+void CubesControl::on_comboBoxCbInput_currentIndexChanged(int index)
 {
     if (!m_readAllSiphraRegs)
         writeSiphraChannelControl(uiSiphraChannelControlValue());
+}
+
+void CubesControl::on_comboboxHoldSource_currentIndexChanged(int index)
+{
+    if (!m_readAllSiphraRegs)
+        writeSiphraReadoutMode(uiSiphraReadoutModeValue());
 }
 
 /*============================================================================

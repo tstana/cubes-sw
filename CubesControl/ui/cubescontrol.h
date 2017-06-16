@@ -111,7 +111,8 @@ private slots:
     void on_sliderDelay_valueChanged(int value);
     void on_spinboxDelay_valueChanged(int arg1);
     void on_spinboxSiphraChannelToConfig_valueChanged(int arg1);
-    void on_comboBox_currentIndexChanged(int index);
+    void on_comboBoxCbInput_currentIndexChanged(int index);
+    void on_comboboxHoldSource_currentIndexChanged(int index);
 
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
@@ -162,7 +163,7 @@ private:
     void    setUiSiphraChannelRegValue(bool powerUpChannel, bool enableTriggering,
                                        int qcThreshold, int qcHysteresis);
     void    setUiSiphraChannelConfigValue(int cmisGain, int ciGain, int shapingTime);
-    void    setUiSiphraReadoutModeValue(int thDelay, int thTune);
+    void    setUiSiphraReadoutModeValue(int thDelay, int thTune, int holdSource);
     void    setUiSiphraChannelControlValue(int cbInput);
 
     void    writeSiphraChannelReg(int value);
