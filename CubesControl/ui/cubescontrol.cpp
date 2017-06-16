@@ -442,7 +442,7 @@ int CubesControl::uiSiphraChannelConfigValue()
 
 int CubesControl::uiSiphraChannelControlValue()
 {
-    int value = ui->comboboxCbInput->currentIndex();
+    int value = ui->comboboxCbInput->currentIndex() << 11;
 
     SiphraTreeWidgetItem *siphraReg =
             (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(0x12);
@@ -1775,7 +1775,7 @@ void CubesControl::on_tmrEventRateReadout_timeout()
     cubes->sendCommand(cmd, dummy);
 }
 
-void CubesControl::on_comboBoxCbInput_currentIndexChanged(int index)
+void CubesControl::on_comboboxCbInput_currentIndexChanged(int index)
 {
     if (!m_readAllSiphraRegs)
         writeSiphraChannelControl(uiSiphraChannelControlValue());

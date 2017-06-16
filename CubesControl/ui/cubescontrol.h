@@ -111,7 +111,7 @@ private slots:
     void on_sliderDelay_valueChanged(int value);
     void on_spinboxDelay_valueChanged(int arg1);
     void on_spinboxSiphraChannelToConfig_valueChanged(int arg1);
-    void on_comboBoxCbInput_currentIndexChanged(int index);
+    void on_comboboxCbInput_currentIndexChanged(int index);
     void on_comboboxHoldSource_currentIndexChanged(int index);
 
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
