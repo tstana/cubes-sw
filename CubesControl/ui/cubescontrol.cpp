@@ -84,18 +84,6 @@ CubesControl::CubesControl(QWidget *parent) :
     connect(commSettings, SIGNAL(accepted()),
             ui->actionConnect, SIGNAL(triggered()));
 
-    /* Prepare ADC poll */
-    ui->lblAdcChan->setText("");
-    m_siphraAdcValue = 0.0;
-    ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
-    m_siphraAdcPollEnabled = false;
-    ui->btnToggleAdcPoll->setText("Enable");
-    ui->btnToggleAdcPollHisto->setText("Enable");
-
-    tmrSiphraAdcPoll = new QTimer(this);
-    connect(tmrSiphraAdcPoll, &QTimer::timeout,
-            this, &CubesControl::on_tmrSiphraAdcPoll_timeout);
-
     /* Connect LED check box clicks to single handler */
     connect(ui->checkboxLed0, &QCheckBox::clicked,
             this, on_anyLedCheckbox_clicked);
@@ -131,6 +119,19 @@ CubesControl::CubesControl(QWidget *parent) :
             ui->tableCubesRegs->item(r, c)->setFlags(flags);
         }
     }
+
+    /* Prepare ADC poll */
+    ui->lblAdcChan->setText("");
+    m_siphraAdcValue = 0.0;
+    ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
+    m_siphraAdcPollEnabled = false;
+    ui->btnToggleAdcPoll->setText("Enable");
+    ui->btnToggleAdcPollHisto->setText("Enable");
+
+    tmrSiphraAdcPoll = new QTimer(this);
+    tmrSiphraAdcPoll->setInterval(10);
+    connect(tmrSiphraAdcPoll, &QTimer::timeout,
+            this, &CubesControl::on_tmrSiphraAdcPoll_timeout);
 
     /* Add items to SIPHRA register view */
     for (int i = 0; i < 1+SIPHRA_PARITY_ERR_REG; i++) {
@@ -266,7 +267,7 @@ void CubesControl::updateHistogram(bool updateAll)
 
     /*
      * Update histogram iff triggered channel is the one we should update AND
-     * we are on the histogram pane/
+     * we are on the histogram pane
      */
     if (m_siphraAdcChan == ui->spinboxHistogramChannel->value()) {
         int idx = m_siphraAdcValue*histogramNumBins / ADC_MAX_VALUE;
@@ -886,7 +887,7 @@ void CubesControl::on_actionToggleAdcPoll_triggered(bool checked)
     if (checked) {
         ui->btnToggleAdcPoll->setText("Disable");
         ui->btnToggleAdcPollHisto->setText("Disable");
-        tmrSiphraAdcPoll->start(10);
+        tmrSiphraAdcPoll->start();
     } else {
         ui->btnToggleAdcPoll->setText("Enable");
         ui->btnToggleAdcPollHisto->setText("Enable");
@@ -1880,7 +1881,12 @@ void CubesControl::on_tabWidget_currentChanged(int index)
         tmrEventRateReadout->stop();
     }
 
-    if (index == 2) {
-        updateHistogram(true);
+    if ((index == 2) || (index == 3)) {
+//        updateHistogram(true);
+        if (m_siphraAdcPollEnabled)
+            tmrSiphraAdcPoll->start();
+    } else {
+        if (m_siphraAdcPollEnabled)
+            tmrSiphraAdcPoll->stop();
     }
 }
