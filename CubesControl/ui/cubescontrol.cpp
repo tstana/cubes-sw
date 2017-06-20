@@ -52,10 +52,6 @@
 #include <QWaitCondition>
 #include <QMutex>
 
-#include <QtCharts/QBarSet>
-#include <QtCharts/QBarSeries>
-#include <QtCharts/QBarCategoryAxis>
-
 #include <QDebug>
 
 /*============================================================================
@@ -165,17 +161,14 @@ CubesControl::CubesControl(QWidget *parent) :
 
     /* Create histogram chart view */
     histogramNumBins = ui->cbNumBins->currentText().toInt();
-    histogramData.fill(0, histogramNumBins);
+    histogramData.resize(histogramNumBins);
+    histogramData.fill(0);
 
-    QBarSet *set = new QBarSet("Channel amplitude");
+    QLineSeries *series = new QLineSeries;
     for (int i = 0; i < histogramNumBins; i++) {
-        set->append(histogramData[i]);
-        set->setColor(QColor(0, 0, 128, 255));
-        set->setBorderColor(QColor(0, 0, 128, 255));
+        series->append(i, histogramData[i]);
+        series->setColor(QColor(0, 0, 128, 255));
     }
-    QBarSeries *series = new QBarSeries;
-    series->append(set);
-    series->setBarWidth(1);
 
     QBarCategoryAxis *axisX = new QBarCategoryAxis;
     axisX->setLabelsVisible(false);
@@ -257,10 +250,9 @@ void CubesControl::updateHistogram(bool updateAll)
 
     /* Update all values and return - this is in case the user changes to the histogram pane */
     if (updateAll) {
-        QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
-        QBarSet *set = series->barSets()[0];
+        QLineSeries *series = (QLineSeries *)ui->histogram->chart()->series()[0];
         for (int i = 0; i < histogramNumBins; i++) {
-            set->replace(i, histogramData[i]);
+            series->replace(i, i, histogramData[i]);
         }
         return;
     }
@@ -274,8 +266,8 @@ void CubesControl::updateHistogram(bool updateAll)
         ++histogramData[idx];
 
         if (ui->tabWidget->currentIndex() == 2) {
-            QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
-            series->barSets()[0]->replace(idx, histogramData[idx]);
+            QLineSeries *series = (QLineSeries *)ui->histogram->chart()->series()[0];
+            series->replace(idx, idx, histogramData[idx]);
 
             QValueAxis *axisY = (QValueAxis *)ui->histogram->chart()->axisY(series);
             int currentMax = axisY->max();
@@ -1281,10 +1273,9 @@ void CubesControl::on_btnClearHistogram_clicked()
 {
     histogramData.fill(0);
 
-    QBarSeries *series = (QBarSeries *)ui->histogram->chart()->series()[0];
-    QBarSet *set = series->barSets()[0];
+    QLineSeries *series = (QLineSeries *)ui->histogram->chart()->series()[0];
     for (int i = 0; i < histogramNumBins; i++) {
-        set->replace(i, 0);
+        series->replace(i, i, 0);
     }
     ui->histogram->chart()->axisY(series)->setRange(0, 64);
 }
@@ -1296,15 +1287,11 @@ void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
     histogramNumBins = arg1.toInt();
     histogramData.fill(0, histogramNumBins);
 
-    QBarSet *set = new QBarSet("ADC value", this);
+    QLineSeries *series = new QLineSeries;
     for (int i = 0; i < histogramNumBins; i++) {
-        set->append(histogramData[i]);
-        set->setColor(QColor(0, 0, 128, 255));
-        set->setBorderColor(QColor(0, 0, 128, 255));
+        series->append(i, histogramData[i]);
+        series->setColor(QColor(0, 0, 128, 255));
     }
-    QBarSeries *series = new QBarSeries();
-    series->append(set);
-    series->setBarWidth(1);
 
     QChart *chart = new QChart;
     chart->setTitle("Histogram");
