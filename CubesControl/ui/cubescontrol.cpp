@@ -972,13 +972,8 @@ void CubesControl::on_actionImportHistogram_triggered()
             if (histogramData[i] > currentMax)
                 currentMax = histogramData[i];
         }
-        qDebug() << histogramData;
-        qDebug() << currentMax;
-
         int range = (currentMax < 256) ? (256) :
                                          (currentMax - currentMax%256 + 256);
-
-        qDebug() << range;
 
         axisY->setRange(0, range);
         axisY->setLabelFormat("%d");
