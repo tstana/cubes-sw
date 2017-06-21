@@ -80,6 +80,7 @@ private slots:
     void on_actionToggleAdcPoll_triggered();
     void on_actionToggleAdcPoll_triggered(bool checked);
     void on_actionExportHistogram_triggered();
+    void on_actionImportHistogram_triggered();
 
     void on_anyLedCheckbox_clicked();
     void on_btnReadAllCubesRegs_clicked();
@@ -93,6 +94,7 @@ private slots:
     void on_btnToggleAdcPollHisto_clicked();
     void on_btnClearHistogram_clicked();
     void on_btnExportHistogram_clicked();
+    void on_btnImportHistogram_clicked();
     void on_cbNumBins_currentTextChanged(const QString &arg1);
     void on_checkboxPowerUpChannel_clicked();
     void on_checkboxEnableChannelTriggering_clicked();

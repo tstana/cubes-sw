@@ -923,6 +923,80 @@ void CubesControl::on_actionExportHistogram_triggered()
     }
 }
 
+void CubesControl::on_actionImportHistogram_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Open file",
+                                                    QString(), "*.bin");
+
+    if (!fileName.isEmpty()) {
+        QFile file(fileName);
+
+        if (!file.open(QIODevice::ReadOnly)) {
+            statusBar()->showMessage("Could not open " + fileName, 5000);
+            return;
+        }
+
+        QByteArray data;
+
+        /* First apply histogram number of bins reading */
+        data = file.read(2);
+        histogramNumBins = ((data[0] & 0xff) << 8) | (data[1] & 0xff);
+        ui->cbNumBins->setCurrentText(QString::number(histogramNumBins));
+
+        /* Then, read the histogram data and apply. Histo data is two bytes per bin. */
+        data = file.read(2*histogramNumBins);
+        for (int i = 0; i < data.size(); i+=2) {
+            histogramData[i/2] = ((data[i] & 0xff) << 8) | (data[i+1] & 0xff);
+        }
+
+        /* Prepare new chart for display */
+        QLineSeries *series = new QLineSeries;
+        for (int i = 0; i < histogramNumBins; i++) {
+            series->append(i, histogramData[i]);
+            series->setColor(QColor(0, 0, 128, 255));
+        }
+
+        QChart *chart = new QChart;
+        chart->setTitle("Histogram");
+        chart->setAnimationOptions(QChart::NoAnimation);
+        chart->addSeries(series);
+
+        QBarCategoryAxis *axisX = new QBarCategoryAxis;
+        axisX->setLabelsVisible(false);
+        axisX->setGridLineVisible(false);
+        QValueAxis *axisY = new QValueAxis;
+
+        /* Adjust Y axis range */
+        int currentMax = histogramData[0];
+        for (int i = 1; i < histogramNumBins; i++) {
+            if (histogramData[i] > currentMax)
+                currentMax = histogramData[i];
+        }
+        qDebug() << histogramData;
+        qDebug() << currentMax;
+
+        int range = (currentMax < 256) ? (256) :
+                                         (currentMax - currentMax%256 + 256);
+
+        qDebug() << range;
+
+        axisY->setRange(0, range);
+        axisY->setLabelFormat("%d");
+
+        chart->setAxisX(axisX, series);
+        chart->setAxisY(axisY, series);
+
+        chart->legend()->setVisible(false);
+
+        QChart *oldChart = ui->histogram->chart();
+        ui->histogram->setChart(chart);
+        delete oldChart;
+
+        statusBar()->showMessage("Finished reading histogram data from " + fileName, 5000);
+        file.close();
+    }
+}
+
 /*============================================================================
  * CUBES OBJECT SLOTS
  *============================================================================*/
@@ -1326,6 +1400,11 @@ void CubesControl::on_btnToggleAdcPollHisto_clicked()
 void CubesControl::on_btnExportHistogram_clicked()
 {
     on_actionExportHistogram_triggered();
+}
+
+void CubesControl::on_btnImportHistogram_clicked()
+{
+    on_actionImportHistogram_triggered();
 }
 
 void CubesControl::on_checkboxPowerUpChannel_clicked()
