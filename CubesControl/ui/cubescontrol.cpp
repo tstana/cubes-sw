@@ -902,7 +902,31 @@ void CubesControl::on_actionExportHistogram_triggered()
 
         QByteArray data;
 
-        /* First two bytes are number of histograms */
+        /* One byte for QcThreshold */
+        data.append(ui->spinboxQcThreshold->value());
+        data.append('_');
+
+        /* Four ASCII chars for QC hysteresis; '0' and 'negligible' are treated as the same */
+        if (ui->comboboxQcHysteresis->currentIndex() >= 2) {
+            data.append(ui->comboboxQcHysteresis->currentText().right(4));
+        } else {
+            data.append("   0");
+        }
+        data.append('_');
+
+        /* Five bytes, right-justified for CMIS gain */
+        data.append(ui->comboboxCmisGain->currentText().rightJustified(5, ' '));
+        data.append('_');
+
+        /* Ten bytes, right-justified for CI gain */
+        data.append(ui->comboboxCiGain->currentText()).rightJustified(10, ' ');
+        data.append('_');
+
+        /* Seven bytes, right-justified for CMIS gain */
+        data.append(ui->comboboxShapingTime->currentText().rightJustified(7, ' '));
+        data.append('_');
+
+        /* Two bytes for number of histograms */
         data.append((histogramNumBins & 0xff00) >> 8);
         data.append(histogramNumBins & 0xff);
 
@@ -937,6 +961,9 @@ void CubesControl::on_actionImportHistogram_triggered()
         }
 
         QByteArray data;
+
+        /* Skip ASIC config data for histogram import */
+        file.read(32);
 
         /* First apply histogram number of bins reading */
         data = file.read(2);
