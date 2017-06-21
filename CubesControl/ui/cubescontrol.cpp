@@ -919,7 +919,7 @@ void CubesControl::on_actionExportHistogram_triggered()
         data.append('_');
 
         /* Ten bytes, right-justified for CI gain */
-        data.append(ui->comboboxCiGain->currentText()).rightJustified(10, ' ');
+        data.append(ui->comboboxCiGain->currentText().rightJustified(10, ' '));
         data.append('_');
 
         /* Seven bytes, right-justified for CMIS gain */
