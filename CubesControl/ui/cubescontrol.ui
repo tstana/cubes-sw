@@ -747,6 +747,16 @@
             </property>
             <item>
              <property name="text">
+              <string>64</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>128</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
               <string>256</string>
              </property>
             </item>
@@ -796,6 +806,13 @@
            <widget class="QPushButton" name="btnExportHistogram">
             <property name="text">
              <string>Export...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnImportHistogram">
+            <property name="text">
+             <string>Import...</string>
             </property>
            </widget>
           </item>
@@ -1662,6 +1679,7 @@
     <addaction name="actionSaveSiphraConfig"/>
     <addaction name="separator"/>
     <addaction name="actionExportHistogram"/>
+    <addaction name="actionImportHistogram"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -1749,6 +1767,11 @@
   <action name="actionExportHistogram">
    <property name="text">
     <string>Export histogram...</string>
+   </property>
+  </action>
+  <action name="actionImportHistogram">
+   <property name="text">
+    <string>Import histogram...</string>
    </property>
   </action>
  </widget>
