@@ -897,7 +897,7 @@
               <widget class="QLabel" name="lblAdcValue">
                <property name="minimumSize">
                 <size>
-                 <width>30</width>
+                 <width>50</width>
                  <height>0</height>
                 </size>
                </property>

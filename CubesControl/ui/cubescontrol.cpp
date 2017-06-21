@@ -1141,9 +1141,15 @@ void CubesControl::on_cubes_devReadReady()
         bool trigged = (data[0] & 0x80);
         m_siphraAdcChan = data[1] & 0x1f;
         m_siphraAdcValue = (double)(((data[2] & 0xf) << 8) | (data[3] & 0xff));
+
+        // Gating counter to only update label once every min. 500 ms
+        static int gatingCounter;
+        ++gatingCounter;
+        gatingCounter %= 50;
+
         if (m_siphraAdcPollEnabled && trigged) {
             updateHistogram();
-            if (ui->tabWidget->currentIndex() == 3) {
+            if ((ui->tabWidget->currentIndex() == 3) && (gatingCounter == 0)) {
                 /* Adjust the data to 610uV per MSB before displaying */
                 m_siphraAdcValue *= 0.610;
                 ui->lblAdcChan->setText(QString::number(m_siphraAdcChan));
