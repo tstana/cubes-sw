@@ -91,7 +91,7 @@ private slots:
     void on_btnWriteAllSiphraRegs_clicked();
     void on_btnReadAllSiphraRegs_clicked();
     void on_btnToggleAdcPoll_clicked();
-    void on_btnToggleAdcPollHisto_clicked();
+    void on_btnStartStopHistogram_clicked();
     void on_btnClearHistogram_clicked();
     void on_btnExportHistogram_clicked();
     void on_btnImportHistogram_clicked();

@@ -122,7 +122,6 @@ CubesControl::CubesControl(QWidget *parent) :
     ui->lblAdcValue->setText(QString::number(m_siphraAdcValue));
     m_siphraAdcPollEnabled = false;
     ui->btnToggleAdcPoll->setText("Enable");
-    ui->btnToggleAdcPollHisto->setText("Enable");
 
     tmrSiphraAdcPoll = new QTimer(this);
     tmrSiphraAdcPoll->setInterval(10);
@@ -160,7 +159,8 @@ CubesControl::CubesControl(QWidget *parent) :
             this, &CubesControl::on_treeSiphraRegMap_contextMenuRequested);
 
     /* Create histogram chart view */
-    histogramNumBins = ui->cbNumBins->currentText().toInt();
+    ui->cbNumBins->setCurrentText("1024");
+    histogramNumBins = 1024;
     histogramData.resize(histogramNumBins);
     histogramData.fill(0);
 
@@ -190,6 +190,14 @@ CubesControl::CubesControl(QWidget *parent) :
 
     ui->histogram->setChart(chart);
 //    ui->histogram->setRenderHint(QPainter::Antialiasing);
+
+    /* Other histogram view objects */
+    if (ui->comboboxHistogramRunType->currentIndex() == 0) {
+        ui->lblHistogramRunTime->setEnabled(false);
+        ui->spinboxHistogramRuntime->setEnabled(false);
+    }
+    ui->btnStartStopHistogram->setText("Start");
+    ui->lblHistogramStatus->setText("Histogram not running.");
 
     /* Event rate readout */
     ui->lblEventRate->setText("0");
@@ -878,11 +886,9 @@ void CubesControl::on_actionToggleAdcPoll_triggered(bool checked)
 
     if (checked) {
         ui->btnToggleAdcPoll->setText("Disable");
-        ui->btnToggleAdcPollHisto->setText("Disable");
         tmrSiphraAdcPoll->start();
     } else {
         ui->btnToggleAdcPoll->setText("Enable");
-        ui->btnToggleAdcPollHisto->setText("Enable");
         tmrSiphraAdcPoll->stop();
     }
 }
@@ -1420,7 +1426,7 @@ void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
         tmrSiphraAdcPoll->start();
 }
 
-void CubesControl::on_btnToggleAdcPollHisto_clicked()
+void CubesControl::on_btnStartStopHistogram_clicked()
 {
     on_actionToggleAdcPoll_triggered();
 }
