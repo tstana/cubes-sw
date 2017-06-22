@@ -1422,7 +1422,6 @@ void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
 
 void CubesControl::on_btnStartStopHistogram_clicked()
 {
-    on_actionToggleAdcPoll_triggered();
 }
 
 void CubesControl::on_btnExportHistogram_clicked()
