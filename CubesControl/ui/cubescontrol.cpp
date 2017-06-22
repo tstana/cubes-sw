@@ -199,6 +199,13 @@ CubesControl::CubesControl(QWidget *parent) :
     ui->btnStartStopHistogram->setText("Start");
     ui->lblHistogramStatus->setText("Histogram not running.");
 
+    tmrHistogramAdcPoll = new QTimer(this);
+    tmrHistogramAdcPoll->setInterval(10);
+    connect(tmrHistogramAdcPoll, &QTimer::timeout,
+            this, &CubesControl::on_tmrHistogramAdcPoll_timeout);
+
+    histogramAdcPollEnabled = false;
+
     /* Event rate readout */
     ui->lblEventRate->setText("0");
     tmrEventRateReadout = new QTimer;
@@ -1422,6 +1429,29 @@ void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
 
 void CubesControl::on_btnStartStopHistogram_clicked()
 {
+    if (!histogramAdcPollEnabled) {
+        histogramAdcPollEnabled = true;
+        ui->lblHistogramStatus->setText("Histogram running in continous mode.");
+        ui->btnStartStopHistogram->setText("Stop");
+        tmrHistogramAdcPoll->start();
+    } else {
+        histogramAdcPollEnabled = false;
+        ui->lblHistogramStatus->setText("Histogram not running.");
+        ui->btnStartStopHistogram->setText("Start");
+        tmrHistogramAdcPoll->stop();
+    }
+}
+
+void CubesControl::on_tmrHistogramAdcPoll_timeout()
+{
+    static int count;
+    ++count;
+    qDebug() << count << ":" << "tmrHistogramAdcPoll";
+
+    if (ui->tabWidget->currentIndex() == 2) {
+        QByteArray dummy;
+        cubes->sendCommand(CMD_GET_SIPHRA_ADCR, dummy);
+    }
 }
 
 void CubesControl::on_btnExportHistogram_clicked()

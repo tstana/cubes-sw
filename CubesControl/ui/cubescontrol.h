@@ -121,8 +121,9 @@ private slots:
     void on_treeSiphraRegMap_contextMenuRequested(const QPoint &p);
     void on_tabWidget_currentChanged(int index);
 
-    void on_tmrSiphraAdcPoll_timeout();
     void on_tmrEventRateReadout_timeout();
+    void on_tmrHistogramAdcPoll_timeout();
+    void on_tmrSiphraAdcPoll_timeout();
 
 private:
     Ui::CubesControl    *ui;
@@ -148,11 +149,13 @@ private:
 
     bool                siphraVisualRegChange = false;
 
-    QTimer              *tmrSiphraAdcPoll;
     QTimer              *tmrEventRateReadout;
+    QTimer              *tmrHistogramAdcPoll;
+    QTimer              *tmrSiphraAdcPoll;
 
     QVector<quint16>    histogramData;
     int                 histogramNumBins;
+    bool                histogramAdcPollEnabled;
 
     void    showConnStatus(int connUp);
     void    updateHistogram(bool updateAll = false);
