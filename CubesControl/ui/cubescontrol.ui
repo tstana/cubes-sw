@@ -727,7 +727,7 @@
              </size>
             </property>
             <property name="currentText">
-             <string>1024</string>
+             <string>64</string>
             </property>
             <item>
              <property name="text">
@@ -825,6 +825,9 @@
             <property name="currentText">
              <string>Continuously</string>
             </property>
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
             <item>
              <property name="text">
               <string>Continuously</string>
@@ -838,7 +841,7 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLabel" name="label_19">
+           <widget class="QLabel" name="lblHistogramRunTime">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -854,19 +857,19 @@
            </widget>
           </item>
           <item row="1" column="3">
-           <widget class="QSpinBox" name="spinboxHistogramRuntime"/>
+           <widget class="QSpinBox" name="spinboxHistogramRuntime">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>60</number>
+            </property>
+           </widget>
           </item>
           <item row="1" column="5">
            <widget class="QPushButton" name="btnImportHistogram">
             <property name="text">
              <string>Import...</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="3">
-           <widget class="QPushButton" name="btnToggleAdcPollHisto">
-            <property name="text">
-             <string>PushButton</string>
             </property>
            </widget>
           </item>
@@ -889,6 +892,20 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="btnStartStopHistogram">
+            <property name="text">
+             <string>PushButton</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" colspan="3">
+           <widget class="QLabel" name="lblHistogramStatus">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
