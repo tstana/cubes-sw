@@ -1430,23 +1430,44 @@ void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
 void CubesControl::on_btnStartStopHistogram_clicked()
 {
     if (!histogramAdcPollEnabled) {
-        histogramAdcPollEnabled = true;
-        ui->lblHistogramStatus->setText("Histogram running in continous mode.");
+        if (ui->comboboxHistogramRunType->currentIndex() == 0) {
+            ui->lblHistogramStatus->setText("Histogram running in continous mode.");
+        } else {
+            histogramRunTime = 60000 / tmrHistogramAdcPoll->interval();
+            QString s = "Histogram running for " +
+                        QString::number(histogramRunTime * tmrHistogramAdcPoll->interval()) +
+                        " seconds.";
+            ui->lblHistogramStatus->setText(s);
+        }
         ui->btnStartStopHistogram->setText("Stop");
         tmrHistogramAdcPoll->start();
+        histogramAdcPollEnabled = true;
     } else {
-        histogramAdcPollEnabled = false;
         ui->lblHistogramStatus->setText("Histogram not running.");
         ui->btnStartStopHistogram->setText("Start");
         tmrHistogramAdcPoll->stop();
+        histogramAdcPollEnabled = false;
     }
 }
 
 void CubesControl::on_tmrHistogramAdcPoll_timeout()
 {
-    static int count;
-    ++count;
-    qDebug() << count << ":" << "tmrHistogramAdcPoll";
+    qDebug() << histogramRunTime << ":" << "tmrHistogramAdcPoll";
+
+    if (ui->comboboxHistogramRunType->currentIndex() == 1) {
+        --histogramRunTime;
+//        if (histogramRunTime % 60 == 0) {
+//            QString s = "Histogram running for " +
+//                        QString::number(histogramRunTime * tmrHistogramAdcPoll->interval()) +
+//                        " seconds.";
+//            ui->lblHistogramStatus->setText(s);
+//        }
+
+        /* Mimic user clicking the button to stop histogramming */
+        if (histogramRunTime == 0) {
+            on_btnStartStopHistogram_clicked();
+        }
+    }
 
     if (ui->tabWidget->currentIndex() == 2) {
         QByteArray dummy;

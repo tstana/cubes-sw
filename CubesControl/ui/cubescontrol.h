@@ -156,6 +156,7 @@ private:
     QVector<quint16>    histogramData;
     int                 histogramNumBins;
     bool                histogramAdcPollEnabled;
+    int                 histogramRunTime;
 
     void    showConnStatus(int connUp);
     void    updateHistogram(bool updateAll = false);
