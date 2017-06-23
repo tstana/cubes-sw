@@ -1434,10 +1434,6 @@ void CubesControl::on_btnStartStopHistogram_clicked()
             ui->lblHistogramStatus->setText("Histogram running in continous mode.");
         } else {
             histogramRunTime = 60000 / tmrHistogramAdcPoll->interval();
-            QString s = "Histogram running for " +
-                        QString::number(histogramRunTime * tmrHistogramAdcPoll->interval()) +
-                        " seconds.";
-            ui->lblHistogramStatus->setText(s);
         }
         ui->btnStartStopHistogram->setText("Stop");
         tmrHistogramAdcPoll->start();
@@ -1456,12 +1452,9 @@ void CubesControl::on_tmrHistogramAdcPoll_timeout()
 
     if (ui->comboboxHistogramRunType->currentIndex() == 1) {
         --histogramRunTime;
-//        if (histogramRunTime % 60 == 0) {
-//            QString s = "Histogram running for " +
-//                        QString::number(histogramRunTime * tmrHistogramAdcPoll->interval()) +
-//                        " seconds.";
-//            ui->lblHistogramStatus->setText(s);
-//        }
+        int seconds = histogramRunTime * tmrHistogramAdcPoll->interval()/1000;
+        QString s = "Histogram running for " + QString::number(seconds) + " s.";
+        ui->lblHistogramStatus->setText(s);
 
         /* Mimic user clicking the button to stop histogramming */
         if (histogramRunTime == 0) {
