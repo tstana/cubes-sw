@@ -1433,7 +1433,8 @@ void CubesControl::on_btnStartStopHistogram_clicked()
         if (ui->comboboxHistogramRunType->currentIndex() == 0) {
             ui->lblHistogramStatus->setText("Histogram running in continous mode.");
         } else {
-            histogramRunTime = 60000 / tmrHistogramAdcPoll->interval();
+            histogramRunTime = ui->spinboxHistogramRuntime->value() *
+                    (60000 / tmrHistogramAdcPoll->interval());
         }
         ui->btnStartStopHistogram->setText("Stop");
         tmrHistogramAdcPoll->start();
