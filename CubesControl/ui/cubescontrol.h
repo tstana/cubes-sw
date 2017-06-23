@@ -115,6 +115,7 @@ private slots:
     void on_spinboxSiphraChannelToConfig_valueChanged(int arg1);
     void on_comboboxCbInput_currentIndexChanged(int index);
     void on_comboboxHoldSource_currentIndexChanged(int index);
+    void on_comboboxHistogramRunType_currentIndexChanged(int index);
 
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);

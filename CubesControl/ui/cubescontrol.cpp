@@ -1478,6 +1478,17 @@ void CubesControl::on_btnImportHistogram_clicked()
     on_actionImportHistogram_triggered();
 }
 
+void CubesControl::on_comboboxHistogramRunType_currentIndexChanged(int index)
+{
+    if (index == 1) {
+        ui->lblHistogramRunTime->setEnabled(true);
+        ui->spinboxHistogramRuntime->setEnabled(true);
+    } else {
+        ui->lblHistogramRunTime->setEnabled(false);
+        ui->spinboxHistogramRuntime->setEnabled(false);
+    }
+}
+
 void CubesControl::on_checkboxPowerUpChannel_clicked()
 {
     int regValue = uiSiphraChannelRegValue();
