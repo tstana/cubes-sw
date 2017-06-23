@@ -1488,6 +1488,11 @@ void CubesControl::on_comboboxHistogramRunType_currentIndexChanged(int index)
         ui->lblHistogramRunTime->setEnabled(false);
         ui->spinboxHistogramRuntime->setEnabled(false);
     }
+
+    /* If histogramming is running, disable it by "clicking" the start/stop button */
+    if (histogramAdcPollEnabled) {
+        on_btnStartStopHistogram_clicked();
+    }
 }
 
 void CubesControl::on_checkboxPowerUpChannel_clicked()
