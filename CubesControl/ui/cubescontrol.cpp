@@ -260,7 +260,7 @@ void CubesControl::showConnStatus(int connUp)
 void CubesControl::updateHistogram(bool updateAll)
 {
     /* No update to be done if not connected or polling not enabled! */
-    if ((!connStatus) || (!m_siphraAdcPollEnabled))
+    if ((!connStatus) || (!histogramAdcPollEnabled))
         return;
 
     /* Update all values and return - this is in case the user changes to the histogram pane */
