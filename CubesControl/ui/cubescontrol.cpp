@@ -1461,6 +1461,7 @@ void CubesControl::on_tmrHistogramAdcPoll_timeout()
         if (histogramRunTime == 0) {
             on_btnStartStopHistogram_clicked();
         }
+
     }
 
     if (ui->tabWidget->currentIndex() == 2) {
@@ -2035,6 +2036,27 @@ void CubesControl::on_tabWidget_currentChanged(int index)
         tmrEventRateReadout->stop();
     }
 
+    /*
+     * Avoid redundant calling of the histogram ADC poll timer callback. This
+     * should however only be done for non-time-based histogramming. For
+     * time-based histogramming, the timer should run, so the histogramming
+     * finishes at the right time.
+     *
+     * The timer callback makes sure no transfers are performed if the user is
+     * not looking at the histogram tab, so the transfer medium to the device
+     * talking to the SIHPRA doesn't get redundantly used up.
+     */
+    if (ui->comboboxHistogramRunType->currentIndex() == 0) {
+        if (index == 2) {
+            if (histogramAdcPollEnabled)
+                tmrHistogramAdcPoll->start();
+        } else {
+            if (histogramAdcPollEnabled)
+                tmrHistogramAdcPoll->stop();
+        }
+    }
+
+    /* Avoid redundant calling of the ADC poll's timer callback (diagnostics tab). */
     if (index == 3) {
         if (m_siphraAdcPollEnabled)
             tmrSiphraAdcPoll->start();
