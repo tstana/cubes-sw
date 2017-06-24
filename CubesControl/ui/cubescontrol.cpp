@@ -915,7 +915,7 @@ void CubesControl::on_actionExportHistogram_triggered()
 
         QByteArray data;
 
-        /* One byte for QcThreshold */
+        /* One byte for QcThreshold value */
         data.append(ui->spinboxQcThreshold->value());
         data.append('_');
 
@@ -927,15 +927,15 @@ void CubesControl::on_actionExportHistogram_triggered()
         }
         data.append('_');
 
-        /* Five bytes, right-justified for CMIS gain */
+        /* Five ASCII chars, right-justified for CMIS gain */
         data.append(ui->comboboxCmisGain->currentText().rightJustified(5, ' '));
         data.append('_');
 
-        /* Ten bytes, right-justified for CI gain */
+        /* Ten ASCII chars, right-justified for CI gain */
         data.append(ui->comboboxCiGain->currentText().rightJustified(10, ' '));
         data.append('_');
 
-        /* Seven bytes, right-justified for CMIS gain */
+        /* Seven ASCII chars, right-justified for shaping time */
         data.append(ui->comboboxShapingTime->currentText().rightJustified(7, ' '));
         data.append('_');
 
