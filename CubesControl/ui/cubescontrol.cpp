@@ -1182,6 +1182,10 @@ void CubesControl::on_cubes_devReadReady()
         m_siphraAdcChan = data[1] & 0x1f;
         m_siphraAdcValue = (double)(((data[2] & 0xf) << 8) | (data[3] & 0xff));
 
+        if (histogramAdcPollEnabled && trigged) {
+            updateHistogram();
+        }
+
         if (m_siphraAdcPollEnabled && trigged) {
             if (ui->tabWidget->currentIndex() == 3) {
                 /* Adjust the data to 610uV per MSB before displaying */
