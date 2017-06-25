@@ -183,6 +183,8 @@ private:
                               int *input_cap);
     int     decodeShaperSettings(int bias, int feedback_cap, int feedback_res,
                                  int hold_cap, int input_cap);
+
+    double  thDelayTime(int thTune, int thDelay);
 };
 
 #endif // CUBESCONTROL_H

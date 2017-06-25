@@ -213,6 +213,10 @@ CubesControl::CubesControl(QWidget *parent) :
     connect(tmrEventRateReadout, &QTimer::timeout,
             this, &CubesControl::on_tmrEventRateReadout_timeout);
 
+    /* Update TH delay time label */
+    ui->lblThDelayTime->setText(QString::number(thDelayTime(ui->sliderTune->value(),
+                                                            ui->sliderDelay->value())));
+
     /* Create communication objects */
     serialPort = new QSerialPort();
 
@@ -665,6 +669,11 @@ void CubesControl::setUiSiphraReadoutModeValue(int thDelay,
     ui->sliderTune->setValue(thTune);
     ui->spinboxTune->setValue(thTune);
     ui->comboboxHoldSource->setCurrentIndex(holdSource);
+}
+
+double CubesControl::thDelayTime(int thTune, int thDelay)
+{
+    return 1700 * (1 + 0.0748*thTune)/(1 + (15 - thDelay));
 }
 
 /*============================================================================
@@ -1826,6 +1835,10 @@ void CubesControl::on_sliderTune_valueChanged(int value)
     siphraVisualRegChange = true;
     ui->spinboxTune->setValue(value);
 
+    /* Update TH delay time label */
+    ui->lblThDelayTime->setText(QString::number(thDelayTime(ui->sliderTune->value(),
+                                                            ui->sliderDelay->value())));
+
     /*
      * The value of the control can also be changed by a read all regs command;
      * in this case, no writing of the channel should be made
@@ -1854,6 +1867,10 @@ void CubesControl::on_spinboxTune_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->sliderTune->setValue(value);
+
+    /* Update TH delay time label */
+    ui->lblThDelayTime->setText(QString::number(thDelayTime(ui->sliderTune->value(),
+                                                            ui->sliderDelay->value())));
 
     /*
      * The value of the control can also be changed by a read all regs command;
@@ -1884,6 +1901,10 @@ void CubesControl::on_sliderDelay_valueChanged(int value)
     siphraVisualRegChange = true;
     ui->spinboxDelay->setValue(value);
 
+    /* Update TH delay time label */
+    ui->lblThDelayTime->setText(QString::number(thDelayTime(ui->sliderTune->value(),
+                                                            ui->sliderDelay->value())));
+
     /*
      * The value of the control can also be changed by a read all regs command;
      * in this case, no writing of the channel should be made
@@ -1912,6 +1933,10 @@ void CubesControl::on_spinboxDelay_valueChanged(int value)
      */
     siphraVisualRegChange = true;
     ui->sliderDelay->setValue(value);
+
+    /* Update TH delay time label */
+    ui->lblThDelayTime->setText(QString::number(thDelayTime(ui->sliderTune->value(),
+                                                            ui->sliderDelay->value())));
 
     /*
      * The value of the control can also be changed by a read all regs command;
