@@ -1442,6 +1442,11 @@ void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
 
 void CubesControl::on_btnStartStopHistogram_clicked()
 {
+    if (!connStatus) {
+        statusBar()->showMessage("Connection not open!", 5000);
+        return;
+    }
+
     if (!histogramAdcPollEnabled) {
         if (ui->comboboxHistogramRunType->currentIndex() == 0) {
             ui->lblHistogramStatus->setText("Histogram running in continous mode.");
