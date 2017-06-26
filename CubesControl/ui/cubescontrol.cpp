@@ -1467,8 +1467,6 @@ void CubesControl::on_btnStartStopHistogram_clicked()
 
 void CubesControl::on_tmrHistogramAdcPoll_timeout()
 {
-    qDebug() << histogramRunTime << ":" << "tmrHistogramAdcPoll";
-
     if (ui->comboboxHistogramRunType->currentIndex() == 1) {
         --histogramRunTime;
 
