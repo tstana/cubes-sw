@@ -1467,17 +1467,18 @@ void CubesControl::on_tmrHistogramAdcPoll_timeout()
     if (ui->comboboxHistogramRunType->currentIndex() == 1) {
         --histogramRunTime;
 
-        /* Mimic user clicking the button to stop histogramming */
-        if (histogramRunTime == 0) {
-            on_btnStartStopHistogram_clicked();
-        }
-
         /* Update histogram status label once a second; should only be done if user is in the relevant tab */
         if (ui->tabWidget->currentIndex() == 2) {
             int seconds = histogramRunTime * tmrHistogramAdcPoll->interval()/1000;
             QString s = "Histogram running for " + QString::number(seconds) + " s.";
             ui->lblHistogramStatus->setText(s);
         }
+
+        /* Mimic user clicking the button to stop histogramming */
+        if (histogramRunTime == 0) {
+            on_btnStartStopHistogram_clicked();
+        }
+
     }
 
     if (ui->tabWidget->currentIndex() == 2) {
