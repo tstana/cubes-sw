@@ -95,7 +95,7 @@ private slots:
     void on_btnClearHistogram_clicked();
     void on_btnExportHistogram_clicked();
     void on_btnImportHistogram_clicked();
-    void on_cbNumBins_currentTextChanged(const QString &arg1);
+    void on_comboboxNumBins_currentTextChanged(const QString &arg1);
     void on_checkboxPowerUpChannel_clicked();
     void on_checkboxEnableChannelTriggering_clicked();
     void on_sliderQcThreshold_valueChanged(int value);

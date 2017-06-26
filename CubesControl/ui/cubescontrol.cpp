@@ -159,7 +159,7 @@ CubesControl::CubesControl(QWidget *parent) :
             this, &CubesControl::on_treeSiphraRegMap_contextMenuRequested);
 
     /* Create histogram chart view */
-    ui->cbNumBins->setCurrentText("1024");
+    ui->comboboxNumBins->setCurrentText("1024");
     histogramNumBins = 1024;
     histogramData.resize(histogramNumBins);
     histogramData.fill(0);
@@ -990,7 +990,7 @@ void CubesControl::on_actionImportHistogram_triggered()
         /* First apply histogram number of bins reading */
         data = file.read(2);
         histogramNumBins = ((data[0] & 0xff) << 8) | (data[1] & 0xff);
-        ui->cbNumBins->setCurrentText(QString::number(histogramNumBins));
+        ui->comboboxNumBins->setCurrentText(QString::number(histogramNumBins));
 
         /* Then, read the histogram data and apply. Histo data is two bytes per bin. */
         data = file.read(2*histogramNumBins);
@@ -1402,7 +1402,7 @@ void CubesControl::on_btnClearHistogram_clicked()
     ui->histogram->chart()->axisY(series)->setRange(0, 64);
 }
 
-void CubesControl::on_cbNumBins_currentTextChanged(const QString &arg1)
+void CubesControl::on_comboboxNumBins_currentTextChanged(const QString &arg1)
 {
     tmrSiphraAdcPoll->stop();
 

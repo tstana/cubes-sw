@@ -705,7 +705,7 @@
            </widget>
           </item>
           <item row="0" column="3">
-           <widget class="QComboBox" name="cbNumBins">
+           <widget class="QComboBox" name="comboboxNumBins">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
               <horstretch>0</horstretch>
