@@ -172,8 +172,8 @@ SiphraTreeWidgetItem::SiphraTreeWidgetItem(QTreeWidget *parent,
                 child(i)->setText(2, "");
             }
             child(0)->setText(0, "23:21");
-            child(0)->setText(1, "cmis_gain");
-            child(0)->setText(3, "CMIS gain setting\n0 = 1/10\n1 = 1/100\n3 = 1/200\n7 = 1/400");
+            child(0)->setText(1, "cmis_attenuation");
+            child(0)->setText(3, "CMIS attenuation setting\n0 = 1/10\n1 = 1/100\n3 = 1/200\n7 = 1/400");
             child(1)->setText(0, "20:19");
             child(1)->setText(1, "ci_gain");
             child(1)->setText(3, "Current integrator gain setting\n0 = 1V/30pC\n1 = 1V/27.75pC\n2 = 1V/3pC\n3 = 1V/0.75pC");
