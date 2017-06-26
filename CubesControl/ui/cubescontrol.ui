@@ -178,7 +178,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="label_8">
              <property name="text">
-              <string>CMIS gain:</string>
+              <string>CMIS atten.:</string>
              </property>
             </widget>
            </item>
@@ -323,7 +323,7 @@
            <item row="3" column="0">
             <widget class="QLabel" name="label_14">
              <property name="text">
-              <string>CB input:</string>
+              <string>AOUT signal:</string>
              </property>
             </widget>
            </item>
