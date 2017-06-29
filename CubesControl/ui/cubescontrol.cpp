@@ -1272,7 +1272,15 @@ void CubesControl::on_btnToggleAdcPoll_clicked()
 void CubesControl::on_tmrSiphraAdcPoll_timeout()
 {
     QByteArray dummy;
-    dummy.resize(4);
+
+    /* Iff ADC_IN readout enabled, trigger forced readout command by writing to CMD_READOUT reg */
+    if (ui->checkboxUseAdcIn->isChecked()) {
+        m_siphraRegAddr = 0x1d;
+        m_siphraRegVal = 1;
+        on_actionWriteSiphraReg_triggered();
+    }
+
+    /* Finally, read out ADCR value from FPGA */
     cubes->sendCommand(CMD_GET_SIPHRA_ADCR, dummy);
 }
 
@@ -1980,6 +1988,28 @@ void CubesControl::on_checkboxCiCompmode_clicked()
         writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }
 
+void CubesControl::on_checkboxUseAdcIn_clicked()
+{
+    /* Apply ADC_IN bit to current value of READOUT_FIXED_LIST and initiate write */
+    m_siphraRegAddr = 0x17;
+
+    SiphraTreeWidgetItem *reg =
+            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_siphraRegAddr);
+    m_siphraRegVal = reg->registerValue();
+
+    m_siphraRegVal |= (1 << 18);
+    reg->setRegisterValue(0, 1);
+    on_actionWriteSiphraReg_triggered();
+
+    /* Apply EN_SPI_FORCED_START bit to current value of READOUT_MODE register */
+    m_siphraRegAddr = 0x18;
+    reg = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_siphraRegAddr);
+    m_siphraRegVal = reg->registerValue();
+    m_siphraRegVal |= (1 << 2);
+    reg->setRegisterValue(4, 1);
+    on_actionWriteSiphraReg_triggered();
+}
+
 /*============================================================================
  * UI CONTAINER SLOTS
  *============================================================================*/
@@ -2102,3 +2132,4 @@ void CubesControl::on_tabWidget_currentChanged(int index)
             tmrSiphraAdcPoll->stop();
     }
 }
+
