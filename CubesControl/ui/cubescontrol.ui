@@ -206,7 +206,17 @@
              </item>
             </widget>
            </item>
-           <item row="2" column="2">
+           <item row="0" column="1">
+            <widget class="QSlider" name="sliderCmisGain">
+             <property name="maximum">
+              <number>3</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
             <widget class="QComboBox" name="comboboxShapingTime">
              <property name="layoutDirection">
               <enum>Qt::LeftToRight</enum>
@@ -233,23 +243,6 @@
              </item>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>Shaping time:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSlider" name="sliderCmisGain">
-             <property name="maximum">
-              <number>3</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_9">
              <property name="text">
@@ -267,7 +260,14 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Shaping time:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
             <widget class="QSlider" name="sliderShapingTime">
              <property name="maximum">
               <number>3</number>
@@ -301,7 +301,34 @@
              </item>
             </widget>
            </item>
-           <item row="3" column="1" colspan="2">
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>AOUT signal:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_21">
+             <property name="text">
+              <string>CI comp. mode:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QCheckBox" name="checkboxCiCompmode">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Enable</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" colspan="2">
             <widget class="QComboBox" name="comboboxCbInput">
              <item>
               <property name="text">
@@ -318,125 +345,6 @@
                <string>Current integrator</string>
               </property>
              </item>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_14">
-             <property name="text">
-              <string>AOUT signal:</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QGroupBox" name="groupboxShaperSettings">
-          <property name="title">
-           <string>Track-and-Hold settings (READOUT_MODE)</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="2" column="2">
-            <widget class="QSpinBox" name="spinboxDelay">
-             <property name="maximum">
-              <number>15</number>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_17">
-             <property name="text">
-              <string>Hold source:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>TH delay:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QSlider" name="sliderDelay">
-             <property name="maximum">
-              <number>15</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1" colspan="2">
-            <widget class="QComboBox" name="comboboxHoldSource">
-             <item>
-              <property name="text">
-               <string>OR(CT[15:0], CTS)</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>CTS</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>OR(QT[15:0], QTS)</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>QTS</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSlider" name="sliderTune">
-             <property name="maximum">
-              <number>31</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_19">
-             <property name="text">
-              <string>Delay time:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QSpinBox" name="spinboxTune">
-             <property name="maximum">
-              <number>31</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>TH tune:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QLabel" name="lblThDelayTime">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="QLabel" name="label_20">
-             <property name="text">
-              <string>ns</string>
-             </property>
             </widget>
            </item>
           </layout>
@@ -628,6 +536,118 @@
             <widget class="QLabel" name="lblEventRate">
              <property name="text">
               <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QGroupBox" name="groupboxShaperSettings">
+          <property name="title">
+           <string>Track-and-Hold settings (READOUT_MODE)</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="2" column="2">
+            <widget class="QSpinBox" name="spinboxDelay">
+             <property name="maximum">
+              <number>15</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_17">
+             <property name="text">
+              <string>Hold source:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>TH delay:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QSlider" name="sliderDelay">
+             <property name="maximum">
+              <number>15</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" colspan="2">
+            <widget class="QComboBox" name="comboboxHoldSource">
+             <item>
+              <property name="text">
+               <string>OR(CT[15:0], CTS)</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>CTS</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>OR(QT[15:0], QTS)</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>QTS</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSlider" name="sliderTune">
+             <property name="maximum">
+              <number>31</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_19">
+             <property name="text">
+              <string>Delay time:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QSpinBox" name="spinboxTune">
+             <property name="maximum">
+              <number>31</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>TH tune:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="lblThDelayTime">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLabel" name="label_20">
+             <property name="text">
+              <string>ns</string>
              </property>
             </widget>
            </item>

@@ -434,20 +434,12 @@ int CubesControl::uiSiphraChannelConfigValue()
     /* Apply the CHANNEL_CONFIG register fields */
     value = (cmis_gain << 21) |
             (ui->sliderCiGain->value() << 19) |
+            (ui->checkboxCiCompmode->isChecked() << 18) |
             (shaper_bias << 14) |
             (shaper_feedback_cap << 10) |
             (shaper_feedback_res << 7) |
             (shaper_hold_cap << 4) |
             (shaper_input_cap);
-
-    /*
-     * OR register value with currently existing bits, masking settings the user
-     * makes via the UI, before applying
-     */
-    SiphraTreeWidgetItem *siphraReg =
-            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(0x11);
-
-    value |= siphraReg->registerValue() & 0x40000;
 
     return value;
 }
@@ -644,13 +636,14 @@ void CubesControl::setUiSiphraChannelRegValue(bool powerUpChannel,
 }
 
 void CubesControl::setUiSiphraChannelConfigValue(int cmisGain,
-                                                 int ciGain,
+                                                 int ciGain, bool ciCompmode,
                                                  int shapingTime)
 {
     ui->sliderCmisGain->setValue(cmisGain);
     ui->comboboxCmisGain->setCurrentIndex(cmisGain);
     ui->sliderCiGain->setValue(ciGain);
     ui->comboboxCiGain->setCurrentIndex(ciGain);
+    ui->checkboxCiCompmode->setChecked(ciCompmode);
     ui->sliderShapingTime->setValue(shapingTime);
     ui->comboboxShapingTime->setCurrentIndex(shapingTime);
 }
@@ -1095,6 +1088,7 @@ void CubesControl::on_cubes_devReadReady()
                 int cmis_gain, ci_gain, shaper_bias, shaper_feedback_cap,
                         shaper_feedback_res, shaper_hold_cap, shaper_input_cap,
                         shapingTime;
+                bool ci_compmode;
                 cmis_gain = reg->registerValue(0);
                 switch (cmis_gain) {
                 case 0:
@@ -1124,6 +1118,7 @@ void CubesControl::on_cubes_devReadReady()
                 }
                 }
                 ci_gain = reg->registerValue(1);
+                ci_compmode = reg->registerValue(2);
                 shaper_bias = reg->registerValue(3);
                 shaper_feedback_cap = reg->registerValue(4);
                 shaper_feedback_res = reg->registerValue(5);
@@ -1132,7 +1127,7 @@ void CubesControl::on_cubes_devReadReady()
                 shapingTime = decodeShaperSettings(shaper_bias, shaper_feedback_cap,
                                                    shaper_feedback_res, shaper_hold_cap,
                                                    shaper_input_cap);
-                setUiSiphraChannelConfigValue(cmis_gain, ci_gain, shapingTime);
+                setUiSiphraChannelConfigValue(cmis_gain, ci_gain, ci_compmode, shapingTime);
             } else if (m_siphraRegAddr == 0x12) {
                 int cb_input = reg->registerValue(3);
                 if (cb_input > 2) {
@@ -1977,6 +1972,12 @@ void CubesControl::on_comboboxHoldSource_currentIndexChanged(int index)
 {
     if (!m_readAllSiphraRegs)
         writeSiphraReadoutMode(uiSiphraReadoutModeValue());
+}
+
+void CubesControl::on_checkboxCiCompmode_clicked()
+{
+    if (!m_readAllSiphraRegs)
+        writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }
 
 /*============================================================================
