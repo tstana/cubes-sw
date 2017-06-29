@@ -810,6 +810,10 @@ void SiphraTreeWidgetItem::setRegisterValue(qint32 value)
         value &= 0x007fffff;
         break;
 
+    case SIPHRA_ADC_CONFIG:
+        value &= 0x0000003f;
+        break;
+
     case SIPHRA_CAL_CTRL:
         value &= 0x0000003f;
         break;
