@@ -867,6 +867,11 @@ void CubesControl::on_actionWriteSiphraReg_triggered()
             QString::number(m_siphraRegAddr & 0xff, 16).rightJustified(2, '0').toUpper());
 
     cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+
+    /* Update SIPHRA register tree item */
+    SiphraTreeWidgetItem *reg =
+            (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_siphraRegAddr);
+    reg->setRegisterValue(m_siphraRegVal);
 }
 
 void CubesControl::on_actionToggleAdcPoll_triggered()
@@ -2011,13 +2016,10 @@ void CubesControl::on_checkboxUseAdcIn_clicked(bool checked)
             (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_siphraRegAddr);
     m_siphraRegVal = reg->registerValue();
 
-     if (checked) {
+     if (checked)
         m_siphraRegVal |= (1 << 18);
-        reg->setRegisterValue(0, 1);
-    } else {
+    else
         m_siphraRegVal &= ~(1 << 18);
-        reg->setRegisterValue(0, 0);
-    }
 
     on_actionWriteSiphraReg_triggered();
 
@@ -2026,15 +2028,11 @@ void CubesControl::on_checkboxUseAdcIn_clicked(bool checked)
     reg = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_siphraRegAddr);
     m_siphraRegVal = reg->registerValue();
 
-    if (checked) {
+    if (checked)
        m_siphraRegVal |= (1 << 2);
-       reg->setRegisterValue(4, 1);
-    } else {
+   else
        m_siphraRegVal &= ~(1 << 2);
-       reg->setRegisterValue(4, 0);
-    }
 
-    reg->setRegisterValue(4, 1);
     on_actionWriteSiphraReg_triggered();
 }
 
