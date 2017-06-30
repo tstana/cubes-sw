@@ -1990,6 +1990,20 @@ void CubesControl::on_checkboxCiCompmode_clicked()
 
 void CubesControl::on_checkboxUseAdcIn_clicked(bool checked)
 {
+    /* Warn user about what checking the box would entail */
+    if (checked) {
+        QMessageBox warn;
+        QString text;
+        QTextStream s(&text);
+        s << "Due to current limitations, please make sure you clear all"
+          << "other bits in READOUT_FIXED_LIST register."
+          << "\n\n"
+          << "This can be done easiest from the SIPHRA register map tab.";
+        warn.setWindowTitle("Warning");
+        warn.setText(text);
+        warn.exec();
+    }
+
     /* Apply ADC_IN bit to current value of READOUT_FIXED_LIST register */
     m_siphraRegAddr = 0x17;
 
