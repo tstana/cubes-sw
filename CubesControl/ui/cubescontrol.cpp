@@ -1988,24 +1988,38 @@ void CubesControl::on_checkboxCiCompmode_clicked()
         writeSiphraChannelConfig(uiSiphraChannelConfigValue());
 }
 
-void CubesControl::on_checkboxUseAdcIn_clicked()
+void CubesControl::on_checkboxUseAdcIn_clicked(bool checked)
 {
-    /* Apply ADC_IN bit to current value of READOUT_FIXED_LIST and initiate write */
+    /* Apply ADC_IN bit to current value of READOUT_FIXED_LIST register */
     m_siphraRegAddr = 0x17;
 
     SiphraTreeWidgetItem *reg =
             (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_siphraRegAddr);
     m_siphraRegVal = reg->registerValue();
 
-    m_siphraRegVal |= (1 << 18);
-    reg->setRegisterValue(0, 1);
+     if (checked) {
+        m_siphraRegVal |= (1 << 18);
+        reg->setRegisterValue(0, 1);
+    } else {
+        m_siphraRegVal &= ~(1 << 18);
+        reg->setRegisterValue(0, 0);
+    }
+
     on_actionWriteSiphraReg_triggered();
 
     /* Apply EN_SPI_FORCED_START bit to current value of READOUT_MODE register */
     m_siphraRegAddr = 0x18;
     reg = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_siphraRegAddr);
     m_siphraRegVal = reg->registerValue();
-    m_siphraRegVal |= (1 << 2);
+
+    if (checked) {
+       m_siphraRegVal |= (1 << 2);
+       reg->setRegisterValue(4, 1);
+    } else {
+       m_siphraRegVal &= ~(1 << 2);
+       reg->setRegisterValue(4, 0);
+    }
+
     reg->setRegisterValue(4, 1);
     on_actionWriteSiphraReg_triggered();
 }
@@ -2132,4 +2146,3 @@ void CubesControl::on_tabWidget_currentChanged(int index)
             tmrSiphraAdcPoll->stop();
     }
 }
-

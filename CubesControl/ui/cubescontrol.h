@@ -117,7 +117,7 @@ private slots:
     void on_comboboxHoldSource_currentIndexChanged(int index);
     void on_comboboxHistogramRunType_currentIndexChanged(int index);
     void on_checkboxCiCompmode_clicked();
-    void on_checkboxUseAdcIn_clicked();
+    void on_checkboxUseAdcIn_clicked(bool checked);
 
     void on_treeSiphraRegMap_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeSiphraRegMap_itemChanged(QTreeWidgetItem *item, int column);
