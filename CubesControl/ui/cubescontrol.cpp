@@ -82,21 +82,21 @@ CubesControl::CubesControl(QWidget *parent) :
 
     /* Connect LED check box clicks to single handler */
     connect(ui->checkboxLed0, &QCheckBox::clicked,
-            this, on_anyLedCheckbox_clicked);
+            this, &CubesControl::on_anyLedCheckbox_clicked);
     connect(ui->checkboxLed1, &QCheckBox::clicked,
-            this, on_anyLedCheckbox_clicked);
+            this, &CubesControl::on_anyLedCheckbox_clicked);
     connect(ui->checkboxLed2, &QCheckBox::clicked,
-            this, on_anyLedCheckbox_clicked);
+            this, &CubesControl::on_anyLedCheckbox_clicked);
     connect(ui->checkboxLed3, &QCheckBox::clicked,
-            this, on_anyLedCheckbox_clicked);
+            this, &CubesControl::on_anyLedCheckbox_clicked);
     connect(ui->checkboxLed4, &QCheckBox::clicked,
-            this, on_anyLedCheckbox_clicked);
+            this, &CubesControl::on_anyLedCheckbox_clicked);
     connect(ui->checkboxLed5, &QCheckBox::clicked,
-            this, on_anyLedCheckbox_clicked);
+            this, &CubesControl::on_anyLedCheckbox_clicked);
     connect(ui->checkboxLed6, &QCheckBox::clicked,
-            this, on_anyLedCheckbox_clicked);
+            this, &CubesControl::on_anyLedCheckbox_clicked);
     connect(ui->checkboxLed7, &QCheckBox::clicked,
-            this, on_anyLedCheckbox_clicked);
+            this, &CubesControl::on_anyLedCheckbox_clicked);
 
     /* Resize address table in CUBES register view */
     ui->tableCubesRegs->resizeColumnToContents(1);
