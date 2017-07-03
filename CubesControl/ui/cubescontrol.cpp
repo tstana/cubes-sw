@@ -487,28 +487,11 @@ void CubesControl::writeSiphraChannelReg(int value)
         return;
     }
 
-    int address;
-
     /* Channel reg address is spinbox setting minus 1 (SIPHRA CTRL_CH_01 is at 0x00) */
-    address = ui->spinboxSiphraChannelToConfig->value();
-    address -= 1;
-
-    /* Initiate CUBES command to write the SIPHRA register */
-    QByteArray data;
-    data.resize(8);
-    data[0] = (value >> 24) & 0xff;
-    data[1] = (value >> 16) & 0xff;
-    data[2] = (value >>  8) & 0xff;
-    data[3] = (value & 0xff);
-    data[4] = 0x00;
-    data[5] = 0x00;
-    data[6] = 0x00;
-    data[7] = (address << 1) | 0x1;
-
-    statusBar()->showMessage("Writing SIPHRA register at address 0x" +
-            QString::number(address & 0xff, 16).rightJustified(2, '0').toUpper());
-
-    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+    m_siphraRegAddr = ui->spinboxSiphraChannelToConfig->value();
+    m_siphraRegAddr -= 1;
+    m_siphraRegVal = value;
+    on_actionWriteSiphraReg_triggered();
 
     /*
      * Also write the READOUT_FIXED_LIST register if triggering on the channel
@@ -518,24 +501,17 @@ void CubesControl::writeSiphraChannelReg(int value)
      * NB! This last part is temporary and may lead to mismatches with the
      * actual register value.
      */
-    address = 0x17;
+    m_siphraRegAddr = 0x17;
     SiphraTreeWidgetItem *item = new SiphraTreeWidgetItem;
-    item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(address);
-    value = item->registerValue();
+    item = (SiphraTreeWidgetItem *)ui->treeSiphraRegMap->topLevelItem(m_siphraRegAddr);
+    m_siphraRegVal = item->registerValue();
     if (ui->checkboxEnableChannelTriggering->isChecked()) {
-        value |= 1 << ui->spinboxSiphraChannelToConfig->value();
+        m_siphraRegVal |= 1 << ui->spinboxSiphraChannelToConfig->value();
     } else {
-        value &= ~(1 << ui->spinboxSiphraChannelToConfig->value());
+        m_siphraRegVal &= ~(1 << ui->spinboxSiphraChannelToConfig->value());
     }
-    data[0] = (value >> 24) & 0xff;
-    data[1] = (value >> 16) & 0xff;
-    data[2] = (value >>  8) & 0xff;
-    data[3] = (value & 0xff);
-    data[4] = 0x00;
-    data[5] = 0x00;
-    data[6] = 0x00;
-    data[7] = (address << 1) | 0x1;
-    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+
+    on_actionWriteSiphraReg_triggered();
 }
 
 void CubesControl::writeSiphraChannelConfig(int value)
@@ -546,24 +522,10 @@ void CubesControl::writeSiphraChannelConfig(int value)
         return;
     }
 
-    int address = 0x11;
-
-    /* Initiate CUBES command to write the SIPHRA register */
-    QByteArray data;
-    data.resize(8);
-    data[0] = (value >> 24) & 0xff;
-    data[1] = (value >> 16) & 0xff;
-    data[2] = (value >>  8) & 0xff;
-    data[3] = (value & 0xff);
-    data[4] = 0x00;
-    data[5] = 0x00;
-    data[6] = 0x00;
-    data[7] = (address << 1) | 0x1;
-
-    statusBar()->showMessage("Writing SIPHRA register at address 0x" +
-            QString::number(address & 0xff, 16).rightJustified(2, '0').toUpper());
-
-    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+    /* Initiate write to SIPHRA register */
+    m_siphraRegAddr = 0x11;
+    m_siphraRegVal = value;
+    on_actionWriteSiphraReg_triggered();
 }
 
 void CubesControl::writeSiphraChannelControl(int value)
@@ -574,24 +536,10 @@ void CubesControl::writeSiphraChannelControl(int value)
         return;
     }
 
-    int address = 0x12;
-
-    /* Initiate CUBES command to write the SIPHRA register */
-    QByteArray data;
-    data.resize(8);
-    data[0] = (value >> 24) & 0xff;
-    data[1] = (value >> 16) & 0xff;
-    data[2] = (value >>  8) & 0xff;
-    data[3] = (value & 0xff);
-    data[4] = 0x00;
-    data[5] = 0x00;
-    data[6] = 0x00;
-    data[7] = (address << 1) | 0x1;
-
-    statusBar()->showMessage("Writing SIPHRA register at address 0x" +
-            QString::number(address & 0xff, 16).rightJustified(2, '0').toUpper());
-
-    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+    /* Initiate write to SIPHRA register */
+    m_siphraRegAddr = 0x12;
+    m_siphraRegVal = value;
+    on_actionWriteSiphraReg_triggered();
 }
 
 void CubesControl::writeSiphraReadoutMode(int value)
@@ -602,24 +550,10 @@ void CubesControl::writeSiphraReadoutMode(int value)
         return;
     }
 
-    int address = 0x18;
-
-    /* Initiate CUBES command to write the SIPHRA register */
-    QByteArray data;
-    data.resize(8);
-    data[0] = (value >> 24) & 0xff;
-    data[1] = (value >> 16) & 0xff;
-    data[2] = (value >>  8) & 0xff;
-    data[3] = (value & 0xff);
-    data[4] = 0x00;
-    data[5] = 0x00;
-    data[6] = 0x00;
-    data[7] = (address << 1) | 0x1;
-
-    statusBar()->showMessage("Writing SIPHRA register at address 0x" +
-            QString::number(address & 0xff, 16).rightJustified(2, '0').toUpper());
-
-    cubes->sendCommand(CMD_SIPHRA_REG_OP, data);
+    /* Initiate write to SIPHRA register */
+    m_siphraRegAddr = 0x18;
+    m_siphraRegVal = value;
+    on_actionWriteSiphraReg_triggered();
 }
 
 void CubesControl::setUiSiphraChannelRegValue(bool powerUpChannel,
