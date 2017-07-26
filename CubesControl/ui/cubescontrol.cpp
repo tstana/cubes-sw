@@ -1189,6 +1189,9 @@ void CubesControl::on_cubes_devErrorOccured(int error)
             connStatus = 0;
             showConnStatus(connStatus);
             break;
+        case 13:
+            msg += " : Experiment R/W error. Try again.";
+            break;
         default:
             msg += ".";
             break;
@@ -1240,16 +1243,8 @@ void CubesControl::on_anyLedCheckbox_clicked()
             (ui->checkboxLed1->isChecked() << 1) |
             (ui->checkboxLed0->isChecked());
 
-    QByteArray data;
 
-    data.resize(4);
-
-    data[0] = 0x00;
-    data[1] = 0x00;
-    data[2] = 0x00;
-    data[3] = leds;
-
-    cubes->sendCommand(CMD_SET_LEDS, data);
+    cubes->setLEDs(leds);
 }
 
 void CubesControl::on_btnReadAllCubesRegs_clicked()

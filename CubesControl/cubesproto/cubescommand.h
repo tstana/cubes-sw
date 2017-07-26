@@ -74,31 +74,45 @@ private:
 
 
 /*-----------------------------------------------------------------------------
- * Command definitions
+ * Command definitions -- Changed to OPCODE definitions for compatibility with
+ * MIST on 24 July 2017
+ * Thus -- cannot use any CMD with value > 0x7F as 1 bit is used for Frame ID
  *---------------------------------------------------------------------------*/
 
-#define CMD_READ_ALL_REGS           0x11
-#define CMD_GET_CUBES_ID            0x90
-#define CMD_SET_LEDS                0x91
-#define CMD_GET_LEDS                0x92
-#define CMD_SIPHRA_REG_OP           0x93
-#define CMD_GET_SIPHRA_DATAR        0x94
-#define CMD_GET_SIPHRA_ADCR         0x95
-#define CMD_GET_CH01_REGS           0xa0
-#define CMD_GET_CH02_REGS           0xa1
-#define CMD_GET_CH03_REGS           0xa2
-#define CMD_GET_CH04_REGS           0xa3
-#define CMD_GET_CH05_REGS           0xa4
-#define CMD_GET_CH06_REGS           0xa5
-#define CMD_GET_CH07_REGS           0xa6
-#define CMD_GET_CH08_REGS           0xa7
-#define CMD_GET_CH09_REGS           0xa8
-#define CMD_GET_CH10_REGS           0xa9
-#define CMD_GET_CH11_REGS           0xaa
-#define CMD_GET_CH12_REGS           0xab
-#define CMD_GET_CH13_REGS           0xac
-#define CMD_GET_CH14_REGS           0xad
-#define CMD_GET_CH15_REGS           0xae
-#define CMD_GET_CH16_REGS           0xaf
-
+#define CMD_READ_ALL_REGS           0x61
+#define CMD_GET_CUBES_ID            0x40
+#define CMD_SET_LEDS                0x41
+#define CMD_GET_LEDS                0x42
+#define CMD_SIPHRA_REG_OP           0x43
+#define CMD_GET_SIPHRA_DATAR        0x44
+#define CMD_GET_SIPHRA_ADCR         0x45
+#define CMD_GET_CH01_REGS           0x50
+#define CMD_GET_CH02_REGS           0x51
+#define CMD_GET_CH03_REGS           0x52
+#define CMD_GET_CH04_REGS           0x53
+#define CMD_GET_CH05_REGS           0x54
+#define CMD_GET_CH06_REGS           0x55
+#define CMD_GET_CH07_REGS           0x56
+#define CMD_GET_CH08_REGS           0x57
+#define CMD_GET_CH09_REGS           0x58
+#define CMD_GET_CH10_REGS           0x59
+#define CMD_GET_CH11_REGS           0x5a
+#define CMD_GET_CH12_REGS           0x5b
+#define CMD_GET_CH13_REGS           0x5c
+#define CMD_GET_CH14_REGS           0x5d
+#define CMD_GET_CH15_REGS           0x5e
+#define CMD_GET_CH16_REGS           0x5f
+#define CMD_NULL                    0x00
+#define CMD_DATA_FRAME              0x01
+#define CMD_F_ACK                   0x02
+#define CMD_T_ACK                   0x03
+#define CMD_REQ_PAYLOAD             0x10
+#define CMD_REQ_HK                  0x11
+#define CMD_REQ_PUS                 0x12
+#define CMD_EXP_SEND                0x20
+#define CMD_SEND_TIME               0x30
+#define CMD_SEND_PUS                0x31
+#define CMD_ACTIVE                  0x70
+#define CMD_SLEEP                   0x71
+#define CMD_POWER_OFF               0x72
 #endif // __CUBESCOMMANDS_H_

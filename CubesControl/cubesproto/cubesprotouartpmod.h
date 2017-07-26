@@ -43,6 +43,8 @@
 #include <QSerialPort>
 
 #define CUBES_I2C_ADDRESS       0x70
+#define CUBES_NL_MTU            507  // Size in bytes
+#define CUBES_NL_HEADER_SIZE    5 // Is 9 bytes in MIST . But 4 bytes of FCS are gazoomped for now!!
 
 class CubesProtoUartPmod : public QObject //, public ICubesProtocol
 {
@@ -58,13 +60,17 @@ public:
     QString         devName();
     QSerialPort*    dev();
 
+    CubesCommand*   currentCommand();
+
+    void            setLEDs(quint8 leds);
+    QByteArray      getLEDs(QByteArray &status);
+    void            setRegValues(quint8 reg);
+    QByteArray      getRegValues(QByteArray &data, quint8 reg);
+
     qint64          write(QByteArray &data);
     QByteArray      readAll();
 
     qint64          sendCommand(quint8 cmd, QByteArray &cmdData);
-
-    CubesCommand*   currentCommand();
-
 private slots:
     void on_serialPort_readReady();
 
@@ -73,6 +79,13 @@ signals:
     void devErrorOccured(int error);
 
 private:
+
+    qint8           requestNL(quint8 cmdCode, QByteArray &datarray);
+    qint8           sendNL(quint8 cmd, QByteArray &cmdData);
+
+    QByteArray      readI2C();
+    qint64          writeI2C(QByteArray &data);
+
     QSerialPort     *m_device;
 
     CubesCommand    *m_currentCommand;
