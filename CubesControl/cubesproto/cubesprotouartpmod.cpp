@@ -401,7 +401,8 @@ qint64 CubesProtoUartPmod::writeI2C(QByteArray &cmdData, bool write)
     numDataBytes = 1 + (cmdData.size() * write);
     data.resize(numDataBytes);
 
-    data[0] = (CUBES_I2C_ADDRESS << 1) | (~write);
+    data[0] = write ? (CUBES_I2C_ADDRESS << 1) :
+                      ((CUBES_I2C_ADDRESS << 1) | 0x01);
     for (int i = 0; i < numDataBytes-1; i++)
         data[i+1] = cmdData[i];
 
