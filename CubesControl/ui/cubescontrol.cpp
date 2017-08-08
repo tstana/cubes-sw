@@ -1189,7 +1189,7 @@ void CubesControl::on_cubes_devErrorOccured(int error)
             connStatus = 0;
             showConnStatus(connStatus);
             break;
-        case 13:
+        case 15:
             msg += " : Experiment R/W error. Try again.";
             break;
         default:

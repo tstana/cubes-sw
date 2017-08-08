@@ -41,6 +41,9 @@
 
 #include <QObject>
 #include <QSerialPort>
+#include <QState>
+#include <QFinalState>
+#include <QStateMachine>
 
 #define CUBES_I2C_ADDRESS       0x70
 #define CUBES_NL_MTU            507  // Size in bytes
@@ -72,25 +75,59 @@ public:
 
     qint64          sendCommand(quint8 cmd, QByteArray &cmdData);
 private slots:
-    void on_serialPort_readReady();
+    void           on_serialPort_readReady();
+    void           write_NL();
+    void           read_NL();
 
 signals:
     void devReadReady();
     void devErrorOccured(int error);
 
+    void exp_rx_FACK();
+    void exp_rx_TACK();
+    void obc_tx_SEND();
+    void obc_tx_data();
+    void exp_rx_UNEX();
+
+    void obc_tx_REQ();
+    void obc_tx_TACK();
+    void exp_rx_EXPS();
+    void exp_rx_data();
+    void obc_tx_FACK();
+
+    void dev_close();
+
 private:
 
     qint8           requestNL(quint8 cmdCode, QByteArray &datarray);
     qint8           sendNL(quint8 cmd, QByteArray &cmdData);
+    quint32         getdatalength();
 
     QByteArray      readI2C();
     qint64          writeI2C(QByteArray &data);
+    qint64          writeI2C(QByteArray &data, bool write);
 
     QSerialPort     *m_device;
 
     CubesCommand    *m_currentCommand;
 
-    qint32          m_bytesLeft;
+    qint32           m_bytesLeft;
+
+    quint32          m_spos;
+    quint32          m_datasize;
+    quint32          m_currfragsize;
+
+    QByteArray       m_data;
+
+    QByteArray       m_header;
+
+    QState          *ready, *runsend, *runreq, *resp, *reqack, *rx, *sendack, *tx;
+    QFinalState     *done;
+    QStateMachine   *machine;
+
+    quint8          m_tfid;
+    quint8          m_fid;
+/*lasfri TODO : Check if done state is required for stopping the state machine ? Can be invoked on closure of comm ?*/
 };
 
 #endif // CUBESPROTOUARTPMOD_H

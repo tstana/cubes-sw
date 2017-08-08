@@ -102,7 +102,7 @@ private:
 #define CMD_GET_CH14_REGS           0x5d
 #define CMD_GET_CH15_REGS           0x5e
 #define CMD_GET_CH16_REGS           0x5f
-#define CMD_NULL                    0x00
+#define CMD_NULL_FRAME              0x00
 #define CMD_DATA_FRAME              0x01
 #define CMD_F_ACK                   0x02
 #define CMD_T_ACK                   0x03

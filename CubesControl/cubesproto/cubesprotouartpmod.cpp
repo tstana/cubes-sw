@@ -51,14 +51,222 @@ CubesProtoUartPmod::CubesProtoUartPmod(QSerialPort *device, QObject *parent) :
     QObject::connect(m_device, &QSerialPort::errorOccurred,
                      this, &CubesProtoUartPmod::devErrorOccured);
 
+    connect(m_device, &QSerialPort::readyRead,
+            this, &CubesProtoUartPmod::read_NL);
+
+    ready = new QState();
+    runreq = new QState();
+    runsend = new QState();
+    done = new QFinalState();
+
+    reqack = new QState(runreq);
+    rx = new QState(runreq);
+    resp = new QState(runreq);
+    runreq->setInitialState(resp);
+
+    tx = new QState(runsend);
+    sendack = new QState(runsend);
+    runsend->setInitialState(sendack);
+
+    ready->addTransition(this, SIGNAL(obc_tx_SEND()), runsend);
+    ready->addTransition(this,SIGNAL(obc_tx_REQ()), runreq);
+    ready->addTransition(this,SIGNAL(dev_close()), done);
+
+    runsend->addTransition(this,SIGNAL(exp_rx_UNEX()),ready);
+    runreq->addTransition(this,SIGNAL(exp_rx_UNEX()),ready);
+
+    tx->addTransition(this,SIGNAL(obc_tx_data()),sendack);
+    sendack->addTransition(this,SIGNAL(exp_rx_FACK()),tx);
+    sendack->addTransition(this,SIGNAL(exp_rx_TACK()),ready);
+    /* lasfri TODO - check if better to abstract runsend and have a done state
+     * in it and transit to that state in above, and then transit to ready on
+     * finished() - see http://doc.qt.io/qt-5/statemachine-api.html */
+
+    rx->addTransition(this,SIGNAL(exp_rx_data()),reqack);
+    reqack->addTransition(this,SIGNAL(obc_tx_TACK()),ready);
+    reqack->addTransition(this,SIGNAL(obc_tx_FACK()),rx);
+    resp->addTransition(this,SIGNAL(exp_rx_EXPS()),reqack);
+
+    connect(tx,SIGNAL(entered()),this,SLOT(write_NL()));
+    connect(reqack,SIGNAL(entered()),this,SLOT(write_NL()));
+
+    machine = new QStateMachine();
+    machine->addState(ready);
+    machine->addState(runreq);
+    machine->addState(runsend);
+    machine->addState(done);
+    machine->setInitialState(ready);
+    machine->start();
+
+
     m_currentCommand = new CubesCommand;
+    qsrand(432223); // initiate the random number generator
 }
 
 CubesProtoUartPmod::~CubesProtoUartPmod()
 {
     delete m_device;
     delete m_currentCommand;
+    delete ready;
+    delete runsend;
+    delete runreq;
+    delete resp;
+    delete reqack;
+    delete rx;
+    delete sendack;
+    delete tx;
+    delete done;
+
 }
+
+quint32 CubesProtoUartPmod::getdatalength()
+{
+    auto s = machine->configuration();
+    if (s.contains(ready) | s.contains(reqack) | s.contains(resp) | s.contains(sendack)){
+        return CUBES_NL_HEADER_SIZE;
+    }
+    if (s.contains(tx) | s.contains(rx))
+    {
+        return m_currfragsize;
+    }
+    return 0; // code should ideally never hit this point
+}
+
+void CubesProtoUartPmod::write_NL()
+{
+    auto s = machine->configuration();
+    quint16 hdrcmd;
+    if (s.contains(ready))
+    {
+        hdrcmd = m_header[0] & 0x7F;
+        if ((hdrcmd == CMD_SET_LEDS) | (hdrcmd == CMD_SEND_PUS) | (hdrcmd == CMD_SEND_TIME))
+        {
+            emit obc_tx_SEND();
+            writeI2C(m_header,true);
+            writeI2C(m_header,false); // second write is for next frame rx from exp
+            return;
+        }
+        if ((hdrcmd == CMD_REQ_HK))
+        {
+            emit obc_tx_REQ();
+            writeI2C(m_header,true);
+            writeI2C(m_header,false);
+            return;
+        }
+
+     }
+    if (s.contains(tx))
+    {
+        QByteArray cdata;
+        quint32 spos = m_spos;
+        m_currfragsize = m_datasize - m_spos;
+        if (m_currfragsize > CUBES_NL_MTU)
+        {
+            m_currfragsize = CUBES_NL_MTU;
+            m_spos = m_spos + CUBES_NL_MTU;
+        }
+        else
+            m_spos = m_datasize; // setting it at last position
+        cdata.resize(m_currfragsize + 1); // for header and no fcs
+        if (spos == 0)
+        {
+            m_fid = ~m_tfid; // flip of tfid
+        }
+        else
+        {
+            m_fid = ~m_fid; // bit flip
+        }
+
+        cdata[0] = (m_fid << 7) | CMD_DATA_FRAME;
+        for(quint32 i=1;i<=m_currfragsize;i++)
+        {
+            cdata[i] = m_data[spos + i - 1];
+        }
+        writeI2C(cdata,true);
+        writeI2C(cdata,false);
+        emit obc_tx_data();
+        return;
+    }
+
+    if (s.contains(reqack))
+    {
+
+    }
+
+    // Unexpected case - Write NULL frame and return to ready state and inform UI
+    m_header.resize(CUBES_NL_HEADER_SIZE);
+    m_header[0] = (m_tfid << 7) | CMD_NULL_FRAME;
+    m_header[1] = 0x00;
+    m_header[2] = 0x00;
+    m_header[3] = 0x00;
+    m_header[4] = 0x00;
+    writeI2C(m_header,true);
+    emit exp_rx_UNEX();
+    emit devErrorOccured(15);
+    return;
+}
+
+void CubesProtoUartPmod::read_NL()
+{
+    QByteArray data;
+    quint16 opcode;
+    quint32 readlen = getdatalength();
+    quint8 fid;
+    data.resize(readlen);
+    data = m_device->read(readlen); // Not using readall !!
+    auto s = machine->configuration();
+
+    opcode = data[0] & 0x7F;
+    fid = ((data[0] & 0x80) >> 7); // fid check not implemented yet - lasfri TODO
+    switch (opcode) {
+    case CMD_F_ACK:
+        if (s.contains(sendack))
+        {
+            if (fid != m_tfid)
+            {
+                m_spos = (m_spos > CUBES_NL_MTU) ? m_spos - CUBES_NL_MTU : 0 ; // to resend the previous data mtu
+            }
+            emit exp_rx_FACK();
+            return;
+        }
+
+        break;
+    case CMD_T_ACK:
+        if (s.contains(sendack))
+        {
+            emit exp_rx_TACK();
+            return;
+        }
+    case CMD_EXP_SEND:
+        if (s.contains(resp))
+        {
+            m_datasize = (data[1] >> 24) + (data[2] >> 16) + (data[3] >> 8) + data[4];
+            m_fid = fid;
+            emit exp_rx_EXPS();
+            return;
+        }
+    case CMD_DATA_FRAME:
+        if (s.contains(rx))
+        {
+
+        }
+    default:
+        break;
+    }
+    //Unexpected operation
+    m_header.resize(CUBES_NL_HEADER_SIZE);
+    m_header[0] = (m_tfid << 7) | CMD_NULL_FRAME;
+    m_header[1] = 0x00;
+    m_header[2] = 0x00;
+    m_header[3] = 0x00;
+    m_header[4] = 0x00;
+    writeI2C(m_header,true);
+    emit exp_rx_UNEX();
+    emit devErrorOccured(15);
+    return;
+}
+
+
 
 QSerialPort* CubesProtoUartPmod::dev()
 {
@@ -72,6 +280,7 @@ bool CubesProtoUartPmod::devOpen(QSerialPort::OpenMode mode)
 
 void CubesProtoUartPmod::devClose()
 {
+    emit dev_close();
     m_device->close();
 }
 
@@ -95,15 +304,22 @@ void CubesProtoUartPmod::on_serialPort_readReady()
 
 void CubesProtoUartPmod::setLEDs(quint8 leds)
 {
-    QByteArray data;
+    m_data.resize(1);
+    m_data[0] = leds;
+    m_datasize = m_data.size();
+    m_spos = 0;
 
-    data.resize(1);
+    m_tfid = qrand()%2; // generate random tfid 0 or 1.
+    m_header.resize(CUBES_NL_HEADER_SIZE);
+    m_header[0] = (m_tfid << 7) | CMD_SET_LEDS;
+    m_header[1] = (m_datasize >> 24) & 0xff;
+    m_header[2] = (m_datasize >> 16) & 0xff;
+    m_header[3] = (m_datasize >> 8) & 0xff;
+    m_header[4] = m_datasize & 0xff;
 
-    data[0] = leds;
+    m_currentCommand->setCommand(CMD_SET_LEDS);
 
-    if(sendNL(CMD_SET_LEDS,data)){
-        emit devErrorOccured(13);
-    }
+    write_NL();
 }
 
 QByteArray CubesProtoUartPmod::getLEDs(QByteArray &status)
@@ -173,6 +389,31 @@ qint64 CubesProtoUartPmod::writeI2C(QByteArray &cmdData)
     return 0;
 
 }
+
+/* Overloading function so that I don't break functionality - lasfri
+ * TODO - delete one after code works */
+qint64 CubesProtoUartPmod::writeI2C(QByteArray &cmdData, bool write)
+{
+    QByteArray      data;
+    int             numDataBytes;
+
+
+    numDataBytes = 1 + (cmdData.size() * write);
+    data.resize(numDataBytes);
+
+    data[0] = (CUBES_I2C_ADDRESS << 1) | (~write);
+    for (int i = 0; i < numDataBytes-1; i++)
+        data[i+1] = cmdData[i];
+
+    /* Clear data buffers and issue command */
+    if(data.length() != m_device->write(data)){
+        return -1;
+    }
+    return 0;
+
+}
+
+
 
 CubesCommand* CubesProtoUartPmod::currentCommand()
 {
