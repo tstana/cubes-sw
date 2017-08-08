@@ -139,7 +139,7 @@ void CubesProtoUartPmod::write_NL()
     if (s.contains(ready))
     {
         hdrcmd = m_header[0] & 0x7F;
-        if ((hdrcmd == CMD_SET_LEDS) | (hdrcmd == CMD_SEND_PUS) | (hdrcmd == CMD_SEND_TIME))
+        if ((hdrcmd == CMD_SET_LEDS) || (hdrcmd == CMD_SEND_PUS) || (hdrcmd == CMD_SEND_TIME))
         {
             emit obc_tx_SEND();
             writeI2C(m_header,true);
