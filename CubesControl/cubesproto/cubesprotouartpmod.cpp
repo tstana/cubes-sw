@@ -219,7 +219,7 @@ void CubesProtoUartPmod::read_NL()
     case CMD_F_ACK:
         if (s.contains(sendack))
         {
-            if (fid != m_tfid)
+            if (fid != m_fid)
             {
                 m_spos = (m_spos > CUBES_NL_MTU) ? m_spos - CUBES_NL_MTU : 0 ; // to resend the previous data mtu
             }
