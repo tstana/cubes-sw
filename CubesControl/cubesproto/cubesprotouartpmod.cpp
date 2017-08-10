@@ -205,16 +205,31 @@ void CubesProtoUartPmod::write_NL()
 
 void CubesProtoUartPmod::read_NL()
 {
-    QByteArray data;
+    QByteArray data,tmpdata;
     quint16 opcode;
-    quint32 readlen = getdatalength();
+    quint32 explen = getdatalength(), rdsize=0;
     quint8 fid;
-    data.resize(readlen);
-    data = m_device->read(readlen); // Not using readall !!
+
+    /*Buffered implementation for QSerialPort read data*/
+    if (explen >= m_device->bytesAvailable())
+    {
+        do
+        {
+            rdsize = rdsize + m_device->read(tmpdata.data(),explen-rdsize);
+            data.append(tmpdata); // is fine as on initialization QByteArray is an empty array.
+        }
+        while (rdsize < explen); // why should this occur ?
+
+    }
+    else
+    {
+        return; // lasfri TODO : check can this lead to an infinite wait in sendack/rx state ?
+    }
+
     auto s = machine->configuration();
 
     opcode = data[0] & 0x7F;
-    fid = ((data[0] & 0x80) >> 7); // fid check not implemented yet - lasfri TODO
+    fid = ((data[0] & 0x80) >> 7);
     switch (opcode) {
     case CMD_F_ACK:
         if (s.contains(sendack))
