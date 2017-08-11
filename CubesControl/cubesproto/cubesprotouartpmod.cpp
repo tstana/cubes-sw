@@ -42,6 +42,8 @@
 #include <QObject>
 #include <QSerialPort>
 
+#include <QDebug>
+
 CubesProtoUartPmod::CubesProtoUartPmod(QSerialPort *device, QObject *parent) :
     QObject(parent),
     m_device{device}
@@ -133,6 +135,7 @@ void CubesProtoUartPmod::write_NL()
 {
     auto s = machine->configuration();
     quint16 hdrcmd;
+
     if (s.contains(ready))
     {
         hdrcmd = m_header[0] & 0x7F;
@@ -205,21 +208,14 @@ void CubesProtoUartPmod::write_NL()
 
 void CubesProtoUartPmod::read_NL()
 {
-    QByteArray data,tmpdata;
+    QByteArray data;
     quint16 opcode;
-    quint32 explen = getdatalength(), rdsize=0;
+    quint32 explen = getdatalength();
     quint8 fid;
 
     /*Buffered implementation for QSerialPort read data*/
-    if (explen >= m_device->bytesAvailable())
-    {
-        do
-        {
-            rdsize = rdsize + m_device->read(tmpdata.data(),explen-rdsize);
-            data.append(tmpdata); // is fine as on initialization QByteArray is an empty array.
-        }
-        while (rdsize < explen); // why should this occur ?
-
+    if (m_device->bytesAvailable() == explen) {
+        data = m_device->readAll();
     }
     else
     {
@@ -230,6 +226,7 @@ void CubesProtoUartPmod::read_NL()
 
     opcode = data[0] & 0x7F;
     fid = ((data[0] & 0x80) >> 7);
+    bool opcodeGood = false;
     switch (opcode) {
     case CMD_F_ACK:
         if (s.contains(sendack))
@@ -239,7 +236,7 @@ void CubesProtoUartPmod::read_NL()
                 m_spos = (m_spos > CUBES_NL_MTU) ? m_spos - CUBES_NL_MTU : 0 ; // to resend the previous data mtu
             }
             emit exp_rx_FACK();
-            return;
+            opcodeGood = true;
         }
 
         break;
@@ -247,24 +244,33 @@ void CubesProtoUartPmod::read_NL()
         if (s.contains(sendack))
         {
             emit exp_rx_TACK();
-            return;
+            opcodeGood = true;
         }
+        break;
     case CMD_EXP_SEND:
         if (s.contains(resp))
         {
             m_datasize = (data[1] >> 24) + (data[2] >> 16) + (data[3] >> 8) + data[4];
             m_fid = fid;
             emit exp_rx_EXPS();
-            return;
+            opcodeGood = true;
         }
+        break;
     case CMD_DATA_FRAME:
         if (s.contains(rx))
         {
 
         }
+        break;
     default:
         break;
     }
+
+    /* Done here, exit */
+    if (opcodeGood) {
+        return;
+    }
+
     //Unexpected operation
     m_header.resize(CUBES_NL_HEADER_SIZE);
     m_header[0] = (m_tfid << 7) | CMD_NULL_FRAME;
