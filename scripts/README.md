@@ -38,14 +38,17 @@ data for the Citiroc ASIC probes.
     - Enable Out_probe_dac_5V?
     - If the answer to the previous is “Yes”:
         - Out_probe_dac_5V Channel Number:
-- The program creates an output file containing 256 ASCII characters of 1’s and
-0’s. A ‘1’ signals that the probe bit is set, a ‘0’ that it is cleared.
+- The program creates an array of 256 ASCII characters of 1’s and 0’s. A ‘1’
+signals that the probe bit is set, a ‘0’ that it is cleared. The probe bits are
+those mentioned in the Citiroc datasheet v2.4
+(https://www.dropbox.com/s/woxqigx5uxixfzn/CITIROC1A%20-%20Datasheet%20V2.4.pdf?dl=0)
 - The program ensures that only a single bit is set within bits [0..63],
-[96..127], [160..223].
-(Only a single block from the ASIC can be routed to the out_probe, not more.)
+[96..127], [160..223]. (Only a single block from the ASIC can be routed to the
+out_probe, not more.)
 - The program ensures that only a single bit is set within bits [64..95],
 [128..159]. (Only a single block from the ASIC can be routed to the
 digital_probe, not more.)
 - The program ensures that only a single bit is set within bits [224..255].
 (Only a single block from the ASIC can be routed to the digital_probe, not more.)
+- The configuration data as mentioned above is stored to an output file text file.
 - The program resides on the cubes-sw repository (https://github.com/tstana/cubes-sw)
