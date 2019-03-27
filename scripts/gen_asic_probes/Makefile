@@ -19,6 +19,7 @@ execdbg = $(bin)/gen_asic_probe_dbg
 all : config
 
 config : $(srcfls)
+	mkdir -p build/
 	$(CXX) $(srcfls) -I $(src) $(CXXFLAGS) $(OPTIMFLAGS) $(LDFLAGS) -o $(exec)
 
 debug : $(srcfls)
