@@ -198,33 +198,33 @@ AsicProbe Menu::parseCmdLine(int argc, char ** argv)
     for(int i=1; i < argc; i++) // 0 is filename
     {
         std::string val = argv[i];
-        if (val.find("-a") != std::string::npos)
+        if (val == "-a")
         {
             i++;
             ap = fetchAnalogMenu(std::stoi(argv[i]));
         }
-        if (val.find("-d") != std::string::npos)
+        if (val == "-d")
         {
             i++;
             dp = fetchDigitalMenu(std::stoi(argv[i]));
         }
-        if (val.find("--ac") != std::string::npos)
+        if (val == "--ac")
         {
             i++;
             achn = fetchChannel(std::stoi(argv[i]));
         }
-        if (val.find("--dc") != std::string::npos)
+        if (val == "--dc")
         {
             i++;
             dchn = fetchChannel(std::stoi(argv[i]));
         }
-        if (val.find("--dac") != std::string::npos)
+        if (val == "--dac")
         {
             i++;
             dachn = fetchChannel(std::stoi(argv[i]));
             ch.setDAC(dachn);
         }
-        if (val.find("-h") != std::string::npos)
+        if (val == "-h")
         {
             std::cout << "Usage : " << argv[0] << " <options>\n";
             std::cout << "\n If <options> are not specified, an interactive menu is displayed to choose the options\n";
