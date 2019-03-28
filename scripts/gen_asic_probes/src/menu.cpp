@@ -228,14 +228,14 @@ AsicProbe Menu::parseCmdLine(int argc, char ** argv)
         {
             std::cout << "Usage : " << argv[0] << " <options>\n";
             std::cout << "\n If <options> are not specified, an interactive menu is displayed to choose the options\n";
-            std::cout << "\n The <options> are : \n";
-            std::cout << " -a <AnalogProbe> \n";
+            std::cout << "\n The <options> are (marked by a **): \n";
+            std::cout << "** : -a <AnalogProbe> ";
             displayAnalog();
-            std::cout << " -d <DigitalProbe> \n";
+            std::cout << "\n\n** : -d <DigitalProbe> \n";
             displayDigital();
-            std::cout << " --ac <AnalogChannel> (1 to 32)\n";
-            std::cout << " --dc <DigitalChannel> (1 to 32)\n";
-            std::cout << " --dac <DACChannel> (1 to 32)\n";
+            std::cout << "\n\n** : --ac <AnalogChannel> (1 to 32)\n";
+            std::cout << "** : --dc <DigitalChannel> (1 to 32)\n";
+            std::cout << "** : --dac <DACChannel> (1 to 32)\n";
             std::cout << "\n-----------------------------------\n";
             ap = AnInvalid;
         }
