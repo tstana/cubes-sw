@@ -1,5 +1,5 @@
 build/
 *.[oad]
 *.pyc
-*.conf
+*.cfg
 *.exe
