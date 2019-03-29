@@ -22,3 +22,4 @@ void invoke_send_repeat(msp_link_t *lnk, unsigned char opcode, unsigned char val
 void invoke_request(msp_link_t *lnk, unsigned char opcode, PrintStyle pstyle);
 
 #endif /* OBCSIM_TRANSACTIONS_H */
+

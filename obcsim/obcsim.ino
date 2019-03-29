@@ -6,9 +6,8 @@
 
 #include "Arduino.h"
 #include "msp_obc.h"
+#include "SDcard.hpp"
 #include "obcsim_configuration.hpp"
-#include <SD.h>
-#include <SPI.h>
 
 #define I2C_SPEED (400L*1000L)
 #define I2C_TIMEOUT (100L*1000L)
@@ -24,8 +23,7 @@ void setup()
 
 	/* Start I2C */
 	msp_i2c_start(I2C_SPEED, I2C_TIMEOUT);
-  SD.begin(4);
-  SD.remove("Datafil.txt");
+
 	Serial.begin(9600);
 	Serial.println(F("MSP Simulator (OBC side) started."));
 }

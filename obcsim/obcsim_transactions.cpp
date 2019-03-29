@@ -6,7 +6,7 @@
 #include "obcsim_configuration.hpp"
 #include "obcsim_transactions.hpp"
 #include "msp_obc.h"
-#include <SD.h>
+#include "SDcard.hpp"
 
 
 // Increase buffer size if MTU is larger than 4096
@@ -209,22 +209,7 @@ static void print_data(unsigned char *data, unsigned long len, PrintStyle pstyle
 		print_string(data, len);
 		break;
 	}
- /*unsigned int restr_data[(REQUEST_BUFFER_SIZE/2)+1];
- for(int i=0; i<REQUEST_BUFFER_SIZE/2; i++){
-  restr_data[i] = data[i*2];
-  restr_data[i] = (restr_data[i]<<8)|data[(i*2)+1];
- }*/
-  File dataFile = SD.open("Datafil.txt", FILE_WRITE);
-  if(dataFile){
-      int written = dataFile.write(data, len);
-      dataFile.close();
-      Serial.print(F("SD-card write success,"));
-      Serial.print(written);
-      Serial.println(F("bytes written"));
-
-    }
-    else
-      Serial.println(F("SD-card write failed"));
+  sendSD(data, len);
 }
 
 static void print_bytes(unsigned char *data, unsigned long len)
@@ -290,4 +275,5 @@ static void print_string(unsigned char *data, unsigned long len)
 	Serial.println(F("string:"));
 	Serial.println((char *) data);
 }
+
 
