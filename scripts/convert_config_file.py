@@ -13,9 +13,19 @@ def inverter(s):
 	print("-")
 	return t
 
-filename = input("Enter input file name: ")
-outputname = input("Enter output file name on format 8.3: ")	
-f = open(filename, 'r') #Name of input file
+inputname = input("Enter input file name: ")
+while (1):
+	sel = int(input("What will you be configuring? (1: ASIC, 2: Probes) "))
+	if (sel == 1):
+		outputname = "asic.cfg"
+		break;
+	elif (sel == 2):
+		outputname = "probe.cfg"
+		break;
+	else:
+		print("ERROR: Please select (1: ASIC) or (2: Probes)\n");
+
+f = open(inputname, 'r') #Name of input file
 g = open(outputname, 'wb') #Name of output file 
 fline = f.readline()
 for y in Generator(fline, 8):
@@ -23,4 +33,5 @@ for y in Generator(fline, 8):
 	g.write(y.to_bytes(1, 'little'))
 f.close()
 g.close()
-
+print("Wrote successfully to " + outputname);
+#

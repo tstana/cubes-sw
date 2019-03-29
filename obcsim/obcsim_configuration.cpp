@@ -10,8 +10,8 @@ static unsigned char data_SEND_PARAMS[] = {0x50, 0x00, 0x10, 0x22};
 static unsigned char data_SEND_CITI_CONF[143];
 static unsigned char data_SEND_PROB_CONF[32];
 static unsigned char data_seqinit2[] = {0xAA, 0x10, 0x50, 0x30};
-static char conf[12] = "conf.txt";
-static char prob[12] = "probe.txt";
+static char conf[12] = "asic.cfg";
+static char prob[12] = "probe.cfg";
 
 void sequence_init(msp_link_t *lnk)
 {
@@ -39,4 +39,3 @@ void sequence_loop(msp_link_t *lnk)
 	Serial.println("--------------------------------------\n");
 	delay(5000);
 }
-
