@@ -78,10 +78,10 @@ int main(int argc, char *argv[])
     if ( not ch.hasInvalid())
     {
         std::ofstream opfl;
-        opfl.open("probe.cfg");
+        opfl.open("Probe.conf");
         if (not opfl.is_open())
         {
-            std::cout << "Could not open file probe.cfg to write config" << std::endl;
+            std::cout << "Could not open file Probe.conf to write config" << std::endl;
             return -1;
         }
         opfl << ch.bitstream();

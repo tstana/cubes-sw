@@ -57,7 +57,7 @@ void Menu::displayWriteMenu(AsicProbe& ch)
     std::cout << "\n";
     std::cout << "\n------- Write Menu --------------------\n";
     ch.PrintChoices();
-    std::cout << "\n1. If this is okay, write to probe.cfg";
+    std::cout << "\n1. If this is okay, write to Probe.conf";
     std::cout << "\n2. If this is not okay, do config again\n";
     std::cout << "\n----------------------------------------\n";
     std::cout << "    Your choice : ";
