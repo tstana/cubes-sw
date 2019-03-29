@@ -1,0 +1,5 @@
+build/
+*.[oad]
+*.pyc
+*.conf
+*.exe

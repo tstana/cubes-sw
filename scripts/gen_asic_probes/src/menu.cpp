@@ -10,49 +10,57 @@ Menu::~Menu()
 
 void Menu::displayMenu()
 {
-    std::cout << "\n\n----------- Probes Menu -------------------------------\n";
+    std::cout << "\n";
+    std::cout << "\n------- Probes Menu -------------------";
     std::cout << "\n1. Enter Analogue Probe choice";
     std::cout << "\n2. Enter Digital Probe choice";
     std::cout << "\n3. Enter DAC choice";
     std::cout << "\n4. Write to File";
-    std:: cout << "\n ------------------------------ \n   Your choice : ";
+    std::cout << "\n---------------------------------------\n";
+    std::cout << "    Your choice : ";
     return ;
 }
 
 void Menu::displayChannel()
 {
-    std::cout << "\n--------------------------------------------------\n";
-    std::cout << " Enter Channel (1-32) : ";
+    std::cout << "\n---------------------------------------\n";
+    std::cout << "    Enter Channel (1-32) : ";
 }
 
 void Menu::displayAnalog()
 {
-    std::cout << "\n\n---------------- Analogue Probe choices --------------\n";
+    std::cout << "\n";
+    std::cout << "\n------- Analogue Probe choices --------";
     std::cout << "\n1. No Analogue Probe";
     std::cout << "\n2. Low gain preamplifier output";
     std::cout << "\n3. High gain preamplifier output";
     std::cout << "\n4. Low gain slow shaper output";
     std::cout << "\n5. High gain slow shaper output";
     std::cout << "\n6. Fast shaper output";
-    std:: cout << "\n ------------------------------ \n   Your choice : ";
+    std::cout << "\n---------------------------------------\n";
+    std::cout << "    Your choice : ";
 }
 
 void Menu::displayDigital()
 {
-    std::cout << "\n\n---------------- Digital Probe choices --------------\n";
+    std::cout << "\n";
+    std::cout << "\n------- Digital Probe choices --------";
     std::cout << "\n1. No Digital Probe";
     std::cout << "\n2. Low gain peak detector mode";
     std::cout << "\n3. High gain peak detector mode";
-    std:: cout << "\n ------------------------------ \n   Your choice : ";
+    std::cout << "\n--------------------------------------\n";
+    std::cout << "    Your choice : ";
 }
 
 void Menu::displayWriteMenu(AsicProbe& ch)
 {
-    std::cout << "\n\n---------------- Write Menu --------------\n";
+    std::cout << "\n";
+    std::cout << "\n------- Write Menu --------------------\n";
     ch.PrintChoices();
     std::cout << "\n1. If this is okay, write to Probe.conf";
-    std::cout << "\n2. If this is not okay, do config again ";
-    std:: cout << "\n ------------------------------ \n   Your choice : ";
+    std::cout << "\n2. If this is not okay, do config again\n";
+    std::cout << "\n----------------------------------------\n";
+    std::cout << "    Your choice : ";
 }
 
 
@@ -198,45 +206,45 @@ AsicProbe Menu::parseCmdLine(int argc, char ** argv)
     for(int i=1; i < argc; i++) // 0 is filename
     {
         std::string val = argv[i];
-        if (val.find("-a") != std::string::npos)
+        if (val == "-a")
         {
             i++;
             ap = fetchAnalogMenu(std::stoi(argv[i]));
         }
-        if (val.find("-d") != std::string::npos)
+        if (val == "-d")
         {
             i++;
             dp = fetchDigitalMenu(std::stoi(argv[i]));
         }
-        if (val.find("--ac") != std::string::npos)
+        if (val == "--ac")
         {
             i++;
             achn = fetchChannel(std::stoi(argv[i]));
         }
-        if (val.find("--dc") != std::string::npos)
+        if (val == "--dc")
         {
             i++;
             dchn = fetchChannel(std::stoi(argv[i]));
         }
-        if (val.find("--dac") != std::string::npos)
+        if (val == "--dac")
         {
             i++;
             dachn = fetchChannel(std::stoi(argv[i]));
             ch.setDAC(dachn);
         }
-        if (val.find("-h") != std::string::npos)
+        if (val == "-h")
         {
             std::cout << "Usage : " << argv[0] << " <options>\n";
             std::cout << "\n If <options> are not specified, an interactive menu is displayed to choose the options\n";
-            std::cout << "\n The <options> are : \n";
-            std::cout << " -a <AnalogProbe> \n";
+            std::cout << "\n The <options> are (marked by a **): \n";
+            std::cout << "** : -a <AnalogProbe> ";
             displayAnalog();
-            std::cout << " -d <DigitalProbe> \n";
+            std::cout << "\n\n** : -d <DigitalProbe> \n";
             displayDigital();
-            std::cout << " --ac <AnalogChannel> (1 to 32)\n";
-            std::cout << " --dc <DigitalChannel> (1 to 32)\n";
-            std::cout << " --dac <DACChannel> (1 to 32)\n";
-            std::cout << "\n-----------------------------------\n";
+            std::cout << "\n\n** : --ac <AnalogChannel> (1 to 32)\n";
+            std::cout << "** : --dc <DigitalChannel> (1 to 32)\n";
+            std::cout << "** : --dac <DACChannel> (1 to 32)\n";
+            std::cout << "\n--------------------------------------\n";
             ap = AnInvalid;
         }
 

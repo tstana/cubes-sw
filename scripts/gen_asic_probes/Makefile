@@ -12,8 +12,8 @@ main = $(src)/main
 menu = $(src)/menu
 asicprobe = $(src)/asicprobe
 srcfls = $(main).cpp $(menu).cpp $(asicprobe).cpp
-exec = $(bin)/gen_asic_probe
-execdbg = $(bin)/gen_asic_probe_dbg
+exec = $(bin)/gen-asic-probes.exe
+execdbg = $(bin)/gen-asic-probes-dbg.exe
 
 
 all : config
@@ -21,6 +21,7 @@ all : config
 config : $(srcfls)
 	mkdir -p build/
 	$(CXX) $(srcfls) -I $(src) $(CXXFLAGS) $(OPTIMFLAGS) $(LDFLAGS) -o $(exec)
+	cp $(exec) ../
 
 debug : $(srcfls)
 	$(CXX) $(srcfls) -I $(src) $(CXXFLAGS) $(DBGFLAGS) $(LDFLAGS) -o $(execdbg)
@@ -29,5 +30,5 @@ debug : $(srcfls)
 
 clean :
 	rm -f $(src)/*.o $(bin)/*.o 
-	rm -f $(exec)
-	rm -f $(execdbg)
+	rm -r build/
+

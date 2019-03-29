@@ -51,29 +51,28 @@ void AsicProbe::PrintChoices()
     };
     static const std::map<DacProbe,std::string> dcstr{
         {DcInvalid,"INVALID"},
-        {DcNone,"disabled"},
-        {Enable,"enabled"}
+        {DcNone,"Disabled"},
+        {Enable,"Enabled"}
     };
 
-    std::cout << "Choices are \n";
-    std::cout << "------------------------------------\n";
+    std::cout << "\nYour choices are:\n";
     auto iter = apstr.find(aval);
     if (aval == AnNone)
-        std::cout << "\nAnalogue Probe Out is : " << iter->second;
+        std::cout << "\n-- Analogue Probe Out : " << iter->second;
     else
-        std::cout << "\nAnalogue Probe Out is : " << iter->second << " for chn " << achan+1;
+        std::cout << "\n-- Analogue Probe Out : " << iter->second << " for chn " << achan+1;
     auto iter2 = dpstr.find(dval);
     if (dval == DiNone)
-        std::cout << "\nDigital Probe Out is : " << iter2->second;
+        std::cout << "\n-- Digital Probe Out  : " << iter2->second;
     else
-        std::cout << "\nDigital Probe Out is : " << iter2->second << " for chn " << dchan+1;
+        std::cout << "\n-- Digital Probe Out  : " << iter2->second << " for chn " << dchan+1;
     auto iter3 = dcstr.find(dcval);
     if (dcval == Enable)
-        std::cout << "\nDAC Out is " << iter3->second << " for chn " << dacchan+1;
+        std::cout << "\n-- DAC Probe Out      : " << iter3->second << " for chn " << dacchan+1;
     else
-        std::cout << "\nDAC Out is " << iter3->second;
+        std::cout << "\n-- DAC Probe Out      : " << iter3->second;
 
-    std::cout << "\n\n----------------------------------\n";
+    std::cout << "\n\n--------------------------------------\n";
 }
 
 std::string AsicProbe::bitstream()
