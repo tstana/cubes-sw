@@ -6,7 +6,7 @@ def Generator(s, n):
 	for start in range(0, len(s)-1, n):
 		yield s[start:start+n]
 
-def inverter(s):
+def invert_bits(s):
 	print(s)
 	t = s[::-1]
 	print(t)
@@ -29,7 +29,7 @@ f = open(inputname, 'r') #Name of input file
 g = open(outputname, 'wb') #Name of output file 
 fline = f.readline()
 for y in Generator(fline, 8):
-	y=(int(inverter(y), 2))
+	y=(int(invert_bits(y), 2))
 	g.write(y.to_bytes(1, 'little'))
 f.close()
 g.close()
