@@ -14,6 +14,7 @@ def invert_bits(s):
 	return t
 
 inputname = input("Enter input file name: ")
+
 while (1):
 	sel = int(input("What will you be configuring? (1: ASIC, 2: Probes) "))
 	if (sel == 1):
@@ -28,7 +29,10 @@ while (1):
 f = open(inputname, 'r') #Name of input file
 g = open(outputname, 'wb') #Name of output file 
 fline = f.readline()
+i = 0;
 for y in Generator(fline, 8):
+	print("addr = 0x{0:x}".format(i))
+	i += 1
 	y=(int(invert_bits(y), 2))
 	g.write(y.to_bytes(1, 'little'))
 f.close()
