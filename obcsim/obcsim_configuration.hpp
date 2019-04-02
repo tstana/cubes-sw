@@ -34,6 +34,9 @@
 #ifndef MSP_OP_SEND_CITI_CONF
 #define MSP_OP_SEND_CITI_CONF 0x72
 #endif
+#ifndef MSP_OP_SEND_PROB_CONF
+#define MSP_OP_SEND_PROB_CONF 0x73
+#endif
 #ifndef MSP_OP_REQ_PUS
 #define MSP_OP_REQ_PUS 0x22
 #endif

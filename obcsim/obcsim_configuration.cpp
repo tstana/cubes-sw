@@ -13,6 +13,8 @@ static unsigned char data_seqinit2[] = {0xAA, 0x10, 0x50, 0x30};
 static char conf[12] = "asic.cfg";
 static char prob[12] = "probe.cfg";
 
+static char cfg_sent = 0;
+
 void sequence_init(msp_link_t *lnk)
 {
 	delay(5000);
@@ -20,7 +22,7 @@ void sequence_init(msp_link_t *lnk)
 	invoke_syscommand(lnk, MSP_OP_ACTIVE);
   initSD();
   readSD(data_SEND_CITI_CONF, conf);
-  //readSD(data_SEND_PROB_CONF, prob);
+  readSD(data_SEND_PROB_CONF, prob);
 	Serial.println("---------------------------------\n");
 	Serial.println("-------- Invoking SEND_TIME --------");
 	invoke_send(lnk, MSP_OP_SEND_TIME, data_seqinit2, sizeof(data_seqinit2), BYTES);
@@ -30,12 +32,22 @@ void sequence_init(msp_link_t *lnk)
 
 void sequence_loop(msp_link_t *lnk)
 {
-	Serial.println("-------- Invoking SEND_CITI_CONF --------");
-	invoke_send(lnk, MSP_OP_SEND_CITI_CONF, data_SEND_CITI_CONF, sizeof(data_SEND_CITI_CONF), NONE);
-	Serial.println("-----------------------------------------\n");
-	delay(5000);
-	Serial.println("-------- Invoking REQ_PAYLOAD --------");
-	invoke_request(lnk, MSP_OP_REQ_PAYLOAD, BYTES);
-	Serial.println("--------------------------------------\n");
-	delay(5000);
+  if (!cfg_sent) {
+  	Serial.println("-------- Invoking SEND_CITI_CONF --------");
+  	invoke_send(lnk, MSP_OP_SEND_CITI_CONF, data_SEND_CITI_CONF, sizeof(data_SEND_CITI_CONF), NONE);
+  	Serial.println("-----------------------------------------\n");
+
+    delay(5000);
+
+    Serial.println("-------- Invoking SEND_PROB_CONF --------");
+    invoke_send(lnk, MSP_OP_SEND_PROB_CONF, data_SEND_PROB_CONF, sizeof(data_SEND_PROB_CONF), NONE);
+    Serial.println("-----------------------------------------\n");
+
+    cfg_sent = 1;
+  }
+
+  delay(5000);
+
+  Serial.println("OBC sim still alive!");
+
 }
