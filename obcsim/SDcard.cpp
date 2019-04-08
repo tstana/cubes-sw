@@ -34,4 +34,21 @@ void sendSD(unsigned char *data, unsigned long len){
       Serial.println(F("SD-card write failed"));
 }
 
-
+/* Code for converting the binary files to binary values. Saves data transfer to convert to binary before sending to satellite.
+ int cols = 8;
+int j = 0;
+char output[144];
+for(i=0; i<len(input) && input[i] != "\n"; i++){
+ if(i%cols == 0 && i != 0){
+    j++;
+  }
+  else {
+    if(input[i] == '0'){
+      input[i] = input[i]<<1;
+    }
+    else if(input[i] == '1'){
+      input[i]=(input[i]<<1)+1;
+    }
+  }
+}
+ */

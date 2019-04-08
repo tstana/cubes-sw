@@ -39,5 +39,9 @@ void loop()
 	}
 	
 	sequence_loop(&exp_link);
+ if(Serial2.available()>0){
+  command = Serial.read();
+  switch
+ }
 }
 

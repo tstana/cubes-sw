@@ -228,6 +228,7 @@ static void print_bytes(unsigned char *data, unsigned long len)
 		snprintf(buf, 5, "0x%02X", data[i]);
 		buf[4] = 0;
 		Serial.print(buf);
+    Serial2.print(buf);
 	}
 	Serial.print("\n");
 }
@@ -245,8 +246,10 @@ static void print_bits(unsigned char *data, unsigned long len)
 			snprintf(buf, 11, "Byte %-5d", j);
 			buf[10] = 0;
 			Serial.print(buf);
+      Serial2.print(buf);
 		}
 		Serial.print("\n");
+   Serial2.print("\n");
 
 		// Now print the bits in each byte
 		for (j = i; (j < i + cols) && (j < len); ++j) {
@@ -261,8 +264,10 @@ static void print_bits(unsigned char *data, unsigned long len)
 			buf[9] = ' ';
 			buf[10] = 0;
 			Serial.print(buf);
+      Serial2.print(buf);
 		}
 		Serial.print("\n");
+   Serial2.print("\n");
 	}
 }
 
@@ -274,6 +279,7 @@ static void print_string(unsigned char *data, unsigned long len)
 	data[len-1] = 0;
 	Serial.println(F("string:"));
 	Serial.println((char *) data);
+  Serial2.println((char *) data);
 }
 
 
