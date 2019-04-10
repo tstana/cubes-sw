@@ -8,12 +8,14 @@
 #include "msp_obc.h"
 #include "SDcard.hpp"
 #include "obcsim_configuration.hpp"
+#include "RS232.hpp"
 
 #define I2C_SPEED (400L*1000L)
 #define I2C_TIMEOUT (100L*1000L)
 
 static msp_link_t exp_link;
 static unsigned char exp_buf[EXP_MTU + 5];
+unsigned char command;
 
 /* Arduino Setup */
 void setup()
@@ -35,13 +37,13 @@ void loop()
 
 	if (!initiated) {
 		sequence_init(&exp_link);
+   RS_init();
 		initiated = true;
 	}
 	
 	sequence_loop(&exp_link);
  if(Serial2.available()>0){
-  command = Serial.read();
-  switch
+  command = Serial2.read();
  }
 }
 

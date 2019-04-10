@@ -5,7 +5,7 @@
 static unsigned char conf[300];
 
 void initSD(void){
-    SD.begin(4);
+    SD.begin(10); //4 on ethernet shield, 10 on SD-prototype board
     SD.remove("Datafil.txt");
 }
 void readSD(unsigned char* target, char location[12]){

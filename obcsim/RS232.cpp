@@ -1,4 +1,4 @@
-#include <Serial.h>
+#include "Arduino.h"
 
 void RS_init(void){
   Serial2.begin(115200, SERIAL_8E1); //Set 115200 Baud rate, 8bit 1stop even parity
