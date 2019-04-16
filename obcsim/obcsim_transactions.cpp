@@ -219,7 +219,7 @@ static void print_bytes(unsigned char *data, unsigned long len)
 	const unsigned long cols = 8;
 
 	Serial.print(F("bytes:"));
-	for (i = 0; i < 20; ++i) {
+	for (i = 0; i < len; ++i) {
 		if (i % cols == 0)
 			Serial.print("\n");
 		else
@@ -275,5 +275,3 @@ static void print_string(unsigned char *data, unsigned long len)
 	Serial.println(F("string:"));
 	Serial.println((char *) data);
 }
-
-
