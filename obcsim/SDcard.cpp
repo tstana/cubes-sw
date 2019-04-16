@@ -8,7 +8,7 @@ void initSD(void){
     SD.begin(4);
     SD.remove("Datafil.txt");
 }
-void readSD(unsigned char* target, char location[12]){
+void readSD(unsigned char* target, char *location){
   File confFile = SD.open(location, FILE_READ);
   if(confFile){
     for(int i=0; confFile.available(); i++){
@@ -33,5 +33,3 @@ void sendSD(unsigned char *data, unsigned long len){
     else
       Serial.println(F("SD-card write failed"));
 }
-
-
