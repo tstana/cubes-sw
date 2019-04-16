@@ -14,7 +14,9 @@ void readSD(unsigned char* target, char *location){
     for(int i=0; confFile.available(); i++){
       target[i] = confFile.read();
     }
-    Serial.println(F("SD-card Read"));
+    Serial.print("SD-card read success from ");
+    Serial.print(location);
+    Serial.println();
   }
   else
     Serial.println(F("SD-card read failed")); 
