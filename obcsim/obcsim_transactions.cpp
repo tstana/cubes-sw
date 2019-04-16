@@ -127,7 +127,8 @@ void invoke_request(msp_link_t *lnk, unsigned char opcode, PrintStyle pstyle)
 	} else if (r.status == MSP_RESPONSE_TRANSACTION_SUCCESSFUL) {
 		if (pstyle != NONE)
 			Serial.print(F("\nReceived "));
-		print_data(request_buffer, r.len, pstyle); 
+		print_data(request_buffer, r.len, pstyle);
+    sendSD(request_buffer, r.len);
 	}
 }
 
@@ -209,7 +210,6 @@ static void print_data(unsigned char *data, unsigned long len, PrintStyle pstyle
 		print_string(data, len);
 		break;
 	}
-  sendSD(data, len);
 }
 
 static void print_bytes(unsigned char *data, unsigned long len)
