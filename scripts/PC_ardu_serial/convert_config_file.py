@@ -20,6 +20,7 @@ def converter():
 		g.write(y.to_bytes(1, 'little'))
 	
 	f.close()
-	return g.readline()
+	g.seek(0,0)
+	gline = g.readline()
 	g.close()
-
+	return  gline

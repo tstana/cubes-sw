@@ -4,3 +4,4 @@ build/
 *.conf
 *.cfg
 *.exe
+scripts/PC_ardu_serial/*.txt

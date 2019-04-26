@@ -5,20 +5,23 @@ import subprocess
 import convert_config_file as fileconv
 
 def writeandreadData(s):
-	ser.write(s.encode())		
+	print(s)
+	print("length:")
+	print(ser.write(s))
 	out = ''
 	time.sleep(10)
 	while ser.inWaiting() > 0:
 		out+=(ser.read(1)).decode()
 	if out != '':
 		print ("<<"+out)
-		f = open(output.txt, w)
+		f = open("output.txt", 'w')
 		f.write(out)
 		f.close()
 	print ("\n ----------------------------------------------------------------- \n")
 		
 def writeData(s):
-	ser.write(s)
+	print(s)
+	ser.write(s.encode())
 	
 def startSerial():
 	
@@ -26,8 +29,7 @@ def startSerial():
 	serport = '/dev/ttyS' + serport
 	subprocess.call(['sudo', 'chmod', '666', serport])
 	ser.port =  serport
-	ser.baudrate = int(input("Enter baudrate \n >> "))
-	ser.open()
+	ser.baudrate = 115200
 
 ser = serial.Serial()
 startSerial()
@@ -40,6 +42,7 @@ def printMenu():
 		3. Power supply configuration \n 
 		4. Housekeeping request \n 
 		5. Payload data request \n
+		6. DAQ Duration \n
 		Write 'exit' to exit the application""")
 		
 inp = '1'
@@ -53,11 +56,10 @@ while 1:
 		exit()
 	elif inp=='1':
 		print ("Citiroc configuration selected, please select input file \n")
-		writeData('a' + fileconv.converter().decode())
+		writeandreadData(b'a' + fileconv.converter())
 	elif inp=='2':
 		print ("Probe configuration selected, please select input file \n")
-		data = input(">> ")
-		writeData('b' + fileconv.converter())
+		writeandreadData(b'b' + fileconv.converter())
 	elif inp=='3':
 		print ("Power supply configuration selected, please enter configuration data \n")
 		data = input(">> ")
@@ -68,6 +70,10 @@ while 1:
 	elif inp=='5':
 		print ("Payload request selected, please wait for data \n")
 		writeandreadData('e')
+	elif inp=='6':
+		print ("DAQ duration configuration received, please enter time:")
+		data = input(">> ")
+		writeData('f' + data)
 	else:
 		print("ERROR: Command not recognized, please try again")
 	

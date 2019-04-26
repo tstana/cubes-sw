@@ -24,7 +24,7 @@ def startSerial():
 	serport = '/dev/ttyS' + serport
 	subprocess.call(['sudo', 'chmod', '666', serport])
 	ser.port =  serport
-	ser.baudrate = int(input("Enter baudrate \n >> "))
+	ser.baudrate = 115200
 	ser.open()
 
 ser = serial.Serial()
