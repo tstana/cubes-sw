@@ -43,6 +43,8 @@ def printMenu():
 		4. Housekeeping request \n 
 		5. Payload data request \n
 		6. DAQ Duration \n
+		7. Turn on DAQ \n
+		8. Turn off DAQ \n
 		Write 'exit' to exit the application""")
 		
 inp = '1'
@@ -74,6 +76,12 @@ while 1:
 		print ("DAQ duration configuration received, please enter time:")
 		data = input(">> ")
 		writeData('f' + data)
+	elif inp =='7':
+		print ("DAQ On command received")
+		writeDate('g')
+	elif inp =='8'
+		print ("DAQ off command received")
+		writeData('h')
 	else:
 		print("ERROR: Command not recognized, please try again")
 	
