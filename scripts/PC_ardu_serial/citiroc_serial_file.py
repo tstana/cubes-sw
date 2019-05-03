@@ -1,4 +1,5 @@
-#!/bin/python3
+#!/usr/bin/python3
+
 import time
 import serial
 import subprocess
@@ -84,4 +85,4 @@ while 1:
 		writeData('h')
 	else:
 		print("ERROR: Command not recognized, please try again")
-	
+
