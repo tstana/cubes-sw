@@ -77,10 +77,10 @@ while 1:
 		print ("DAQ duration configuration received, please enter time:")
 		data = input(">> ")
 		writeData('f' + data)
-	elif inp =='7':
+	elif inp=='7':
 		print ("DAQ On command received")
 		writeDate('g')
-	elif inp =='8'
+	elif inp=='8':
 		print ("DAQ off command received")
 		writeData('h')
 	else:
