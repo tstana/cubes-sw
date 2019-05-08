@@ -31,6 +31,7 @@ def startSerial():
 	subprocess.call(['sudo', 'chmod', '666', serport])
 	ser.port =  serport
 	ser.baudrate = 115200
+	ser.open()
 
 ser = serial.Serial()
 startSerial()
