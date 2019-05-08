@@ -3,7 +3,7 @@
 import time
 import serial
 import subprocess
-import convert_config_file as fileconv
+import fileconv
 
 def writeandreadData(s):
 	print(s)
