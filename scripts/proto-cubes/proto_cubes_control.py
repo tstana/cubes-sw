@@ -5,7 +5,7 @@ import serial
 import subprocess
 import fileconv
 
-from proto_cubes_cmd import *
+from proto_cubes_cmds import *
 
 def writeandreadData(s):
 	print(s)
