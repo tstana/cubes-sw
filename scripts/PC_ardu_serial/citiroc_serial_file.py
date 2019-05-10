@@ -5,6 +5,8 @@ import serial
 import subprocess
 import fileconv
 
+from proto_cubes_cmd import *
+
 def writeandreadData(s):
 	print(s)
 	print("length:")
@@ -60,20 +62,20 @@ while 1:
 		exit()
 	elif inp=='1':
 		print ("Citiroc configuration selected, please select input file \n")
-		writeandreadData(b'a' + fileconv.converter())
+		writeandreadData(CMD_CITIROC_CONF + fileconv.converter())
 	elif inp=='2':
 		print ("Probe configuration selected, please select input file \n")
-		writeandreadData(b'b' + fileconv.converter())
+		writeandreadData(CMD_PROBE_CONF + fileconv.converter())
 	elif inp=='3':
 		print ("Power supply configuration selected, please enter configuration data \n")
 		data = input(">> ")
-		writeData('c' + data)
+		writeData(CMD_HVPS_CONF + data)
 	elif inp=='4':
 		print ("Housekeeping request selected, please wait for data \n")
-		writeandreadData('d')
+		writeandreadData(CMD_REQ_HK)
 	elif inp=='5':
 		print ("Payload request selected, please wait for data \n")
-		writeandreadData('e')
+		writeandreadData(CMD_REQ_PAYLOAD)
 	elif inp=='6':
 		print ("DAQ duration configuration received, please enter time:")
 		data = input(">> ")
@@ -83,7 +85,7 @@ while 1:
 		writeDate('g')
 	elif inp=='8':
 		print ("DAQ off command received")
-		writeData('h')
+		writeData('x')
 	else:
 		print("ERROR: Command not recognized, please try again")
 
