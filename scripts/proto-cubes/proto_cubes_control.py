@@ -4,6 +4,7 @@ import time
 import serial
 import subprocess
 import fileconv
+import sys
 
 from proto_cubes_cmds import *
 
@@ -62,10 +63,22 @@ while 1:
 		exit()
 	elif inp=='1':
 		print ("Citiroc configuration selected, please select input file \n")
-		writeandreadData(CMD_CITIROC_CONF + fileconv.converter())
+		try:
+			d = CMD_CITIROC_CONF + fileconv.converter()
+			writeandreadData(d)
+		except Exception as e:
+			print()
+			print(e)
+			print()
 	elif inp=='2':
 		print ("Probe configuration selected, please select input file \n")
-		writeandreadData(CMD_PROBE_CONF + fileconv.converter())
+		try:
+			d = CMD_PROBE_CONF + fileconv.converter()
+			writeandreadData(d)
+		except Exception as e:
+			print()
+			print(e)
+			print()
 	elif inp=='3':
 		print ("Power supply configuration selected, please enter configuration data \n")
 		data = input(">> ")
