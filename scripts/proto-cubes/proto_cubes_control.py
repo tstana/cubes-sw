@@ -91,6 +91,7 @@ while 1:
 		print(int(returned[:3], 10))
 		print(int(returned[4:7], 10))
 		print(int(returned[7:11], 10))
+		print(int(returned[12:15], 10))
 	elif inp=='5':
 		print ("Payload request selected, please wait for data \n")
 		writeandreadData(CMD_REQ_PAYLOAD)
