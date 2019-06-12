@@ -18,6 +18,8 @@ def writeandreadData(s):
 		f.write(out)
 		f.close()
 	print ("\n ----------------------------------------------------------------- \n")
+	if s == 'h':
+		return out
 		
 def writeData(s):
 	print(s)
@@ -68,7 +70,10 @@ while 1:
 		writeData('c' + data)
 	elif inp=='4':
 		print ("Housekeeping request selected, please wait for data \n")
-		writeandreadData('d')
+		returned = writeandreadData('h')
+		print(int(returned[:3], 10))
+		print(int(returned[4:7], 10))
+		print(int(returned[7:11], 10))
 	elif inp=='5':
 		print ("Payload request selected, please wait for data \n")
 		writeandreadData('e')
@@ -79,7 +84,7 @@ while 1:
 	elif inp =='7':
 		print ("DAQ On command received")
 		writeDate('g')
-	elif inp =='8'
+	elif inp =='8':
 		print ("DAQ off command received")
 		writeData('h')
 	else:
