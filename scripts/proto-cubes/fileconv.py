@@ -11,9 +11,9 @@ def inverter(s):
 
 def converter():
 	filename = input("Enter input file name: ")
-	outputname = "conffil.txt"
+	outputname = "config.cfg"
 	f = open(filename, 'r') #Name of input file
-	g = open(outputname, 'r+b') #Name of output file 
+	g = open(outputname, 'w+b') #Name of output file 
 	fline = f.readline()
 	for y in Generator(fline, 8):
 		y=(int(inverter(y), 2))
@@ -23,4 +23,4 @@ def converter():
 	g.seek(0,0)
 	gline = g.readline()
 	g.close()
-	return  gline
+	return gline

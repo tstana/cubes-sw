@@ -1,8 +1,12 @@
-#!/bin/python3
+#!/usr/bin/python3
+
 import time
 import serial
 import subprocess
-import convert_config_file as fileconv
+import fileconv
+import sys
+
+from proto_cubes_cmds import *
 
 def writeandreadData(s):
 	print(s)
@@ -32,6 +36,7 @@ def startSerial():
 	subprocess.call(['sudo', 'chmod', '666', serport])
 	ser.port =  serport
 	ser.baudrate = 115200
+	ser.open()
 
 ser = serial.Serial()
 startSerial()
@@ -60,33 +65,45 @@ while 1:
 		exit()
 	elif inp=='1':
 		print ("Citiroc configuration selected, please select input file \n")
-		writeandreadData(b'a' + fileconv.converter())
+		try:
+			d = CMD_CITIROC_CONF + fileconv.converter()
+			writeandreadData(d)
+		except Exception as e:
+			print()
+			print(e)
+			print()
 	elif inp=='2':
 		print ("Probe configuration selected, please select input file \n")
-		writeandreadData(b'b' + fileconv.converter())
+		try:
+			d = CMD_PROBE_CONF + fileconv.converter()
+			writeandreadData(d)
+		except Exception as e:
+			print()
+			print(e)
+			print()
 	elif inp=='3':
 		print ("Power supply configuration selected, please enter configuration data \n")
 		data = input(">> ")
-		writeData('c' + data)
+		writeData(CMD_HVPS_CONF + data)
 	elif inp=='4':
 		print ("Housekeeping request selected, please wait for data \n")
-		returned = writeandreadData('h')
+		returned = writeandreadData(CMD_REQ_HK)
 		print(int(returned[:3], 10))
 		print(int(returned[4:7], 10))
 		print(int(returned[7:11], 10))
 	elif inp=='5':
 		print ("Payload request selected, please wait for data \n")
-		writeandreadData('e')
+		writeandreadData(CMD_REQ_PAYLOAD)
 	elif inp=='6':
 		print ("DAQ duration configuration received, please enter time:")
 		data = input(">> ")
 		writeData('f' + data)
-	elif inp =='7':
+	elif inp=='7':
 		print ("DAQ On command received")
 		writeDate('g')
-	elif inp =='8':
+	elif inp=='8':
 		print ("DAQ off command received")
-		writeData('h')
+		writeData('x')
 	else:
 		print("ERROR: Command not recognized, please try again")
-	
+
