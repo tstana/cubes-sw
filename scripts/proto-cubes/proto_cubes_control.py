@@ -22,7 +22,7 @@ def writeandreadData(s):
 		f.write(out)
 		f.close()
 	print ("\n ----------------------------------------------------------------- \n")
-	if s == 'h':
+	if s == 'CMD_REQ_HK':
 		return out
 		
 def writeData(s):
