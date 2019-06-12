@@ -12,17 +12,20 @@ def writeandreadData(s):
 	print(s)
 	print("length:")
 	print(ser.write(s))
-	out = ''
+	out = bytearray()
 	time.sleep(10)
 	while ser.inWaiting() > 0:
-		out+=(ser.read(1)).decode()
-	if out != '':
-		print ("<<"+out)
-		f = open("output.txt", 'w')
-		f.write(out)
-		f.close()
+		out += (ser.read(1))
+	
+	print(out)
+	
+	#if out != '':
+#		print ("<<"+out)
+#		f = open("output.txt", 'w')
+#		f.write(out)
+#		f.close()
 	print ("\n ----------------------------------------------------------------- \n")
-	if s == 'CMD_REQ_HK':
+	if s == CMD_REQ_HK:
 		return out
 		
 def writeData(s):
@@ -88,10 +91,10 @@ while 1:
 	elif inp=='4':
 		print ("Housekeeping request selected, please wait for data \n")
 		returned = writeandreadData(CMD_REQ_HK)
-		print(int(returned[:3], 10))
-		print(int(returned[4:7], 10))
-		print(int(returned[7:11], 10))
-		print(int(returned[12:15], 10))
+		print(int(returned[:3], 16))
+		print(int(returned[4:7], 16))
+		print(int(returned[7:11], 16))
+		print(int(returned[12:15], 16))
 	elif inp=='5':
 		print ("Payload request selected, please wait for data \n")
 		writeandreadData(CMD_REQ_PAYLOAD)
