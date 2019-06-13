@@ -5,6 +5,7 @@ import serial
 import subprocess
 import fileconv
 import sys
+from struct import unpack_from
 
 from proto_cubes_cmds import *
 
@@ -13,18 +14,15 @@ def writeandreadData(s):
 	print("length:")
 	print(ser.write(s))
 	out = bytearray()
-	time.sleep(10)
+	time.sleep(5)
 	while ser.inWaiting() > 0:
 		out += (ser.read(1))
-	
-	print(out)
 	
 	#if out != '':
 #		print ("<<"+out)
 #		f = open("output.txt", 'w')
 #		f.write(out)
 #		f.close()
-	print ("\n ----------------------------------------------------------------- \n")
 	if s == CMD_REQ_HK:
 		return out
 		
@@ -91,10 +89,22 @@ while 1:
 	elif inp=='4':
 		print ("Housekeeping request selected, please wait for data \n")
 		returned = writeandreadData(CMD_REQ_HK)
-		print(int(returned[:3], 16))
-		print(int(returned[4:7], 16))
-		print(int(returned[7:11], 16))
-		print(int(returned[12:15], 16))
+		decodeddata = returned.decode()
+		offset = decodeddata.find("Unix time: ")+23 #Offset unix time data
+		if offset != -1:
+			try:
+				channels = unpack_from('>LLLL', returned, offset)
+				print("Hit count \n------------------------")
+				print("Channel 0: ", channels[0])
+				print("Channel 16: ", channels[1])
+				print("Channel 31: ", channels[2])
+				print("Channel 21: ", channels[3])
+			except:
+				print ("Not enough data not found in serial")
+
+			
+		else:
+			print("Unix time not found")
 	elif inp=='5':
 		print ("Payload request selected, please wait for data \n")
 		writeandreadData(CMD_REQ_PAYLOAD)
@@ -104,10 +114,11 @@ while 1:
 		writeData('f' + data)
 	elif inp=='7':
 		print ("DAQ On command received")
-		writeDate('g')
+		writeData('g')
 	elif inp=='8':
 		print ("DAQ off command received")
 		writeData('x')
 	else:
 		print("ERROR: Command not recognized, please try again")
+	print ("\n ----------------------------------------------------------------- \n")
 
