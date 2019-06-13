@@ -17,12 +17,6 @@ def writeandreadData(s):
 	time.sleep(5)
 	while ser.inWaiting() > 0:
 		out += (ser.read(1))
-	
-	#if out != '':
-#		print ("<<"+out)
-#		f = open("output.txt", 'w')
-#		f.write(out)
-#		f.close()
 	if s == CMD_REQ_HK:
 		return out
 		
@@ -89,18 +83,18 @@ while 1:
 	elif inp=='4':
 		print ("Housekeeping request selected, please wait for data \n")
 		returned = writeandreadData(CMD_REQ_HK)
-		decodeddata = returned.decode()
+		decodeddata = returned.decode('utf-8', 'ignore')
 		offset = decodeddata.find("Unix time: ")+23 #Offset unix time data
 		if offset != -1:
 			try:
 				channels = unpack_from('>LLLL', returned, offset)
 				print("Hit count \n------------------------")
-				print("Channel  0: ", channels[0])
-				print("Channel 16: ", channels[1])
-				print("Channel 31: ", channels[2])
-				print("Channel 21: ", channels[3])
-			except:
-				print ("Not enough data not found in serial")
+				print("Channel  0: %i (0x%08X)" % (channels[0], channels[0]))
+				print("Channel 16: %i (0x%08X)" % (channels[1], channels[1]))
+				print("Channel 31: %i (0x%08X)" % (channels[2], channels[2]))
+				print("Channel 21: %i (0x%08X)" % (channels[3], channels[3]))
+			except Exception as ex:
+				print(ex)
 
 			
 		else:
