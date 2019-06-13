@@ -95,7 +95,7 @@ while 1:
 			try:
 				channels = unpack_from('>LLLL', returned, offset)
 				print("Hit count \n------------------------")
-				print("Channel 0: ", channels[0])
+				print("Channel  0: ", channels[0])
 				print("Channel 16: ", channels[1])
 				print("Channel 31: ", channels[2])
 				print("Channel 21: ", channels[3])
