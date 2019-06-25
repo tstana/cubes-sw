@@ -26,6 +26,8 @@ for x in range(start+269, len(filecontent)-146, 2):
 
 
 f.close()
+filename = filename[:-3]
+filename = filename + 'png'
 fig = plt.figure()
 ax = plt.subplot(111)
 ax.plot(datavalues)
@@ -35,6 +37,6 @@ plt.title('DAQ retrieved')
 plt.annotate("Unix time: %i" %unixtime, xy=(9000, 67500))
 plt.annotate("Bins: %i" %binno, xy=(500, 67500))
 plt.grid(True)
-fig.savefig('DAQ.png')
+fig.savefig(filename)
 plt.close(fig)
 print("DONE")
