@@ -12,7 +12,7 @@ from struct import unpack
 filename = input("Enter file name: ")
 f = open(filename, 'rb')
 filecontent = bytearray(f.read())
-start = filecontent.find("Unix time: ")+11 #Offsetting "Unix time: "
+start = filecontent.find(("Unix time: ").encode())+11 #Offsetting "Unix time: "
 unixtime = int(filecontent[start:start+10])
 binno = unpack('>h',filecontent[start+266:start+268])
 i = 0
