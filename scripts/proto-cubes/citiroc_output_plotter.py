@@ -5,9 +5,14 @@ import subprocess
 import sys
 import binascii
 import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from struct import unpack
+
+print("NOTE: This script prints graphs to a separate window. It requires a " +
+      "windowing system to run.\n" +
+      "      Command-line-only systems will not work.")
+
+print()
 
 filename = input("Enter file name: ")
 f = open(filename, 'rb')
@@ -37,6 +42,4 @@ plt.title('DAQ retrieved')
 plt.annotate("Unix time: %i" %unixtime, xy=(0.65, 0.96), xycoords='axes fraction')
 plt.annotate("Bins: %i" %binno, xy=(0.01, 0.95), xycoords='axes fraction')
 plt.grid(True)
-fig.savefig(filename)
-plt.close(fig)
-print("DONE")
+plt.show()
