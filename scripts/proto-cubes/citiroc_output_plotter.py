@@ -34,7 +34,7 @@ f.close()
 #-------------------------------------------------------------------------------
 # 	Linear plot
 #-------------------------------------------------------------------------------
-plt.figure("Linear Plot", figsize=(6, 9))
+plt.figure(filename[:-4] + " -- Linear Plot", figsize=(6, 9))
 plt.suptitle("Bins: %i   Unix time: %i" %(binno[0],unixtime))
 
 ax00 = plt.subplot(321)
@@ -83,7 +83,7 @@ plt.grid(True)
 #-------------------------------------------------------------------------------
 #   Log. plot 
 #-------------------------------------------------------------------------------
-plt.figure("Logarithmic Plot", figsize=(6, 9))
+plt.figure(filename[:-4] + " -- Logarithmic Plot", figsize=(6, 9))
 plt.suptitle("Bins: %i   Unix time: %i" %(binno[0],unixtime))
 
 ax10 = plt.subplot(321)
