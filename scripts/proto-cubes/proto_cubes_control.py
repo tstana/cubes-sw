@@ -47,6 +47,7 @@ def printMenu():
 		6. DAQ Duration \n
 		7. Turn on DAQ \n
 		8. Turn off DAQ \n
+		9. Delete all SD-card files \n
 		Write 'exit' to exit the application""")
 		
 inp = '1'
@@ -112,6 +113,11 @@ while 1:
 	elif inp=='8':
 		print ("DAQ off command received")
 		writeData('x')
++   elif inp=='9':
++       print ("Delete all files command received")
++       writeData('Q')
+
+		
 	else:
 		print("ERROR: Command not recognized, please try again")
 	print ("\n ----------------------------------------------------------------- \n")
