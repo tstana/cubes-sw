@@ -22,9 +22,9 @@ unixtime = int(filecontent[start:start+10])
 binno = unpack('>h',filecontent[start+266:start+268])
 i = 0
 datavalues = list(range(0, 12287, 1))
-for x in range(start+269, len(filecontent)-146, 2):
+for x in range(start+268, len(filecontent)-146, 2):
     try:
-        datavalues[i] = unpack('=H', filecontent[x:x+2])[0]
+        datavalues[i] = unpack('=H', filecontent[x+1:x-1:-1])[0]
     except:
         print("Value at location %i in the file has an issue" %x)
     i=i+1
