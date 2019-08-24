@@ -9,8 +9,7 @@ outch16 = []
 outch31 = []
 outor = []
 outtime = []
-i = 0
-for filename in glob.glob('*.dat'):
+for filename in glob.glob('_HK.dat'):
     file = open(filename, 'r')
     data = file.readlines()
     for line in data:
@@ -20,17 +19,16 @@ for filename in glob.glob('*.dat'):
             outch16.append(int(split[9]))
             outch31.append(int(split[10]))
             outor.append(int(split[11]))
-            outtime.append(int(split[1]))
-            i = i+1
+            outtime.append(int(split[0]))
         else:
             pass
     file.close()
 orgtime = outtime[0]
-outtime[:] = [x-outtime[0] for x in outtime]
-printch0 = [x for _,x in sorted(zip(outch0, outtime))]
-printch16 = [x for _,x in sorted(zip(outch16, outtime))]
-printch31 = [x for _,x in sorted(zip(outch31, outtime))]
-printor = [x for _,x in sorted(zip(outor, outtime))]
+outtime[:] = [x-orgtime for x in outtime]
+printch0 = [x for _,x in sorted(zip(outtime, outch0))]
+printch16 = [x for _,x in sorted(zip(outtime, outch16))]
+printch31 = [x for _,x in sorted(zip(outtime, outch31))]
+printor = [x for _,x in sorted(zip(outtime, outor))]
 printtime = sorted(outtime)
 
 
