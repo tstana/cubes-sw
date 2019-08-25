@@ -113,9 +113,10 @@ while 1:
 	elif inp=='8':
 		print ("DAQ off command received")
 		writeData('x')
-+   elif inp=='9':
-+       print ("Delete all files command received")
-+       writeData('Q')
+	elif inp=='9':
+		print ("Delete all SD-files Received")
+		writeData('Q')
+	
 
 		
 	else:
