@@ -5,3 +5,7 @@ build/
 *.cfg
 *.exe
 
+bin/
+[Oo]bj/
+.vs/
+
