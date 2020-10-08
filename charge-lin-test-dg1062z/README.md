@@ -7,7 +7,7 @@ A higher amplitude based on the user's selection is output every 5 seconds.
 
 The figure below shows the pulse sweep that will be created by the program.
 
-!fig/ampl-sweep-example.png!
+[[fig/ampl-sweep-example.png]]
 
 The intended application for the program is to test the linearity and range
 of the Citiroc HG and LG chains via the IN_CALIB input on the Citiroc, hence
