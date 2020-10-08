@@ -49,82 +49,94 @@ namespace charge_lin_test_dg1062z
             Console.WriteLine("     before running...)");
             Console.WriteLine();
 
-            UsbSession sesh = new UsbSession(VISAID);
-
-            var pgen = sesh.RawIO;
-            string cmd, resp;
-
-            Console.WriteLine("Sending ID query to pulse generator...");
-            Console.WriteLine();
-
-            Console.WriteLine(">>> *IDN?");
-            pgen.Write("*IDN?");
-            resp = Encoding.ASCII.GetString(pgen.Read());
-            Console.Write("<<< ");
-            Console.WriteLine(resp);
-
-            if (resp.Contains("DG1ZA194405466"))    // NOTE: Should be same as VISAID!
+            try
             {
-                Console.WriteLine("Instrument serial number matches USB ID - proceeding!");
+                UsbSession sesh = new UsbSession(VISAID);
+
+                var pgen = sesh.RawIO;
+                string cmd, resp;
+
+                Console.WriteLine("Sending ID query to pulse generator...");
                 Console.WriteLine();
 
-                Console.Write("Please input start voltage (V): ");
-                startVoltage = Convert.ToDouble(Console.ReadLine());
-                Console.Write("Please input end voltage (V): ");
-                endVoltage = Convert.ToDouble(Console.ReadLine()); ;
-                Console.Write("Please input voltage increase on each step: ");
-                voltageStep = Convert.ToDouble(Console.ReadLine());
+                Console.WriteLine(">>> *IDN?");
+                pgen.Write("*IDN?");
+                resp = Encoding.ASCII.GetString(pgen.Read());
+                Console.Write("<<< ");
+                Console.WriteLine(resp);
 
-                Console.WriteLine();
-                Console.WriteLine("Selected voltages translate in the following charge range: [" +
-                    CAP*startVoltage + ", " + CAP*endVoltage +"] pF.");
-
-                Thread.Sleep(2000);
-
-                Console.WriteLine();
-                Console.WriteLine("If this is incorrect, hit <Ctrl+C> on your keyboard to end the program");
-                Console.WriteLine("and start over...");                
-                Console.WriteLine();
-
-                Thread.Sleep(2000);
-
-                Console.WriteLine("Start your DAQ for at least " + 
-                    + (5*(voltageStep + endVoltage-startVoltage)/voltageStep) + "s.");
-
-                Thread.Sleep(2000);
-
-                Console.Write("Press any key to start applying pulses...");
-                Console.ReadLine();
-
-                Console.WriteLine("Applying 1-us pulse signals at 1 kHz...");
-                Console.WriteLine();
-
-                cmd = ":FUNC:PULS:WIDTH 1e-6";
-                Console.WriteLine(">>> " + cmd);
-                pgen.Write(cmd);
-
-                cmd = ":OUTP:STATE ON";
-                Console.WriteLine(">>> " + cmd);
-                pgen.Write(cmd);
-
-                for (double i = startVoltage; i <= endVoltage; i += voltageStep)
+                if (resp.Contains("DG1ZA194405466"))    // NOTE: Should be same as VISAID!
                 {
-                    cmd = ":APPL:PULS 1000," + i.ToString("N3") +
-                                         "," + (i/2).ToString("N3") +
-                                         ",0";
+                    Console.WriteLine("Instrument serial number matches USB ID - proceeding!");
+                    Console.WriteLine();
+
+                    Console.Write("Please input start voltage (V): ");
+                    startVoltage = Convert.ToDouble(Console.ReadLine());
+                    Console.Write("Please input end voltage (V): ");
+                    endVoltage = Convert.ToDouble(Console.ReadLine()); ;
+                    Console.Write("Please input voltage increase on each step: ");
+                    voltageStep = Convert.ToDouble(Console.ReadLine());
+
+                    Console.WriteLine();
+                    Console.WriteLine("Selected voltages translate in the following charge range: [" +
+                        CAP * startVoltage + ", " + CAP * endVoltage + "] pF.");
+
+                    Thread.Sleep(2000);
+
+                    Console.WriteLine();
+                    Console.WriteLine("If this is incorrect, hit <Ctrl+C> on your keyboard to end the program");
+                    Console.WriteLine("and start over...");
+                    Console.WriteLine();
+
+                    Thread.Sleep(2000);
+
+                    Console.WriteLine("Start your DAQ for at least " +
+                        +(5 * (voltageStep + endVoltage - startVoltage) / voltageStep) + "s.");
+
+                    Thread.Sleep(2000);
+
+                    Console.Write("Press any key to start applying pulses...");
+                    Console.ReadLine();
+
+                    Console.WriteLine("Applying 1-us pulse signals at 1 kHz...");
+                    Console.WriteLine();
+
+                    cmd = ":FUNC:PULS:WIDTH 1e-6";
                     Console.WriteLine(">>> " + cmd);
                     pgen.Write(cmd);
 
-                    Thread.Sleep(5000);
+                    cmd = ":OUTP:STATE ON";
+                    Console.WriteLine(">>> " + cmd);
+                    pgen.Write(cmd);
+
+                    for (double i = startVoltage; i <= endVoltage; i += voltageStep)
+                    {
+                        cmd = ":APPL:PULS 1000," + i.ToString("N3") +
+                                             "," + (i / 2).ToString("N3") +
+                                             ",0";
+                        Console.WriteLine(">>> " + cmd);
+                        pgen.Write(cmd);
+
+                        Thread.Sleep(5000);
+                    }
+
+                    cmd = ":OUTP:STATE OFF";
+                    Console.WriteLine(">>> " + cmd);
+                    pgen.Write(cmd);
                 }
 
-                cmd = ":OUTP:STATE OFF";
-                Console.WriteLine(">>> " + cmd);
-                pgen.Write(cmd);
+                // End of program.
+                sesh.Dispose();
             }
-
-            // End of program.
-            sesh.Dispose();
+            catch (Ivi.Visa.NativeVisaException e)
+            {
+                Console.WriteLine("Exception thrown by the VISA driver:");
+                Console.WriteLine();
+                Console.WriteLine("    " + e.Message);
+                Console.WriteLine();
+                Console.WriteLine("Perhaps pulse generator not connected to a USB port?");
+                Console.WriteLine();
+            }
 
             Console.WriteLine();
             Console.WriteLine("Press any key to continue...");
