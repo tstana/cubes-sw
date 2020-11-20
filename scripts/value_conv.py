@@ -1,9 +1,15 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import math
 import sys
 
+print("Please select:")
+print("  '1' for voltage, hex to dec");
+print("  '2' for voltage, dec to hex");
+print("  '3' for temperature, hex to dec");
+print("  '4' for temperature, dec to hex");
+print()
 
-types = input("Select 1 for from hex to decimal, 2 for decimal to hex, 3 for temperature from hex, 4 for temperature to hex: ")
+types = input("Your selection: ")
 
 if types == '1':
 	number = input("Write the number in hex: ")
