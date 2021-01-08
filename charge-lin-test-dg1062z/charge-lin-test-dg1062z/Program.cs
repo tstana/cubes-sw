@@ -74,14 +74,14 @@ namespace charge_lin_test_dg1062z
                     startVoltage = Convert.ToDouble(Console.ReadLine());
                     Console.Write("Please input end voltage (V): ");
                     endVoltage = Convert.ToDouble(Console.ReadLine()); ;
-                    Console.Write("Please input voltage increase on each step: ");
+                    Console.Write("Please input voltage increase on each step (V): ");
                     voltageStep = Convert.ToDouble(Console.ReadLine());
 
                     Console.WriteLine();
                     Console.WriteLine("Selected voltages translate in the following charge range: [" +
                         CAP * startVoltage + ", " + CAP * endVoltage + "] pF.");
 
-                    Thread.Sleep(2000);
+                    Thread.Sleep(1000);
 
                     Console.WriteLine();
                     Console.WriteLine("If this is incorrect, hit <Ctrl+C> on your keyboard to end the program");
@@ -95,7 +95,7 @@ namespace charge_lin_test_dg1062z
 
                     Thread.Sleep(2000);
 
-                    Console.Write("Press any key to start applying pulses...");
+                    Console.Write("Press ENTER key to start applying pulses...");
                     Console.ReadLine();
 
                     Console.WriteLine("Applying 1-us pulse signals at 1 kHz...");
@@ -139,7 +139,7 @@ namespace charge_lin_test_dg1062z
             }
 
             Console.WriteLine();
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("Press ENTER key to exit.");
             Console.ReadKey();
         }
     }
