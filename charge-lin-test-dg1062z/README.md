@@ -21,8 +21,7 @@ using Visual Studio and the NI-VISA .NET drivers.
 
 1. Download and install Visual Studio Community version. (VS2017 was used for
    developing this software, but any version will work, presumably.)
-1. Download the NI-VISA install package from the [NI website](https://www.ni.com/sv-se/support/downloads/drivers/download/packaged.ni-visa.346210.html)
-1. _(Optional)_ Download the IVI drivers from the [Rigol website](https://beyondmeasure.rigoltech.com/acton/attachment/1579/f-076a/1/-/-/-/-/DG1000Z%28IVI_DRV%29update_1.0.0.zip).
+1. Download the NI-VISA install package from the [NI website](https://www.ni.com/sv-se/support/downloads/drivers/download/packaged.ni-visa.346210.html).
 1. Connect the DG1062Z pulse generator to a USB port on your PC.
 1. Double-click the solution (`.sln`) file for the project.
 1. Put VS in _Release_ mode.
@@ -42,3 +41,8 @@ location. The process for this is:
 - Click **Properties**
 - Navigate to **Reference Paths**
 - Click **Browse** to find the path to the IVI drivers on your computer.
+
+**Note:** You may need to also download and install the IVI drivers from the
+[Rigol website](https://beyondmeasure.rigoltech.com/acton/attachment/1579/f-076a/1/-/-/-/-/DG1000Z%28IVI_DRV%29update_1.0.0.zip).
+If it doesn't work only with the NI-VISA package referenced in the checklist
+above, try this one too.
