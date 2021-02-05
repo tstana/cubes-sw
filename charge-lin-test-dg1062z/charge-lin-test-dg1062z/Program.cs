@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Globalization;
 
 using NationalInstruments.Visa;
 
@@ -36,6 +37,12 @@ namespace charge_lin_test_dg1062z
             ///
 
             double startVoltage, endVoltage, voltageStep;
+
+            /// Ensure the US "culture" is used, so a dot is correctly sent to
+            /// the pulse generator as a decimal separator. (SCPI commands use
+            /// English-style decimal separators -- dots).
+            CultureInfo culture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = culture;
 
             Console.WriteLine("================================================================================");
             Console.WriteLine("  Charge Linearity Test using DG1062Z Pulse Generator");
@@ -70,16 +77,43 @@ namespace charge_lin_test_dg1062z
                     Console.WriteLine("Instrument serial number matches USB ID - proceeding!");
                     Console.WriteLine();
 
-                    Console.Write("Please input start voltage (V): ");
-                    startVoltage = Convert.ToDouble(Console.ReadLine());
-                    Console.Write("Please input end voltage (V): ");
-                    endVoltage = Convert.ToDouble(Console.ReadLine()); ;
-                    Console.Write("Please input voltage increase on each step (V): ");
-                    voltageStep = Convert.ToDouble(Console.ReadLine());
+                    Console.WriteLine("You will now be asked to input the start and end voltage for the pulses.");
+                    Console.WriteLine("Please use dots as decimal separators!");
+                    Thread.Sleep(2000);
+
+                    while (true)
+                    {
+                        Console.WriteLine();
+                        Console.Write("Please input start voltage (V): ");
+                        startVoltage = Convert.ToDouble(Console.ReadLine());
+                        Console.Write("Please input end voltage (V): ");
+                        endVoltage = Convert.ToDouble(Console.ReadLine()); ;
+                        Console.Write("Please input voltage increase on each step (V): ");
+                        voltageStep = Convert.ToDouble(Console.ReadLine());
+
+                        if (startVoltage > endVoltage)
+                        {
+                            Console.WriteLine("Starting voltage cannot be higher than ending voltage!");
+                            Console.WriteLine("Please try again...");
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+
+                        if (voltageStep > endVoltage - startVoltage)
+                        {
+                            Console.WriteLine("Voltage step must be between end voltage and start voltage!");
+                            Console.WriteLine("Please try again...");
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+
+                        break;
+                    }
 
                     Console.WriteLine();
                     Console.WriteLine("Selected voltages translate in the following charge range: [" +
-                        CAP * startVoltage + ", " + CAP * endVoltage + "] pF.");
+                        CAP * startVoltage + ", " + CAP * endVoltage + "] pF, in " +
+                        CAP * voltageStep + " pF increments.");
 
                     Thread.Sleep(1000);
 
@@ -91,7 +125,9 @@ namespace charge_lin_test_dg1062z
                     Thread.Sleep(2000);
 
                     Console.WriteLine("Start your DAQ for at least " +
-                        +(5 * (voltageStep + endVoltage - startVoltage) / voltageStep) + "s.");
+                        + Math.Ceiling(5 * (voltageStep + endVoltage - startVoltage) / voltageStep) +
+                        "s...");
+                    Console.WriteLine();
 
                     Thread.Sleep(2000);
 
@@ -111,6 +147,11 @@ namespace charge_lin_test_dg1062z
 
                     for (double i = startVoltage; i <= endVoltage; i += voltageStep)
                     {
+                        /// Command format:
+                        ///   :APPL:PULS [width];[voltage];[offset];[delay]
+                        /// 
+                        /// For the DG1062, [offset] = [voltage]/2, so that
+                        /// the pulse has its baseline at 0 V.
                         cmd = ":APPL:PULS 1000," + i.ToString("N3") +
                                              "," + (i / 2).ToString("N3") +
                                              ",0";
