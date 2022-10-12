@@ -9,3 +9,4 @@ bin/
 [Oo]bj/
 .vs/
 
+*.dat
