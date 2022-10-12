@@ -1,11 +1,23 @@
-# value_conv.py
+# CUBES General-Purpose Scripts
 
-## Purpose
+This folder is a collection of scripts for general-purpose use on CUBES. Some
+of the scripts are documented below.
+
+- [value_conv.py](#value_convpy)
+  - [Purpose](#purpose)
+  - [Usage](#usage)
+- [gen_asic_probes.py](#gen_asic_probespy)
+  - [Purpose](#purpose-1)
+  - [Features](#features)
+ 
+## value_conv.py
+
+### Purpose
 
 This script provides a means of converting Hamamatsu HVPS C11204 configuration
 data between decimal and hex values.
 
-## Use
+### Usage
 
 The following choices are available:
 
@@ -17,14 +29,14 @@ The following choices are available:
 The values output by this script can be used to make sense of the data actually
 sent to or retrieved by the HVPS module.
 
-# gen_asic_probes.py
+## gen_asic_probes.py
 
-## Purpose
+### Purpose
 
 This script can be used to generate an ASCII file that contains configuration
 data for the Citiroc ASIC probes.
 
-## Requirements
+### Features
 
 -	The program asks the user for the following input:
     - Enable out_probe?
@@ -51,4 +63,3 @@ digital_probe, not more.)
 - The program ensures that only a single bit is set within bits [224..255].
 (Only a single block from the ASIC can be routed to the digital_probe, not more.)
 - The configuration data as mentioned above is stored to an output file text file.
-- The program resides on the cubes-sw repository (https://github.com/tstana/cubes-sw)
