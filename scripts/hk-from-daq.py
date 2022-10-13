@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
-def main():
-	filename = input("Enter .dat file name: ")
+import argparse
+
+def process(filename):
 	if (filename[-4:] != ".dat"):
 		filename += ".dat"
 
@@ -95,6 +96,11 @@ def main():
 		print("  HG, Ch. 31    : " + str(int(bin_cfg[4])))
 		print("  LG, Ch. 31    : " + str(int(bin_cfg[5])))
 
-if __name__ == "__main__":
-	main()
-	print()
+
+parser = argparse.ArgumentParser(description="Print out HK values from histogram header.")
+parser.add_argument("filename", help="DAQ .dat file")
+args = parser.parse_args()
+
+process(args.filename)
+
+print()
