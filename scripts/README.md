@@ -9,6 +9,9 @@ of the scripts are documented below.
 - [gen_asic_probes.py](#gen_asic_probespy)
   - [Purpose](#purpose-1)
   - [Features](#features)
+- [hk-from-dat.py](#hk-from-datpy)
+  - [Purpose](#purpose-2)
+  - [Usage](#usage-1)
  
 ## value_conv.py
 
@@ -63,3 +66,76 @@ digital_probe, not more.)
 - The program ensures that only a single bit is set within bits [224..255].
 (Only a single block from the ASIC can be routed to the digital_probe, not more.)
 - The configuration data as mentioned above is stored to an output file text file.
+
+## hk-from-dat.py
+
+### Purpose
+
+This cript parses and prints fields in the histogram header from DAQ _.dat_ files.
+
+### Usage
+
+This script requires Python 3 to run.
+
+```
+usage: hk-from-daq.py [-h] filename
+
+Print out HK values from histogram header.
+
+positional arguments:
+  filename    DAQ .dat file
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+
+Process to run it from Windows:
+
+1. Copy the DAQ _.dat_ file to be processed to the `scripts` folder (for simplicity).
+1. Open up a PowerShell window in the `scripts` folder (_Shift_ + right-click in a
+   Windows Explorer window, then click **Open PowerShell window here**).
+1. Type in `python .\hk-from-dat.py .\<daq-file-name.dat>`.
+   - Note: You can use TAB completion or copy-and-paste in PowerShell to avoid from
+     typing everything out, e.g., type in `python hk-`, then hit the TAB key and
+     PowerShell should fill in the `.\hk-from-dat.py` for you -- if you are in the
+     `scripts` folder where this script lives.
+1. If the DAQ file is formatted correctly, the contents of the histogram header are
+   printed to `stdout`:
+   
+   ```
+   PS C:\Projects\cubes\cubes-sw\scripts> python .\hk-from-daq.py .\dataCITI_2022-10-12_14-06-42.dat
+   
+   Reading from data file ".\dataCITI_2022-10-12_14-06-42.dat"...
+   
+   Board ID: B2
+   
+   DAQ start...
+     Unix time     : 1665583576
+     Citiroc temp. : 31.000 C
+     HVPS temp.    : 29.634 C
+     HVPS voltage  : 39.998 V
+     HVPS current  : 0.000 mA
+   
+   DAQ end...
+     Unix time     : 1665583600
+     DAQ time      : 20.0 s
+     Live time     : 18.3 s
+     Ch. 0 Hits    : 40002
+     Ch. 16 Hits   : 40016
+     Ch. 31 Hits   : 40020
+     OR32 Hits     : 40030
+     HVPS temp.    : 29.682 C
+     HVPS voltage  : 39.996 V
+     HVPS current  : 0.000 mA
+   
+   Bin config's...
+     HG, Ch. 0     : 0
+     LG, Ch. 0     : 0
+     HG, Ch. 16    : 0
+     LG, Ch. 16    : 0
+     HG, Ch. 31    : 0
+     LG, Ch. 31    : 0
+   ```
+
+The process and output on Linux should be similar, though without the need to
+type in the `.\` for the current folder.
