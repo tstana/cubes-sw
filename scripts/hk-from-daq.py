@@ -62,7 +62,7 @@ def main():
 		hvps_curr_end = float(int.from_bytes(f.read(2), "big"))
 		hvps_curr_end *= 5.194e-3
 
-		f.read(91)
+		f.read(94)
 
 		bin_cfg = f.read(6)
 
