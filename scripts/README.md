@@ -71,7 +71,7 @@ digital_probe, not more.)
 
 ### Purpose
 
-This cript parses and prints fields in the histogram header from DAQ _.dat_ files.
+This script parses and prints fields in the histogram header from DAQ _.dat_ files.
 
 ### Usage
 
@@ -92,7 +92,7 @@ optional arguments:
 Process to run it from Windows:
 
 1. Copy the DAQ _.dat_ file to be processed to the `scripts` folder (for simplicity).
-1. Open up a PowerShell window in the `scripts` folder (_Shift_ + right-click in a
+1. Open up a PowerShell window in the `scripts` folder (_Shift + right-click_ in a
    Windows Explorer window, then click **Open PowerShell window here**).
 1. Type in `python .\hk-from-dat.py .\<daq-file-name.dat>`.
    - Note: You can use TAB completion or copy-and-paste in PowerShell to avoid from
