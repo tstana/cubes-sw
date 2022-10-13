@@ -50,14 +50,14 @@ def main():
 		trig_count_31 = int.from_bytes(f.read(4), "big")
 		trig_count_or32 = int.from_bytes(f.read(4), "big")
 
-		temp_citi_end= float(int.from_bytes(f.read(2), "big"))
-		temp_citi_end= ((2.7 - (temp_citi_start*2)/1e3)/8e-3)
+		temp_citi_end = float(int.from_bytes(f.read(2), "big"))
+		temp_citi_end = ((2.7 - (temp_citi_end*2)/1e3)/8e-3)
 
-		temp_hvps_end= float(int.from_bytes(f.read(2), "big"))
-		temp_hvps_end= (temp_hvps_start*1.907e-5 - 1.035) / (-5.5e-3)
+		temp_hvps_end = float(int.from_bytes(f.read(2), "big"))
+		temp_hvps_end = (temp_hvps_end*1.907e-5 - 1.035) / (-5.5e-3)
 
-		hvps_volt_end= float(int.from_bytes(f.read(2), "big"))
-		hvps_volt_end*= 1.812e-3
+		hvps_volt_end = float(int.from_bytes(f.read(2), "big"))
+		hvps_volt_end *= 1.812e-3
 
 		hvps_curr_end = float(int.from_bytes(f.read(2), "big"))
 		hvps_curr_end *= 5.194e-3
