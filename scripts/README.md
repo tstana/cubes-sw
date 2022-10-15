@@ -98,8 +98,7 @@ Process to run it from Windows:
 1. Type in `python .\hk-from-dat.py .\<daq-file-name.dat>`.
    - Note: You can use TAB completion or copy-and-paste in PowerShell to avoid from
      typing everything out, e.g., type in `python hk-`, then hit the TAB key and
-     PowerShell should fill in the `.\hk-from-dat.py` for you -- if you are in the
-     `scripts` folder where this script lives.
+     PowerShell should fill in the `.\hk-from-dat.py` for you.
 1. If the DAQ file is formatted correctly, the contents of the histogram header are
    printed to `stdout`:
    
