@@ -78,7 +78,7 @@ This script parses and prints fields in the histogram header from DAQ _.dat_ fil
 This script requires Python 3 to run.
 
 ```
-usage: hk-from-daq.py [-h] filename
+usage: hk-from-dat.py [-h] filename
 
 Print out HK values from histogram header.
 
@@ -91,8 +91,9 @@ optional arguments:
 
 Process to run it from Windows:
 
-1. Copy the DAQ _.dat_ file to be processed to the `scripts` folder (for simplicity).
-1. Open up a PowerShell window in the `scripts` folder (_Shift + right-click_ in a
+1. For ease of use, copy the `hk-from-dat.py` script to the folder containing data
+   files.
+1. Open up a PowerShell window in the data files folder (_Shift + right-click_ in a
    Windows Explorer window, then click **Open PowerShell window here**).
 1. Type in `python .\hk-from-dat.py .\<daq-file-name.dat>`.
    - Note: You can use TAB completion or copy-and-paste in PowerShell to avoid from
@@ -103,7 +104,7 @@ Process to run it from Windows:
    printed to `stdout`:
    
    ```
-   PS C:\Projects\cubes\cubes-sw\scripts> python .\hk-from-daq.py .\dataCITI_2022-10-12_14-06-42.dat
+   PS C:\Projects\cubes\cubes-sw\scripts> python hk-from-dat.py dataCITI_2022-10-12_14-06-42.dat
    
    Reading from data file ".\dataCITI_2022-10-12_14-06-42.dat"...
    
@@ -136,6 +137,3 @@ Process to run it from Windows:
      HG, Ch. 31    : 0
      LG, Ch. 31    : 0
    ```
-
-The process and output on Linux should be similar, though without the need to
-type in the `.\` for the current folder.
