@@ -84,6 +84,7 @@ def process(filename):
 		print("  Ch. 16 Hits   : " + str(trig_count_16))
 		print("  Ch. 31 Hits   : " + str(trig_count_31))
 		print("  OR32 Hits     : " + str(trig_count_or32))
+		print("  Citiroc temp. : " + "%.3f" % temp_citi_end + " C")
 		print("  HVPS temp.    : " + "%.3f" % temp_hvps_end+ " C")
 		print("  HVPS voltage  : " + "%.3f" % hvps_volt_end+ " V")
 		print("  HVPS current  : " + "%.3f" % hvps_curr_end+ " mA")
