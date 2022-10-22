@@ -46,8 +46,8 @@ def write_defconfig(inputname):
 	g.write("/*\n")
 	g.write(" * Default Citiroc Configuration\n")
 	g.write(" *\n")
-	g.write(" * Generated from " + inputname + " on " + str(date.today()) +
-		" using\n" +
+	g.write(" * Generated from " + os.path.basename(inputname) + " on " +
+	    str(date.today()) + " using\n" +
 		" * " + os.path.basename(__file__) + "\n")
 	g.write(" *")
 	g.write(GCC_HEADER)
