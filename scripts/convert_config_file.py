@@ -68,8 +68,7 @@ def write_defconfig(inputname):
 		i += 1
 
 	g.write(" 0x00")  # CONF_ID field
-	g.write("\n}")
-	g.write('\n')
+	g.write("\n};\n")
 
 	g.close()
 
