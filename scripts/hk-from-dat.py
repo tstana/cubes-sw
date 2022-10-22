@@ -63,7 +63,9 @@ def process(filename):
 		hvps_curr_end = float(int.from_bytes(f.read(2), "big"))
 		hvps_curr_end *= 5.194e-3
 
-		f.read(94)
+		f.read(93)
+
+		conf_id = f.read(1)
 
 		bin_cfg = f.read(6)
 
@@ -88,6 +90,8 @@ def process(filename):
 		print("  HVPS temp.    : " + "%.3f" % temp_hvps_end+ " C")
 		print("  HVPS voltage  : " + "%.3f" % hvps_volt_end+ " V")
 		print("  HVPS current  : " + "%.3f" % hvps_curr_end+ " mA")
+		print()
+		print("Citiroc Conf. ID: " + str(int.from_bytes(conf_id, "big")))
 		print()
 		print("Bin config's...")
 		print("  HG, Ch. 0     : " + str(int(bin_cfg[0])))
