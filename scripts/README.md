@@ -3,32 +3,13 @@
 This folder is a collection of scripts for general-purpose use on CUBES. Some
 of the scripts are documented below.
 
-- [value_conv.py](#value_convpy)
-  - [Purpose](#purpose)
-  - [Usage](#usage)
 - [hk-from-dat.py](#hk-from-datpy)
   - [Purpose](#purpose-1)
   - [Usage](#usage-1)
+- [value_conv.py](#value_convpy)
+  - [Purpose](#purpose)
+  - [Usage](#usage)
  
-## value_conv.py
-
-### Purpose
-
-This script provides a means of converting Hamamatsu HVPS C11204 configuration
-data between decimal and hex values.
-
-### Usage
-
-The following choices are available:
-
-1. Convert voltage from hex to decimal;
-2. Convert voltage from decimal to hex;
-3. Convert temperature from hex to decimal;
-4. Convert temperature from decimal to hex.
-
-The values output by this script can be used to make sense of the data actually
-sent to or retrieved by the HVPS module.
-
 ## hk-from-dat.py
 
 ### Purpose
@@ -98,3 +79,22 @@ Process to run it from Windows:
      HG, Ch. 31    : 0
      LG, Ch. 31    : 0
    ```
+
+## value_conv.py
+
+### Purpose
+
+This script provides a means of converting Hamamatsu HVPS C11204 configuration
+data between decimal and hex values.
+
+### Usage
+
+The following choices are available:
+
+1. Convert voltage from hex to decimal;
+2. Convert voltage from decimal to hex;
+3. Convert temperature from hex to decimal;
+4. Convert temperature from decimal to hex.
+
+The values output by this script can be used to make sense of the data actually
+sent to or retrieved by the HVPS module.
