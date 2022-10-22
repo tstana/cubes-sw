@@ -3,13 +3,63 @@
 This folder is a collection of scripts for general-purpose use on CUBES. Some
 of the scripts are documented below.
 
+- [convert_config_file.py](#convert_config_filepy)
+  - [Purpose](#purpose)
+  - [Usage](#usage)
 - [hk-from-dat.py](#hk-from-datpy)
   - [Purpose](#purpose-1)
   - [Usage](#usage-1)
 - [value_conv.py](#value_convpy)
-  - [Purpose](#purpose)
-  - [Usage](#usage)
- 
+  - [Purpose](#purpose-2)
+  - [Usage](#usage-2)
+
+## convert_config_file.py
+
+### Purpose
+
+This script can be used to convert a Citiroc ASIC config to a default
+configuration array in the C programming language. The default configuration
+array is meant to be applied by the CUBES Microcontroller Sub-System (MSS) when
+CUBES is initialized after reset.
+
+### Usage
+
+This script requires Python 3 to run.
+
+```
+usage: convert_config_file.py [-h] filename
+
+Convert Citiroc .conf file exported by CitirocUI to default configuration
+array to be applied by MSS on CUBES initialization.
+
+positional arguments:
+  filename    .conf file exported by CitirocUI
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+
+The process to generate a new default Citiroc configuration for the CUBES
+MSS is outlined below:
+
+1. Use the [CitirocUI software](https://github.com/tstana/CitirocUI) to create a new
+   Citiroc configuration using the _Slow Control_ tab.
+   - **Tip:** No need to start from scratch, work with one of the available
+     [configurations on Dropbox](https://www.dropbox.com/home/CUBES/Testing/MPPC%20testing/Datafiles/Configurations)!
+2. After you are done editing the configuration, click the **Save** button
+   under the _Slow Control_ tab to create a new configuration file.
+3. Copy the configuration file created from CitirocUI to the folder where this
+   script resides.
+4. Run this script on the new configuration file, e.g.:
+   ```
+   $ python convert_config_file.py charge-lin-test-dg1062z.conf
+   Wrote successfully to citiroc_defconfig.h
+   ```
+5. Copy the `citiroc_defconfig.h` file to the folder `firmware/drivers/citiroc/`
+   wherever the `cubes-fw` repository resides on your computer's storage device.
+6. Build and run the new configuration. CUBES should now start with the newly
+   generated default configuration.
+
 ## hk-from-dat.py
 
 ### Purpose
