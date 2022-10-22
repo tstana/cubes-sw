@@ -54,7 +54,7 @@ def write_defconfig(inputname):
 	g.write(" */\n")
 	g.write('\n')
 
-	g.write("const uint8_t CITIROC_DEFCONFIG = {")
+	g.write("const uint8_t CITIROC_DEFCONFIG[144] = {")
 
 	i = 0;
 	for y in Generator(conf, 8):
